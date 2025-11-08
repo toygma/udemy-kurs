@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-roboto:"Roboto", sans-serif;
+  --font-ibm: "IBM Plex Sans", sans-serif;
+}
+
+:root {
+  --font-roboto:"Roboto", sans-serif;
+}
+
+*{
+  font-family: var(--font-roboto)
+}
+
+button {
+  cursor: pointer;
+}
+

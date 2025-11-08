@@ -1,0 +1,193 @@
+import { useState } from "react";
+import { Link, useNavigate } from "react-router";
+import { DoctorAvatar, Logo } from "@/core/images";
+import { menuData } from "./constants/headerConstants";
+import MobileHeader from "./_components/MobileHeader";
+import Button from "@/shared/ui/Button";
+
+const Header = () => {
+  const [activeItemId, setActiveItemId] = useState<number | null>(null);
+  const [openMobileMenu, setOpenMobileMenu] = useState(false);
+  const [avatarMenu, setAvatarMenu] = useState(false);
+  const navigate = useNavigate();
+  const user = { _id: 1, name: "toygma", role: "admin" };
+
+  const activeDropdown = menuData.find((item) => item.id === activeItemId);
+
+  const handleMouseLeave = () => {
+    setActiveItemId(null);
+  };
+  const handleAvatarMenuClose = () => {
+    setAvatarMenu((prev) => !prev);
+  };
+
+  const handleMenuOpen = () => {
+    setOpenMobileMenu((prev) => !prev);
+  };
+  return (
+    <header className="fixed top-0 left-0 w-full bg-white shadow-lg z-40 font-ibm!">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-20">
+          <div className="flex items-center gap-3">
+            <img
+              src={Logo}
+              alt="logo"
+              title="mern-logo"
+              className="w-auto h-10 object-contain"
+            />
+
+            <h2
+              onClick={() => navigate("/")}
+              className="text-3xl font-bold tracking-tight text-indigo-700 cursor-pointer hover:text-indigo-900 transition duration-150"
+            >
+              MERN-Health
+            </h2>
+          </div>
+
+          <div className="lg:flex hidden">
+            <ul className="flex space-x-8">
+              {menuData.map((item) => (
+                <li key={item.id} onMouseEnter={() => setActiveItemId(item.id)}>
+                  <Link
+                    to={item.href}
+                    className={`
+                      text-lg font-medium text-gray-600 pb-1 transition duration-150 ease-in-out
+                      ${
+                        activeItemId === item.id && item.dropdown?.length
+                          ? "text-indigo-600 border-b-2 border-indigo-600"
+                          : "hover:text-indigo-600 hover:border-b-2 hover:border-indigo-600"
+                      }
+                    `}
+                  >
+                    {item.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            {activeDropdown?.dropdown?.length ? (
+              <div
+                onMouseLeave={handleMouseLeave}
+                onMouseEnter={() => setActiveItemId(activeDropdown.id)}
+                className="
+      absolute top-full left-0 mt-0 w-auto min-w-[250px] 
+      bg-white rounded-xl shadow-2xl border border-gray-100 p-4 
+      transition duration-300 ease-in-out 
+    "
+                style={{ left: "50%", transform: "translateX(-50%)" }}
+              >
+                <ul
+                  className={`space-y-2 grid gap-x-4 
+        ${activeDropdown.dropdown.length > 5 ? "grid-cols-2" : "grid-cols-1"}
+      `}
+                >
+                  {activeDropdown.dropdown.map((subItem) => (
+                    <li key={subItem.name} className="min-w-max">
+                      <Link
+                        to={subItem.link}
+                        className="block px-3 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg transition duration-150"
+                      >
+                        {subItem.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
+          </div>
+          <div className="flex items-center gap-4 relative">
+            <Button
+              type="button"
+              children="Randevu Alın"
+              className="py-2 lg:block hidden"
+            />
+            {user ? (
+              <div className="relative lg:inline-block hidden">
+                <img
+                  src={DoctorAvatar}
+                  alt="avatar"
+                  className="w-12 h-12 object-cover rounded-full cursor-pointer"
+                  onClick={handleAvatarMenuClose}
+                />
+
+                {avatarMenu && (
+                  <div className="absolute right-0 mt-2 w-40 bg-white  rounded-lg shadow-md overflow-hidden z-50 flex flex-col">
+                    <span className="px-4 py-2 border-b">
+                      Welcome, {user.name}
+                    </span>
+                    <Link
+                      onClick={handleAvatarMenuClose}
+                      to={"/my-profile"}
+                      className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer"
+                    >
+                      My Profile
+                    </Link>
+                    {user.role === "admin" && (
+                      <Link
+                        onClick={handleAvatarMenuClose}
+                        to={"/admin"}
+                        className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer"
+                      >
+                        Admin Panel
+                      </Link>
+                    )}
+                    {user.role === "doctor" && (
+                      <Link
+                        onClick={handleAvatarMenuClose}
+                        to={`/doctor/${user?._id}`}
+                        className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer"
+                      >
+                        Doctor Panel
+                      </Link>
+                    )}
+                    <Link
+                      onClick={handleAvatarMenuClose}
+                      to={"/my-appointment"}
+                      className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer"
+                    >
+                      My Appointment
+                    </Link>
+                    <button
+                      onClick={handleAvatarMenuClose}
+                      className="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-gray-100 cursor-pointer"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <Link to={"/giris-yap"}>
+                <Button type="button" className="py-2">
+                  Giriş Yap
+                </Button>
+              </Link>
+            )}
+            <button
+              onClick={() => setOpenMobileMenu(!openMobileMenu)}
+              className="lg:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors  cursor-pointer"
+            >
+              <svg
+                className="w-8 h-8 text-gray-700"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+            </button>
+
+            {/* Mobile Menu */}
+            <MobileHeader onClose={handleMenuOpen} openMenu={openMobileMenu} />
+          </div>
+        </div>
+      </div>
+    </header>
+  );
+};
+
+export default Header;
