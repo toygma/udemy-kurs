@@ -1,9 +1,10 @@
 import { Doctor, DoctorPatient, Line, ModalLine, Shape } from "@/core/images";
 import Button from "@/shared/ui/Button";
+import LayoutContainer from "@/shared/ui/LayoutContainer";
 
 const Hero = () => {
   return (
-    <div className="min-h-screen w-full">
+    <LayoutContainer>
       <div className="flex flex-col items-center justify-center mt-24 gap-4">
         <div className="relative">
           <h1 className="max-w-[800px] text-center md:text-[60px] text-[40px] text-gray-800">
@@ -52,7 +53,7 @@ const Hero = () => {
           />
         </div>
       </div>
-    </div>
+    </LayoutContainer>
   );
 };
 
