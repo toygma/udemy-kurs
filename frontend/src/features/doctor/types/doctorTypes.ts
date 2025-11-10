@@ -7,7 +7,7 @@ export interface DoctorSlot {
 
 export interface Education {
   degree: string;
-  institution: string;
+  university: string;
   year: string;
 }
 
@@ -18,9 +18,9 @@ export interface Doctor {
   phone: string;
   role: "doctor";
   speciality: string; 
-  experience: string;
-  fee: string;
-  patients: string; 
+  experience: number;
+  fee: number;
+  patients: number; 
   available: boolean; 
   averageRating: number;
   totalRating: number;
@@ -57,7 +57,6 @@ export interface Doctor {
 
   images: [
     {
-      public_id: string;
       url: string;
     }
   ];

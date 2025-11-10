@@ -5,6 +5,7 @@ import Loading from "@/features/Loading";
 
 const HomePage = lazy(() => import("@/features/home/HomePage"));
 const Doctors = lazy(() => import("@/features/doctor/Doctors"));
+const DoctorDetail = lazy(() => import("@/features/doctor/DoctorDetail"));
 
 export const MainRoutes = {
   path: "/",
@@ -27,5 +28,15 @@ export const MainRoutes = {
         </Suspense>
       ),
     },
+      {
+      path: "/detay/doktor/:name/:id",
+      element: (
+        <Suspense fallback={<Loading />}>
+          <DoctorDetail />
+        </Suspense>
+      ),
+    },
+    
+    
   ],
 };

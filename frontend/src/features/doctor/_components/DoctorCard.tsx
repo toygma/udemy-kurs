@@ -1,13 +1,14 @@
 import type { Doctor, IDoctorCardProps } from "../types/doctorTypes";
 import { Link } from "react-router";
 import { Circle, User } from "lucide-react";
+import { generateSlugify } from "@/shared/utils/helper";
 
 const DoctorCard = ({filteredDoctors}:IDoctorCardProps) => {
   return (
      <main className="flex-1">
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
               {filteredDoctors.map((doctor: Doctor) => (
-                <Link to={""} className="group">
+                <Link to={`/detay/doktor/${generateSlugify(doctor.name)}/${doctor._id}`} className="group">
                   <div className="bg-white rounded-2xl shadow-md hover:shadow-lg overflow-hidden h-full flex flex-col">
                     <div className="relative">
                       <img
