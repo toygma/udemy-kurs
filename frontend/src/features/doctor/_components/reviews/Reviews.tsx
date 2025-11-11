@@ -94,7 +94,31 @@ const Reviews = () => {
             <MessageCircle className="w-8 h-8 text-indigo-600" />
             Patient Reviews
           </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <RatingSummary reviews={reviews} />
+            <RatingDistribution reviews={reviews} />
+          </div>
         </div>
+
+        {/* Write Review Form */}
+        <ReviewForm onSubmit={handleSubmitReview} isLoading={isSubmitting} />
+
+        {/* Reviews List */}
+        <ReviewList
+          reviews={reviews}
+          onDelete={handleDeleteReview}
+          deletingId={deletingId}
+        />
+        {modalOpen && (
+          <Modal
+            title="Confirm Delete"
+            paragraph="Are you sure you want to delete this review?"
+            onConfirm={handleConfirmDelete}
+            onCancel={handleCancelDelete}
+            loading={isDeleting}
+          />
+        )}
       </div>
     </div>
   );
