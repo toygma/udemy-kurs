@@ -17,11 +17,11 @@ export interface Doctor {
   email: string;
   phone: string;
   role: "doctor";
-  speciality: string; 
+  speciality: string;
   experience: number;
   fee: number;
-  patients: number; 
-  available: boolean; 
+  patients: number;
+  available: boolean;
   averageRating: number;
   totalRating: number;
   about: string;
@@ -35,9 +35,8 @@ export interface Doctor {
     country: string;
   };
 
- 
   appointments: string[];
-  reviews: any[]; 
+  reviews: any[];
   awards: {
     title?: string;
     year?: string | number;
@@ -64,7 +63,12 @@ export interface Doctor {
   updatedAt: string;
 }
 
-
 export interface IDoctorCardProps {
-  filteredDoctors:Doctor[]
+  filteredDoctors: Doctor[];
+}
+
+export interface ITimeSlot {
+  time: string;
+  dateTime: Date;
+  available: boolean;
 }

@@ -88,11 +88,11 @@ export const doctors: Doctor[] = [
       "Heart Disease Prevention Counseling",
     ],
     workingHours: [
-      { day: "Monday", startTime: "09:00", endTime: "17:00" },
-      { day: "Tuesday", startTime: "09:00", endTime: "17:00" },
-      { day: "Wednesday", startTime: "09:00", endTime: "17:00" },
-      { day: "Thursday", startTime: "09:00", endTime: "17:00" },
-      { day: "Friday", startTime: "09:00", endTime: "16:00" },
+      { day: "Pazartesi", startTime: "09:00", endTime: "17:00" },
+      { day: "Salı", startTime: "09:00", endTime: "17:00" },
+      { day: "Çarşamba", startTime: "09:00", endTime: "17:00" },
+      { day: "Perşembe", startTime: "09:00", endTime: "17:00" },
+      { day: "Cuma", startTime: "09:00", endTime: "16:00" },
     ],
     images: [
       {
@@ -150,9 +150,10 @@ export const doctors: Doctor[] = [
       "Botox & Fillers",
     ],
     workingHours: [
-      { day: "Monday", startTime: "10:00", endTime: "18:00" },
-      { day: "Wednesday", startTime: "09:30", endTime: "17:30" },
-      { day: "Friday", startTime: "09:00", endTime: "16:00" },
+      { day: "Pazartesi", startTime: "09:00", endTime: "17:00" },
+      { day: "Salı", startTime: "09:00", endTime: "17:00" },
+      { day: "Çarşamba", startTime: "09:00", endTime: "17:00" },
+      { day: "Cuma", startTime: "09:00", endTime: "16:00" },
     ],
     images: [
       {

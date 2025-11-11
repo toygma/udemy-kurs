@@ -10,6 +10,8 @@ import {
   Phone,
   Mail,
 } from "lucide-react";
+import DoctorSlot from "./_components/DoctorSlot";
+import Reviews from "./_components/reviews/Reviews";
 
 const DoctorDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -231,6 +233,8 @@ const DoctorDetail = () => {
             </div>
           </div>
         </div>
+        <DoctorSlot doctor={doctor}/>
+          <Reviews />
       </div>
     </div>
   );
