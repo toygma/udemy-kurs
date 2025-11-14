@@ -1,15 +1,9 @@
-// components/RatingDistribution.tsx
-import React from "react";
-import type { Review } from "../../types/reviewTypes";
+import type { RatingSummaryProps } from "../types/reviewTypes";
 
-interface RatingDistributionProps {
-  reviews: Review[];
-}
-
-const RatingDistribution: React.FC<RatingDistributionProps> = ({ reviews }) => {
+const RatingDistribution = ({ reviews }: RatingSummaryProps) => {
   return (
     <div className="bg-white rounded-2xl shadow-lg p-8 md:col-span-2">
-      <h3 className="font-semibold text-gray-900 mb-4">Rating Distribution</h3>
+      <h3 className="font-semibold text-gray-900 mb-4">Puan Dağılımı</h3>
       <div className="space-y-3">
         {[5, 4, 3, 2, 1].map((star) => {
           const count = reviews.filter((r) => r.rating === star).length;
@@ -18,16 +12,16 @@ const RatingDistribution: React.FC<RatingDistributionProps> = ({ reviews }) => {
 
           return (
             <div key={star} className="flex items-center gap-3">
-              <span className="text-sm text-gray-600 w-12">{star} Star</span>
+              <span className="text-sm text-gray-600 w-12">{star} Oy</span>
               <div className="flex-1 bg-gray-200 rounded-full h-2">
                 <div
                   className="bg-yellow-400 h-2 rounded-full transition-all"
                   style={{ width: `${percentage}%` }}
                 ></div>
+                <span className="text-sm text-gray-600 w-12 text-right">
+                  {percentage} %
+                </span>
               </div>
-              <span className="text-sm text-gray-600 w-12 text-right">
-                {percentage}%
-              </span>
             </div>
           );
         })}

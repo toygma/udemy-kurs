@@ -10,6 +10,6 @@ export const generateSlugify = (title:string) => {
 }
 
 
-export const formatDate = (date:Date):string=> {
+export const formatDate = (date:any):string=> {
     return moment(date).format("DD/MM/YYYY")
 }

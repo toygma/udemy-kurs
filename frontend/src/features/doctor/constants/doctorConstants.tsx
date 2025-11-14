@@ -28,7 +28,6 @@ export const categories = [
   { id: "dentist", name: "Diş Doktoru", icon: <Smile /> },
 ];
 
-
 export const doctors: Doctor[] = [
   {
     _id: "1",
@@ -55,7 +54,19 @@ export const doctors: Doctor[] = [
       country: "Türkiye",
     },
     appointments: [],
-    reviews: [],
+    reviews: [
+      {
+        _id: "review-3",
+        user: {
+          name: "anonymous",
+          image: DoctorAvatar2,
+        },
+        rating: 4,
+        comment: "Harika, her şey çok iyiydi.",
+        createdAt: "2025-01-01",
+      },
+    ],
+
     awards: [
       {
         title: "Best Cardiologist",
@@ -127,7 +138,19 @@ export const doctors: Doctor[] = [
       country: "Türkiye",
     },
     appointments: [],
-    reviews: [],
+    reviews: [
+      {
+        _id: "review-2",
+        user: {
+          name: "anonymous",
+          image: DoctorAvatar2,
+        },
+        rating: 4,
+        comment: "Harika, her şey çok iyiydi.",
+        createdAt: "2025-01-01",
+      },
+    ],
+
     awards: [
       {
         title: "Skin Care Specialist Award",

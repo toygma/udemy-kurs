@@ -11,7 +11,8 @@ import {
   Mail,
 } from "lucide-react";
 import DoctorSlot from "./_components/DoctorSlot";
-import Reviews from "./_components/reviews/Reviews";
+import ReviewSection from "../reviews/Reviews";
+import LayoutContainer from "@/shared/ui/LayoutContainer";
 
 const DoctorDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -21,7 +22,9 @@ const DoctorDetail = () => {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-800">Doktor bulunamadı</h2>
+          <h2 className="text-2xl font-bold text-gray-800">
+            Doktor bulunamadı
+          </h2>
           <p className="text-gray-600 mt-2">
             Aradığınız doktor bilgisi mevcut değil.
           </p>
@@ -32,7 +35,7 @@ const DoctorDetail = () => {
 
   return (
     <div className="min-h-screen">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <LayoutContainer >
         {/* Header */}
         <div className="bg-white rounded-3xl shadow-xl overflow-hidden mb-8">
           <div className="bg-linear-to-r from-blue-600 to-indigo-600 h-32"></div>
@@ -233,9 +236,9 @@ const DoctorDetail = () => {
             </div>
           </div>
         </div>
-        <DoctorSlot doctor={doctor}/>
-          <Reviews />
-      </div>
+        <DoctorSlot doctor={doctor} />
+        <ReviewSection/>
+      </LayoutContainer>
     </div>
   );
 };

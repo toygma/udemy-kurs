@@ -1,3 +1,5 @@
+import type { Review } from "@/features/reviews/types/reviewTypes";
+
 export interface DoctorSlot {
   id: number;
   day: string;
@@ -36,7 +38,7 @@ export interface Doctor {
   };
 
   appointments: string[];
-  reviews: any[];
+  reviews: Review[];
   awards: {
     title?: string;
     year?: string | number;
