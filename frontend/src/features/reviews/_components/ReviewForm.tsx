@@ -28,12 +28,12 @@ const ReviewForm = ({ onSubmit, isLoading }: ReviewFormProps) => {
   const commentValue = watch("comment");
 
   const handleFormSubmit = (data: ReviewSchemaType) => {
-    
     onSubmit(data.rating, data.comment);
   };
 
   return (
     <div className="bg-white rounded-2xl shadow-lg p-8 mb-12">
+      <h3 className="text-2xl font-bold text-gray-900 mb-6">Yeni Yorum Ekle</h3>
       <h3 className="text-2xl font-bold text-gray-900 mb-6">
         <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
           {/* Puanlama */}

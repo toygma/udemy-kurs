@@ -2,7 +2,15 @@ import { MessageCircle } from "lucide-react";
 import type { ReviewListProps } from "../types/reviewTypes";
 import ReviewItem from "./ReviewItem";
 
-const ReviewList = ({ reviews, onDelete, deletingId}: ReviewListProps) => {
+const ReviewList = ({
+  reviews,
+  onDelete,
+  deletingId,
+  editingId,
+  onSubmit,
+  onEdit,
+  onCancel,
+}: ReviewListProps) => {
   return (
     <div>
       <h3 className="text-2xl font-bold text-gray-900 mb-6">
@@ -16,6 +24,10 @@ const ReviewList = ({ reviews, onDelete, deletingId}: ReviewListProps) => {
               review={review}
               onDelete={onDelete}
               isDeleting={deletingId === review._id}
+              editingId={editingId} 
+              onSubmit={onSubmit} 
+              onEdit={onEdit} 
+              onCancel={onCancel} 
             />
           ))}
         </div>

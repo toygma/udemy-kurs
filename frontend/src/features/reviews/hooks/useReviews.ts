@@ -12,7 +12,6 @@ export const useReviews = (initialReviews: Review[] = []) => {
 
   const addReview = async (rating: number, comment: string) => {
     setIsSubmitting(true);
-
     setTimeout(() => {
       const newReview: Review = {
         _id: crypto.randomUUID(),
@@ -24,16 +23,16 @@ export const useReviews = (initialReviews: Review[] = []) => {
         comment,
         createdAt: new Date().toISOString(),
       };
-
       setReviews((prev) => [newReview, ...prev]);
       setIsSubmitting(false);
+      setEditingId(null);
     }, 1000);
   };
 
   const updateReview = async (
-    reviewId: string,
     rating: number,
-    comment: string
+    comment: string,
+    reviewId?: string
   ) => {
     setIsSubmitting(true);
     setTimeout(() => {
