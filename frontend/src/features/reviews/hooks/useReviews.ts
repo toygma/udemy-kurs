@@ -8,6 +8,8 @@ export const useReviews = (initialReviews: Review[] = []) => {
 
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
+  const [editingLoading, setIsEditingLoading] = useState<boolean>(false);
+
   const [editingId, setEditingId] = useState<string | null>(null);
 
   const addReview = async (rating: number, comment: string) => {
@@ -34,7 +36,7 @@ export const useReviews = (initialReviews: Review[] = []) => {
     comment: string,
     reviewId?: string
   ) => {
-    setIsSubmitting(true);
+    setIsEditingLoading(true);
     setTimeout(() => {
       setReviews((prev) =>
         prev.map((review) =>
@@ -42,7 +44,7 @@ export const useReviews = (initialReviews: Review[] = []) => {
         )
       );
 
-      setIsSubmitting(false);
+      setIsEditingLoading(false);
       setEditingId(null);
     }, 1000);
   };
@@ -77,5 +79,6 @@ export const useReviews = (initialReviews: Review[] = []) => {
     deleteReview,
     startEditing,
     cancelEditing,
+    editingLoading,
   };
 };

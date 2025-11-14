@@ -17,6 +17,7 @@ const ReviewItem = ({
   onSubmit,
   onEdit,
   onCancel,
+  isLoading
 }: ReviewItemProps) => {
   const isEditing = editingId === review._id;
 
@@ -25,7 +26,7 @@ const ReviewItem = ({
     handleSubmit,
     control,
     watch,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<ReviewSchemaType>({
     mode: "onChange",
     resolver: zodResolver(ReviewsSchema),
@@ -179,10 +180,10 @@ const ReviewItem = ({
                 </button>
                 <button
                   type="submit"
-                  disabled={isSubmitting}
+                  disabled={isLoading}
                   className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition disabled:opacity-50"
                 >
-                  {isSubmitting ? "Kaydediliyor..." : "Yorumu Güncelle"}
+                  {isLoading ? "Kaydediliyor..." : "Yorumu Güncelle"}
                 </button>
               </div>
             </form>

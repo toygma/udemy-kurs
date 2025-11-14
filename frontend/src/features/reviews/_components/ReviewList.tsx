@@ -10,6 +10,7 @@ const ReviewList = ({
   onSubmit,
   onEdit,
   onCancel,
+  isLoading,
 }: ReviewListProps) => {
   return (
     <div>
@@ -28,6 +29,7 @@ const ReviewList = ({
               onSubmit={onSubmit} 
               onEdit={onEdit} 
               onCancel={onCancel} 
+              isLoading={isLoading}
             />
           ))}
         </div>

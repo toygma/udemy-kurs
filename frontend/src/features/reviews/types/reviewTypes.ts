@@ -41,6 +41,7 @@ export interface ReviewItemProps {
   ) => void;
   onEdit: (reviewId: string) => void;
   onCancel: () => void;
+  isLoading?:boolean;
 }
 
 export interface ReviewListProps {
@@ -51,4 +52,6 @@ export interface ReviewListProps {
   onSubmit: (rating: number, comment: string) => void;
   onEdit: (reviewId: string) => void;
   onCancel: () => void;
+  isLoading?:boolean;
+
 }

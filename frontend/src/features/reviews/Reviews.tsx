@@ -16,13 +16,13 @@ const ReviewsSection = () => {
     startEditing,
     cancelEditing,
     updateReview,
+    editingLoading,
   } = useReviews();
 
   const handleSubmit = (rating: number, comment: string, reviewId?: string) => {
     updateReview(rating, comment, reviewId);
   };
 
-  
   return (
     <div className="min-h-screen  py-12">
       <div className="mb-12">
@@ -35,19 +35,17 @@ const ReviewsSection = () => {
           <RatingDistribution reviews={reviews} />
         </div>
       </div>
-      <ReviewForm
-        onSubmit={addReview}
-        isLoading={isSubmitting}
-      />
+      <ReviewForm onSubmit={addReview} isLoading={isSubmitting} />
 
-        <ReviewList
+      <ReviewList
         reviews={reviews}
         onDelete={deleteReview}
         deletingId={deletingId}
         editingId={editingId}
-        onSubmit={handleSubmit} 
-        onEdit={startEditing} 
+        onSubmit={handleSubmit}
+        onEdit={startEditing}
         onCancel={cancelEditing}
+        isLoading={editingLoading}
       />
     </div>
   );
