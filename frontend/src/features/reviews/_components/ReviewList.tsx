@@ -7,10 +7,10 @@ const ReviewList = ({
   onDelete,
   deletingId,
   editingId,
-  onSubmit,
-  onEdit,
   onCancel,
-  isLoading,
+  onEdit,
+  onSubmit,
+  isLoading
 }: ReviewListProps) => {
   return (
     <div>
@@ -25,10 +25,10 @@ const ReviewList = ({
               review={review}
               onDelete={onDelete}
               isDeleting={deletingId === review._id}
-              editingId={editingId} 
-              onSubmit={onSubmit} 
-              onEdit={onEdit} 
-              onCancel={onCancel} 
+              editingId={editingId}
+              onSubmit={onSubmit}
+              onCancel={onCancel}
+              onEdit={onEdit}
               isLoading={isLoading}
             />
           ))}

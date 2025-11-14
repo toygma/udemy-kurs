@@ -33,14 +33,10 @@ export interface ReviewItemProps {
   review: Review;
   onDelete?: (reviewId: string) => void;
   isDeleting?: boolean;
-  editingId?: string | null;
-  onSubmit: (
-    rating: number,
-    comment: string,
-    editingId?: string | null
-  ) => void;
-  onEdit: (reviewId: string) => void;
-  onCancel: () => void;
+  editingId?:string | null;
+  onSubmit: (rating:number,comment:string,editingId?:string | null) => void;
+  onEdit:(reviewId:string) => void;
+  onCancel:()=>void;
   isLoading?:boolean;
 }
 
@@ -48,10 +44,9 @@ export interface ReviewListProps {
   reviews: Review[];
   onDelete: (reviewId: string) => void;
   deletingId: string | null;
-  editingId?: string | null;
-  onSubmit: (rating: number, comment: string) => void;
-  onEdit: (reviewId: string) => void;
-  onCancel: () => void;
+  editingId?:string | null;
+  onSubmit: (rating:number,comment:string) => void;
+  onEdit:(reviewId:string) => void;
+  onCancel:()=>void;
   isLoading?:boolean;
-
 }

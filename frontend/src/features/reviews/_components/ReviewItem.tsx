@@ -2,25 +2,25 @@ import { formatDate } from "@/shared/utils/helper";
 import { Calendar, Edit, Trash2, User } from "lucide-react";
 import StarRating from "./StarRating";
 import type { ReviewItemProps } from "../types/reviewTypes";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   ReviewsSchema,
   type ReviewSchemaType,
 } from "../validation/reviews.schema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Controller, useForm } from "react-hook-form";
+import Button from "@/shared/ui/Button";
 
 const ReviewItem = ({
   review,
   onDelete,
   isDeleting,
-  editingId,
-  onSubmit,
-  onEdit,
   onCancel,
-  isLoading
+  onEdit,
+  onSubmit,
+  editingId,
+  isLoading,
 }: ReviewItemProps) => {
   const isEditing = editingId === review._id;
-
   const {
     register,
     handleSubmit,
@@ -35,6 +35,7 @@ const ReviewItem = ({
       rating: 0,
     },
   });
+
   const commentValue = watch("comment");
 
   const handleFormSubmit = (data: ReviewSchemaType) => {
@@ -71,38 +72,37 @@ const ReviewItem = ({
                 {formatDate(review?.createdAt)}
               </div>
 
-              {!isEditing && (
-                <div className="flex items-center gap-1">
-                  <button
-                    onClick={() => onEdit(review._id)}
-                    className="p-2 hover:bg-blue-50 text-blue-600 
-                           hover:text-blue-700 rounded-lg transition"
-                    title="Edit review"
-                  >
-                    <Edit className="w-5 h-5" />
-                  </button>
-                  <button
-                    onClick={() => onDelete?.(review._id)}
-                    disabled={isDeleting}
-                    className="p-2 hover:bg-red-50 text-red-600 
+              <div className="flex items-center gap-1">
+                {!isEditing && (
+                  <div>
+                    <button
+                      onClick={() => onEdit(review._id)}
+                      className="p-2 hover:bg-blue-50 text-blue-600 hover:text-blue-700 rounded-full"
+                    >
+                      <Edit className="w-5 h-5" />
+                    </button>
+                    <button
+                      onClick={() => onDelete?.(review._id)}
+                      disabled={isDeleting}
+                      className="p-2 hover:bg-red-50 text-red-600 
                            hover:text-red-700 rounded-lg transition 
                            disabled:opacity-50 disabled:cursor-not-allowed"
-                    title="Delete review"
-                  >
-                    {isDeleting ? (
-                      <div
-                        className="w-5 h-5 border-2 border-red-600 
+                      title="Delete review"
+                    >
+                      {isDeleting ? (
+                        <div
+                          className="w-5 h-5 border-2 border-red-600 
                                 border-t-transparent rounded-full animate-spin"
-                      />
-                    ) : (
-                      <Trash2 className="w-5 h-5" />
-                    )}
-                  </button>
-                </div>
-              )}
+                        />
+                      ) : (
+                        <Trash2 className="w-5 h-5" />
+                      )}
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-
           {!isEditing ? (
             <div className="space-y-2">
               <StarRating rating={review?.rating} readOnly size={18} />
@@ -116,9 +116,6 @@ const ReviewItem = ({
               className="space-y-4 mt-4"
             >
               <div className="flex flex-col">
-                <label className="block text-sm font-semibold text-gray-900 mb-2">
-                  Puanlama
-                </label>
                 <div className="flex items-center gap-4">
                   <Controller
                     name="rating"
@@ -148,7 +145,7 @@ const ReviewItem = ({
                 )}
               </div>
 
-              {/* Yorum Alanı */}
+              {/* YORUM ALANI */}
               <div>
                 <label className="block text-sm font-semibold text-gray-900 mb-2">
                   Yorum (10-500 karakter)
@@ -169,22 +166,20 @@ const ReviewItem = ({
                   </span>
                 </div>
               </div>
-
               <div className="flex justify-end gap-3 pt-2">
-                <button
-                  type="button"
+                <Button
                   onClick={() => onCancel()}
-                  className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition"
-                >
-                  İptal
-                </button>
-                <button
+                  type="button"
+                  className="bg-gray-100 text-gray-700 hover:bg-white hover:text-black"
+                  children="İptal"
+                />
+                <Button
                   type="submit"
+                  className=""
+                  children="Yorumu Güncelle"
+                  loading={isLoading}
                   disabled={isLoading}
-                  className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition disabled:opacity-50"
-                >
-                  {isLoading ? "Kaydediliyor..." : "Yorumu Güncelle"}
-                </button>
+                />
               </div>
             </form>
           )}

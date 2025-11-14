@@ -19,9 +19,9 @@ const ReviewsSection = () => {
     editingLoading,
   } = useReviews();
 
-  const handleSubmit = (rating: number, comment: string, reviewId?: string) => {
-    updateReview(rating, comment, reviewId);
-  };
+  const handleSubmit = (rating:number,comment:string,reviewId?:string) => {
+    updateReview(rating,comment,reviewId)
+  }
 
   return (
     <div className="min-h-screen  py-12">

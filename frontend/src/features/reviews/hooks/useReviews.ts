@@ -8,7 +8,8 @@ export const useReviews = (initialReviews: Review[] = []) => {
 
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
-  const [editingLoading, setIsEditingLoading] = useState<boolean>(false);
+  const [editingLoading, setEditingLoading] = useState<boolean>(false);
+
 
   const [editingId, setEditingId] = useState<string | null>(null);
 
@@ -36,7 +37,7 @@ export const useReviews = (initialReviews: Review[] = []) => {
     comment: string,
     reviewId?: string
   ) => {
-    setIsEditingLoading(true);
+    setEditingLoading(true);
     setTimeout(() => {
       setReviews((prev) =>
         prev.map((review) =>
@@ -44,7 +45,7 @@ export const useReviews = (initialReviews: Review[] = []) => {
         )
       );
 
-      setIsEditingLoading(false);
+      setEditingLoading(false);
       setEditingId(null);
     }, 1000);
   };
@@ -79,6 +80,6 @@ export const useReviews = (initialReviews: Review[] = []) => {
     deleteReview,
     startEditing,
     cancelEditing,
-    editingLoading,
+    editingLoading
   };
 };
