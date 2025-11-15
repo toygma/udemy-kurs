@@ -2,6 +2,7 @@ import { Suspense, lazy } from "react";
 import NotFound from "@/features/NotFound";
 import MainLayout from "@/layouts/MainLayout";
 import Loading from "@/features/Loading";
+import MyProfile from "@/features/patient/MyProfile";
 
 const HomePage = lazy(() => import("@/features/home/HomePage"));
 const Doctors = lazy(() => import("@/features/doctor/Doctors"));
@@ -36,7 +37,13 @@ export const MainRoutes = {
         </Suspense>
       ),
     },
-    
-    
+       {
+      path: "/profil",
+      element: (
+        <Suspense fallback={<Loading />}>
+          <MyProfile />
+        </Suspense>
+      ),
+    },
   ],
 };
