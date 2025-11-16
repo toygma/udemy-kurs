@@ -2,11 +2,11 @@ import { Suspense, lazy } from "react";
 import NotFound from "@/features/NotFound";
 import MainLayout from "@/layouts/MainLayout";
 import Loading from "@/features/Loading";
-import MyProfile from "@/features/patient/MyProfile";
 
 const HomePage = lazy(() => import("@/features/home/HomePage"));
 const Doctors = lazy(() => import("@/features/doctor/Doctors"));
 const DoctorDetail = lazy(() => import("@/features/doctor/DoctorDetail"));
+const MyProfile = lazy(() => import("@/features/patient/MyProfile"));
 
 export const MainRoutes = {
   path: "/",
@@ -29,7 +29,7 @@ export const MainRoutes = {
         </Suspense>
       ),
     },
-      {
+    {
       path: "/detay/doktor/:name/:id",
       element: (
         <Suspense fallback={<Loading />}>
@@ -37,7 +37,7 @@ export const MainRoutes = {
         </Suspense>
       ),
     },
-       {
+    {
       path: "/profil",
       element: (
         <Suspense fallback={<Loading />}>

@@ -1,11 +1,9 @@
-
 import { z } from "zod";
 
-
 export const ProfileUpdateSchema = z.object({
-  name: z.string().min(2, "İsim en az 2 karakter olmalı"),
-  email: z.email("Geçersiz Email Adresi"),
-  phone: z.string().min(11, "Telefon numarası en az 11 rakamdan oluşmalıdır."),
+  name: z.string().min(2, "İsim en az 2 karakter olmalıdır."),
+  email: z.email("Geçersiz email adresi"),
+  phone: z.string().min(11, "Telefon numarası en az 11 rakam'dan oluşmalıdır."),
   gender: z.enum(["Erkek", "Kadın"]),
   address: z.object({
     street: z.string().optional(),
@@ -15,6 +13,5 @@ export const ProfileUpdateSchema = z.object({
   }),
   image: z.string().optional(),
 });
-
 
 export type ProfileUpdateSchemaType = z.infer<typeof ProfileUpdateSchema>;
