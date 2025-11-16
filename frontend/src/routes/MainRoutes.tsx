@@ -47,7 +47,7 @@ export const MainRoutes = {
       ),
     },
      {
-      path: "/randevularım",
+      path: "/randevularim",
       element: (
         <Suspense fallback={<Loading />}>
           <MyAppointments />
