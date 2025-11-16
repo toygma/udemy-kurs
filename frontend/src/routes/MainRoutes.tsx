@@ -7,6 +7,7 @@ const HomePage = lazy(() => import("@/features/home/HomePage"));
 const Doctors = lazy(() => import("@/features/doctor/Doctors"));
 const DoctorDetail = lazy(() => import("@/features/doctor/DoctorDetail"));
 const MyProfile = lazy(() => import("@/features/patient/MyProfile"));
+const MyAppointments = lazy(() => import("@/features/patient/MyAppointment"));
 
 export const MainRoutes = {
   path: "/",
@@ -42,6 +43,14 @@ export const MainRoutes = {
       element: (
         <Suspense fallback={<Loading />}>
           <MyProfile />
+        </Suspense>
+      ),
+    },
+     {
+      path: "/randevularım",
+      element: (
+        <Suspense fallback={<Loading />}>
+          <MyAppointments />
         </Suspense>
       ),
     },

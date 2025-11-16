@@ -1,0 +1,132 @@
+// _components/AppointmentCard.tsx
+
+import { Clock, CreditCard, MapPin, X } from "lucide-react";
+import moment from "moment";
+import type { AppointmentCardProps } from "../types/appointmentTypes";
+
+
+const AppointmentCard = ({
+  appointment,
+  onPayment,
+  onCancel,
+  isPaymentLoading,
+  isCancelLoading,
+}: AppointmentCardProps) => {
+  const isPaid = appointment.isPaid === "ödendi";
+
+  return (
+    <div className="bg-white rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-200 overflow-hidden border border-gray-100">
+      <div className="flex flex-col md:flex-row">
+        {/* Doctor Image */}
+        <div className="md:w-1/4 h-64 md:h-auto bg-linear-to-br from-blue-100 to-blue-50 flex items-center justify-center overflow-hidden">
+          {appointment.doctor.images?.length ? (
+            <img
+              src={appointment.doctor.images[0].url}
+              alt={`Dr. ${appointment.doctor.name}`}
+              className="w-full h-full object-cover"
+              loading="lazy"
+            />
+          ) : (
+            <div className="w-32 h-32 bg-blue-200 rounded-full flex items-center justify-center">
+              <span className="text-4xl text-blue-600 font-bold">
+                {appointment.doctor.name.charAt(0)}
+              </span>
+            </div>
+          )}
+        </div>
+
+        {/* Appointment Info */}
+        <div className="flex-1 p-8 flex flex-col justify-between">
+          <div className="space-y-4">
+            {/* Doctor Name & Payment Status */}
+            <div>
+              <div className="flex items-center gap-3 mb-2">
+                <h3 className="text-2xl font-bold text-gray-900">
+                  {appointment.doctor.name}
+                </h3>
+                {isPaid && (
+                  <span className="px-3 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded-full">
+                    ✓ Ödendi
+                  </span>
+                )}
+              </div>
+              <p className="text-blue-600 font-semibold text-lg">
+                {appointment.doctor.speciality}
+              </p>
+            </div>
+
+            {/* Details */}
+            <div className="space-y-3 pt-4 border-t border-gray-100">
+              {/* Location */}
+              {appointment.doctor.address?.city && (
+                <div className="flex items-start gap-3">
+                  <MapPin className="w-5 h-5 text-blue-500 mt-0.5 shrink-0" />
+                  <div>
+                    <p className="text-sm text-gray-500 mb-0.5">Adres</p>
+                    <p className="text-gray-800">
+                      {appointment.doctor.address.city}
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {/* Date & Time */}
+              <div className="flex items-start gap-3">
+                <Clock className="w-5 h-5 text-blue-500 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-sm text-gray-500 mb-0.5">Tarih</p>
+                  <p className="text-gray-800 font-semibold">
+                    {moment(appointment.date).format("LL")} - {appointment.timeSlot}
+                  </p>
+                </div>
+              </div>
+
+            
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex gap-3 mt-6 pt-6 border-t border-gray-100">
+            {/* Payment Button */}
+            <button
+              onClick={() => onPayment(appointment._id)}
+              disabled={isPaymentLoading || isPaid}
+              className={`flex-1 ${
+                isPaymentLoading
+                  ? "bg-blue-300 cursor-not-allowed"
+                  : isPaid
+                  ? "bg-green-500 cursor-default"
+                  : "bg-linear-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700"
+              } text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2 shadow-md`}
+            >
+              <CreditCard className="w-5 h-5" />
+              {isPaymentLoading
+                ? "Yükleniyor..."
+                : isPaid
+                ? "Ödeme Tamamlandı"
+                : "Online Öde"}
+            </button>
+
+            {/* Cancel Button (hidden if paid) */}
+            {!isPaid && (
+              <button
+                onClick={() => onCancel(appointment._id)}
+                disabled={isCancelLoading}
+                className={`flex-1 ${
+                  isCancelLoading
+                    ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                    : "bg-gray-100 hover:bg-red-50 text-gray-700 hover:text-red-600 border border-gray-200 hover:border-red-200"
+                } font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2`}
+              >
+                <X className="w-5 h-5" />
+                {isCancelLoading ? "İptal Ediliyor..." : "İptal"}
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default AppointmentCard;
