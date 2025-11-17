@@ -1,16 +1,11 @@
-// _components/AppointmentCard.tsx
-
 import { Clock, CreditCard, MapPin, X } from "lucide-react";
 import moment from "moment";
 import type { AppointmentCardProps } from "../types/appointmentTypes";
-
 
 const AppointmentCard = ({
   appointment,
   onPayment,
   onCancel,
-  isPaymentLoading,
-  isCancelLoading,
 }: AppointmentCardProps) => {
   const isPaid = appointment.isPaid === "ödendi";
 
@@ -18,13 +13,12 @@ const AppointmentCard = ({
     <div className="bg-white rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-200 overflow-hidden border border-gray-100">
       <div className="flex flex-col md:flex-row">
         {/* Doctor Image */}
-        <div className="md:w-1/4 h-64 md:h-auto bg-linear-to-br from-blue-100 to-blue-50 flex items-center justify-center overflow-hidden">
+        <div className="md:w-1/4 bg-linear-to-br from-blue-100 to-blue-50 flex items-center justify-center overflow-hidden aspect-square" >
           {appointment.doctor.images?.length ? (
             <img
               src={appointment.doctor.images[0].url}
               alt={`Dr. ${appointment.doctor.name}`}
               className="w-full h-full object-cover"
-              loading="lazy"
             />
           ) : (
             <div className="w-32 h-32 bg-blue-200 rounded-full flex items-center justify-center">
@@ -36,7 +30,7 @@ const AppointmentCard = ({
         </div>
 
         {/* Appointment Info */}
-        <div className="flex-1 p-8 flex flex-col justify-between">
+        <div className="flex-1 p-8 flex flex-col justify-between ">
           <div className="space-y-4">
             {/* Doctor Name & Payment Status */}
             <div>
@@ -76,12 +70,11 @@ const AppointmentCard = ({
                 <div>
                   <p className="text-sm text-gray-500 mb-0.5">Tarih</p>
                   <p className="text-gray-800 font-semibold">
-                    {moment(appointment.date).format("LL")} - {appointment.timeSlot}
+                    {moment(appointment.date).format("LL")} -{" "}
+                    {appointment.timeSlot}
                   </p>
                 </div>
               </div>
-
-            
             </div>
           </div>
 
@@ -90,36 +83,25 @@ const AppointmentCard = ({
             {/* Payment Button */}
             <button
               onClick={() => onPayment(appointment._id)}
-              disabled={isPaymentLoading || isPaid}
+              disabled={isPaid}
               className={`flex-1 ${
-                isPaymentLoading
-                  ? "bg-blue-300 cursor-not-allowed"
-                  : isPaid
+                isPaid
                   ? "bg-green-500 cursor-default"
                   : "bg-linear-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700"
               } text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2 shadow-md`}
             >
               <CreditCard className="w-5 h-5" />
-              {isPaymentLoading
-                ? "Yükleniyor..."
-                : isPaid
-                ? "Ödeme Tamamlandı"
-                : "Online Öde"}
+              {isPaid ? "Ödeme Tamamlandı" : "Online Öde"}
             </button>
 
-            {/* Cancel Button (hidden if paid) */}
+            {/* Cancel Button */}
             {!isPaid && (
               <button
                 onClick={() => onCancel(appointment._id)}
-                disabled={isCancelLoading}
-                className={`flex-1 ${
-                  isCancelLoading
-                    ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                    : "bg-gray-100 hover:bg-red-50 text-gray-700 hover:text-red-600 border border-gray-200 hover:border-red-200"
-                } font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2`}
+                className="flex-1 bg-gray-100 hover:bg-red-50 text-gray-700 hover:text-red-600 border border-gray-200 hover:border-red-200 font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
               >
                 <X className="w-5 h-5" />
-                {isCancelLoading ? "İptal Ediliyor..." : "İptal"}
+                İptal
               </button>
             )}
           </div>

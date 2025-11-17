@@ -1,61 +1,32 @@
-// hooks/useLocalAppointments.ts
-
 import { useState } from "react";
-import toast from "react-hot-toast";
 import type { Appointment } from "../types/appointmentTypes";
+import toast from "react-hot-toast";
+import { mockAppointments } from "../constants/appointmentConstants";
 
-export const useLocalAppointments = (initialData: Appointment[]) => {
-  const [appointments, setAppointments] = useState<Appointment[]>(initialData);
-  const [loadingCheckoutId, setLoadingCheckoutId] = useState<string | null>(
-    null
-  );
-  const [loadingCancelId, setLoadingCancelId] = useState<string | null>(null);
+export const useAppointments = () => {
+  const [appointments, setAppointments] = useState<Appointment[]>(mockAppointments);
 
-  const handleCheckout = async (appointmendId:string) => {
+  const handleCheckout = (appointmentId: string) => {
+    setAppointments((prev) =>
+      prev.map((apt) =>
+        apt._id === appointmentId
+          ? { ...apt, isPaid: "ödendi", paymentId: crypto.randomUUID() }
+          : apt
+      )
+    );
 
-    return new Promise<void>((resolve) => {
-      setTimeout(() => {
-        setAppointments((prev) => {
-          return prev.map((apt) =>
-            apt._id === appointmendId
-              ? {
-                  ...apt,
-                  isPaid: "ödendi",
-                  paymentId: `pay_${Date.now()}`,
-                }
-              : apt
-          );
-        });
-
-        setLoadingCheckoutId(null);
-        toast.success("Ödeme Gerçekleşti!");
-        resolve();
-      }, 1500);
-    });
+    toast.success("Ödeme gerçekleşti.");
   };
 
-  const handleCancel = async (appointmentId: string) => {
-    setLoadingCancelId(appointmentId);
-    console.log("🚀 ~ handleCancel ~ appointmentId:", appointmentId)
+  const handleCancel = (appointmentId: string) => {
+    setAppointments((prev) => prev.filter((apt) => apt._id !== appointmentId));
 
-    return new Promise<void>((resolve) => {
-      setTimeout(() => {
-        setAppointments((prev) =>
-          prev.filter((apt) => apt._id !== appointmentId)
-        );
-
-        setLoadingCancelId(null);
-        toast.success("Randevu başarılı bir şekilde iptal edildi.");
-        resolve();
-      }, 1000);
-    });
+    toast.success("Randevu başarıyla silindi.");
   };
 
   return {
-    appointments,
-    loadingCheckoutId,
-    loadingCancelId,
     handleCheckout,
+    appointments,
     handleCancel,
   };
 };

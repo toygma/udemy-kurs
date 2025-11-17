@@ -7,7 +7,7 @@ const HomePage = lazy(() => import("@/features/home/HomePage"));
 const Doctors = lazy(() => import("@/features/doctor/Doctors"));
 const DoctorDetail = lazy(() => import("@/features/doctor/DoctorDetail"));
 const MyProfile = lazy(() => import("@/features/patient/MyProfile"));
-const MyAppointments = lazy(() => import("@/features/patient/MyAppointment"));
+const MyAppointments = lazy(() => import("@/features/patient/MyAppointments"));
 
 export const MainRoutes = {
   path: "/",

@@ -31,6 +31,4 @@ export interface AppointmentCardProps {
   appointment: Appointment;
   onPayment: (appointmentId: string) => void;
   onCancel: (appointmentId: string) => void;
-  isPaymentLoading: boolean;
-  isCancelLoading: boolean;
 }

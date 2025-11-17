@@ -91,11 +91,11 @@ const DoctorDetail = () => {
             <div className="bg-white rounded-2xl shadow-lg p-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
                 <Stethoscope className="w-6 h-6 text-indigo-600" />
-                Dr. {doctor.name} Hakkında
+                {doctor.name} Hakkında
               </h2>
               <p className="text-gray-700 leading-relaxed">
                 {doctor.about ||
-                  `Dr. ${doctor.name}, alanında deneyimli bir ${doctor.speciality} olup, yüksek kaliteli hasta bakımı sunmayı hedeflemektedir.`}
+                  ` ${doctor.name}, alanında deneyimli bir ${doctor.speciality} olup, yüksek kaliteli hasta bakımı sunmayı hedeflemektedir.`}
               </p>
             </div>
 
