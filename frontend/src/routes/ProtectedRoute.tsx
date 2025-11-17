@@ -15,3 +15,18 @@ export const ProtectedRoute = () => {
     return <Navigate to={"/login"} replace />;
   }
 };
+
+export const ProtectedDoctor = () => {
+  const user = { role: "doctor" };
+  const loading = false;
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  if (!user || user.role !== "doctor") {
+    return <Navigate to="/" replace />;
+  }
+
+  return <Outlet />;
+};
