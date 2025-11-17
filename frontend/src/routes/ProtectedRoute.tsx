@@ -25,8 +25,8 @@ export const ProtectedDoctor = () => {
   }
 
   if (!user || user.role !== "doctor") {
-    return <Navigate to="/" replace />;
+    return <Navigate to={"/"} replace />;
   }
 
-  return <Outlet />;
+  return <Outlet/>
 };

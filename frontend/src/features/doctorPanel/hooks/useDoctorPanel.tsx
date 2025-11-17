@@ -9,8 +9,8 @@ export const useDoctorPanel = () => {
   const updateAppointmentStatus = (appointmentId: string) => {
     try {
       setAppointments((prev) =>
-        prev.map((item) =>
-          item._id === appointmentId ? { ...item, status: "tamamlandı" } : item
+        prev.map((apt) =>
+          apt._id === appointmentId ? { ...apt, status: "tamamlandı" } : apt
         )
       );
     } catch (error) {
@@ -21,8 +21,8 @@ export const useDoctorPanel = () => {
   const deleteAppointmentStatus = (appointmentId: string) => {
     try {
       setAppointments((prev) =>
-        prev.map((item) =>
-          item._id === appointmentId ? { ...item, status: "iptal" } : item
+        prev.map((apt) =>
+          apt._id === appointmentId ? { ...apt, status: "iptal" } : apt
         )
       );
     } catch (error) {

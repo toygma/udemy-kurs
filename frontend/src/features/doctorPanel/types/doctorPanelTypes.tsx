@@ -25,8 +25,8 @@ export interface IAppointment {
 export interface IStats {
   total: number;
   pending: number;
-  confirmed: number;
   completed: number;
+  cancel: number;
 }
 
 export type FilterStatus = "hepsi" | "bekleniyor" | "tamamlandı" | "iptal";

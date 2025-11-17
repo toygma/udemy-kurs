@@ -1,3 +1,4 @@
+import { DoctorAvatar3, DoctorAvatar4, DoctorAvatar6 } from "@/core/images";
 import type { IAppointment } from "../types/doctorPanelTypes";
 
 export const doctorPanelConstants: IAppointment[] = [
@@ -10,7 +11,7 @@ export const doctorPanelConstants: IAppointment[] = [
       phone: "+90 555 111 22 33",
       image: {
         public_id: "img_01",
-        url: "https://example.com/images/doktor1.jpg",
+        url: DoctorAvatar3,
       },
 
       isPaid: "ödendi",
@@ -32,7 +33,7 @@ export const doctorPanelConstants: IAppointment[] = [
       phone: "+90 555 444 33 22",
       image: {
         public_id: "img_02",
-        url: "https://example.com/images/hasta1.jpg",
+        url: DoctorAvatar4,
       },
       isPaid: "ödendi",
       role: "hasta",
@@ -53,7 +54,7 @@ export const doctorPanelConstants: IAppointment[] = [
       phone: "+90 555 999 88 77",
       image: {
         public_id: "img_03",
-        url: "https://example.com/images/hasta2.jpg",
+        url: DoctorAvatar6,
       },
 
       isPaid: "ödenmedi",
