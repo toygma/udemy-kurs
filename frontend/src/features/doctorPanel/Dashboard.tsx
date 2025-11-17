@@ -3,7 +3,7 @@ import { useDoctorPanel } from "./hooks/useDoctorPanel";
 import type { FilterStatus, IAppointment } from "./types/doctorPanelTypes";
 import { useDebounce } from "use-debounce";
 import StatsCard from "./_components/StatsCard";
-import { AlertCircle, Calendar } from "lucide-react";
+import { Calendar } from "lucide-react";
 import FilterSearch from "./_components/FilterSearch";
 import AppointmentRow from "./_components/AppointmentRow";
 
@@ -32,6 +32,24 @@ const Dashboard = () => {
     confirmed: appointments.filter((a) => a.status === "tamamlandı").length,
     cancel: appointments.filter((a) => a.status === "iptal").length,
   };
+
+  const getEmptyMessage = () => {
+    if (
+      appointments.length === 0 &&
+      searchTerm === "" &&
+      filterStatus !== "hepsi"
+    ) {
+      return "Henüz Randevu yok";
+    }
+
+    if (searchTerm !== "" || filterStatus !== "hepsi") {
+      return "seçilen filtreye göre bir arama bulunamadı.";
+    }
+
+    return "Henüz Randevu yok";
+  };
+
+  const emptyMessage = getEmptyMessage()
 
   return (
     <div>
@@ -77,15 +95,14 @@ const Dashboard = () => {
               <th className="px-6 py-4 text-left">Hasta</th>
               <th className="px-6 py-4 text-left">Tarih</th>
               <th className="px-6 py-4 text-left">Durum</th>
-              <th className="px-6 py-4 text-center w-72">Eylem</th>
+              <th className="px-6 py-4 text-center w-70">Eylem</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
             {filteredAppointments.length === 0 ? (
               <tr>
                 <td colSpan={5} className="text-center py-12 text-gray-500">
-                  <AlertCircle className="mx-auto mb-2" size={48} />
-                  No appointments found
+                  {emptyMessage}
                 </td>
               </tr>
             ) : (
