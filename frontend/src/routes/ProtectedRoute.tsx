@@ -30,3 +30,18 @@ export const ProtectedDoctor = () => {
 
   return <Outlet/>
 };
+
+export const ProtectedAdmin = () => {
+  const user = { role: "admin" };
+  const loading = false;
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  if (!user || user.role !== "admin") {
+    return <Navigate to={"/"} replace />;
+  }
+
+  return <Outlet/>
+};
