@@ -1,3 +1,5 @@
+import type { DoctorRequest, User } from "../types/adminTypes";
+
 export const stats = {
   totalDoctors: 12,
   totalPatients: 340,
@@ -110,4 +112,72 @@ export const doctorServices = [
   "Psikolojik Danışmanlık",
   "Cilt Tedavisi",
   "Reçete / İlaç Yönetimi",
+];
+
+
+
+export const MOCK_DOCTOR_REQUESTS: DoctorRequest[] = [
+    {
+        id: 1,
+        fullName: "Dr. Ahmet Yılmaz",
+        specialization: "Kardiyoloji",
+        email: "ahmet.yilmaz@ornek.com",
+        phone: "0555 111 22 33",
+        requestDate: "2023-10-25",
+        status: "bekliyor"
+    },
+    {
+        id: 2,
+        fullName: "Dr. Ayşe Kaya",
+        specialization: "Dahiliye",
+        email: "ayse.kaya@ornek.com",
+        phone: "0555 444 55 66",
+        requestDate: "2023-10-26",
+        status: "bekliyor"
+    },
+    {
+        id: 3,
+        fullName: "Dr. Mehmet Demir",
+        specialization: "Nöroloji",
+        email: "mehmet.demir@ornek.com",
+        phone: "0555 777 88 99",
+        requestDate: "2023-10-27",
+        status: "bekliyor"
+    }
+];
+
+
+export const MOCK_USERS: User[] = [
+    {
+        id: 1,
+        fullName: "Burak Admin",
+        email: "burak@admin.com",
+        role: "admin",
+        isBlocked: false,
+        createdAt: "2023-01-01"
+    },
+    {
+        id: 2,
+        fullName: "Dr. Ayşe Yılmaz",
+        email: "ayse@hastane.com",
+        role: "doctor",
+        isBlocked: false,
+        createdAt: "2023-05-15"
+    },
+    {
+        id: 3,
+        fullName: "Mehmet Hasta",
+        email: "mehmet@gmail.com",
+        role: "patient",
+        isBlocked: false,
+        createdAt: "2023-08-20"
+    },
+    {
+        id: 4,
+        fullName: "Kötü Niyetli Kullanıcı",
+        email: "spam@bot.com",
+        role: "patient",
+        isBlocked: true, 
+        createdAt: "2023-11-02"
+    }
 ];

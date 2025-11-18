@@ -6,6 +6,8 @@ import {
   LayoutDashboard,
   Menu,
   X,
+  Check,
+  Edit2,
 } from "lucide-react";
 import { useState } from "react";
 import { User } from "@/core/images";
@@ -22,6 +24,18 @@ const data = [
     title: "Doktor Ekle",
     path: "/admin/panel/doktor-ekle",
     icon: <UserPlus size={20} />,
+  },
+  {
+    id: 3,
+    title: "Doktor Onayla",
+    path: "/admin/panel/doktor-onayla",
+    icon: <Check size={20} />,
+  },
+  {
+    id: 4,
+    title: "Kullanıcı Düzenle",
+    path: "/admin/panel/kullanici-ayarlari",
+    icon: <Edit2 size={20} />,
   },
 ];
 
@@ -56,9 +70,15 @@ const Sidebar = () => {
           }`}
         >
           {isOpen ? (
-            <X size={20} className="text-slate-600 group-hover:text-slate-900" />
+            <X
+              size={20}
+              className="text-slate-600 group-hover:text-slate-900"
+            />
           ) : (
-            <Menu size={20} className="text-slate-600 group-hover:text-slate-900" />
+            <Menu
+              size={20}
+              className="text-slate-600 group-hover:text-slate-900"
+            />
           )}
         </button>
       </div>
@@ -85,7 +105,9 @@ const Sidebar = () => {
                   {item.icon}
                 </span>
                 {isOpen && (
-                  <span className={`font-medium ${isActive ? "font-semibold" : ""}`}>
+                  <span
+                    className={`font-medium ${isActive ? "font-semibold" : ""}`}
+                  >
                     {item.title}
                   </span>
                 )}
@@ -131,10 +153,13 @@ const Sidebar = () => {
             }`}
             title={!isOpen ? "Ana Sayfa" : ""}
           >
-            <LayoutDashboard size={18} className="group-hover:scale-110 transition-transform" />
+            <LayoutDashboard
+              size={18}
+              className="group-hover:scale-110 transition-transform"
+            />
             {isOpen && "Ana Sayfa"}
           </Link>
-          
+
           <button
             onClick={handleLogout}
             className={`flex items-center gap-2 px-4 py-2.5 text-red-600 hover:bg-red-50 rounded-xl transition-all duration-200 font-medium cursor-pointer group w-full ${
@@ -142,7 +167,10 @@ const Sidebar = () => {
             }`}
             title={!isOpen ? "Çıkış Yap" : ""}
           >
-            <LogOut size={18} className="group-hover:scale-110 transition-transform" />
+            <LogOut
+              size={18}
+              className="group-hover:scale-110 transition-transform"
+            />
             {isOpen && "Çıkış Yap"}
           </button>
         </div>

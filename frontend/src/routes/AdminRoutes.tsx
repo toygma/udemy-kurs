@@ -5,6 +5,8 @@ import { Suspense } from "react";
 import { ProtectedAdmin } from "./ProtectedRoute";
 import AdminLayout from "@/layouts/AdminLayout";
 import AddDoctor from "@/features/admin/AddDoctor";
+import DoctorRequests from "@/features/admin/DoctorRequestTable";
+import UsersManagement from "@/features/admin/UsersManagement";
 
 export const AdminRoutes = {
   path: "/admin/panel",
@@ -27,6 +29,22 @@ export const AdminRoutes = {
           element: (
             <Suspense fallback={<Loading />}>
               <AddDoctor />
+            </Suspense>
+          ),
+        },
+        {
+          path: "doktor-onayla",
+          element: (
+            <Suspense fallback={<Loading />}>
+              <DoctorRequests />
+            </Suspense>
+          ),
+        },
+        {
+          path: "kullanici-ayarlari",
+          element: (
+            <Suspense fallback={<Loading />}>
+              <UsersManagement />
             </Suspense>
           ),
         },

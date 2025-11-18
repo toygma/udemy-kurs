@@ -58,3 +58,25 @@ export interface Doctor {
   createdAt?: string;
   updatedAt?: string;
 }
+
+export interface DoctorRequest {
+    id: number;
+    fullName: string;
+    specialization: string; 
+    email: string;
+    phone: string;
+    requestDate: string;
+    status: 'bekliyor' | 'onaylandı' | 'reddedildi';
+}
+
+
+export type UserRole = 'admin' | 'doctor' | 'patient';
+
+export interface User {
+    id: number;
+    fullName: string;
+    email: string;
+    role: UserRole;     
+    isBlocked: boolean;  
+    createdAt: string;
+}
