@@ -5,7 +5,6 @@ import { MOCK_USERS } from './constants/adminConstants';
 const UsersManagement = () => {
   const [users, setUsers] = useState<User[]>(MOCK_USERS);
 
-  // 1. Rol Değiştirme Fonksiyonu
   const handleRoleChange = (userId: number, newRole: UserRole) => {
     const updatedUsers = users.map((user) => {
       if (user.id === userId) {
@@ -14,7 +13,6 @@ const UsersManagement = () => {
       return user;
     });
     setUsers(updatedUsers);
-    // Gerçekte burada API'ye istek atılır: PATCH /users/{id}/role
     console.log(`Kullanıcı ${userId} yeni rolü: ${newRole}`);
   };
 
