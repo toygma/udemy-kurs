@@ -1,43 +1,26 @@
-import { useState } from 'react';
-import type { DoctorRequest } from './types/adminTypes';
-import { MOCK_DOCTOR_REQUESTS } from './constants/adminConstants';
+import { useDoctorRequest } from "./hooks/useDoctorRequest";
 
-const DoctorRequests = () => {
-  const [requests, setRequests] = useState<DoctorRequest[]>(MOCK_DOCTOR_REQUESTS);
-
-  const handleApprove = (id: number) => {
-    if (confirm("Doktoru onaylamak istediğinize emin misiniz?")) {
-      
-      const updatedList = requests.filter((doctor) => doctor.id !== id);
-      setRequests(updatedList);
-      
-      alert("Doktor başarıyla onaylandı ve panele eklendi!");
-    }
-  };
-
-  const handleReject = (id: number) => {
-    if (confirm("Başvuruyu reddetmek istediğinize emin misiniz?")) {
-      const updatedList = requests.filter((doctor) => doctor.id !== id);
-      setRequests(updatedList);
-    }
-  };
+const DoctorRequestTable = () => {
+  const { handleApprove, handleReject, request } = useDoctorRequest();
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-sm mt-12">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-bold text-gray-800">Bekleyen Doktor Başvuruları</h2>
+        <h2 className="text-xl font-bold text-gray-800">
+          Bekleyen Doktor Başvuruları
+        </h2>
         <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">
-          {requests.length} Başvuru
+          {request.length} Başvuru
         </span>
       </div>
 
-      {requests.length === 0 ? (
+      {request.length === 0 ? (
         <div className="text-center py-10 text-gray-500 bg-gray-50 rounded border border-dashed">
           Şu an onay bekleyen doktor bulunmuyor.
         </div>
       ) : (
         <div className="overflow-x-auto">
-          <table className="w-full text-sm text-left text-gray-500">
+          <table className="w-full text-sm text-left uppercase bg-gray-50">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50">
               <tr>
                 <th className="px-6 py-3">Doktor Adı</th>
@@ -47,11 +30,16 @@ const DoctorRequests = () => {
               </tr>
             </thead>
             <tbody>
-              {requests.map((doctor) => (
-                <tr key={doctor.id} className="bg-white border-b hover:bg-gray-50">
+              {request.map((doctor) => (
+                <tr
+                  key={doctor.id}
+                  className="bg-white border-b hover:bg-gray-50"
+                >
                   <td className="px-6 py-4 font-medium text-gray-900">
                     {doctor.fullName}
-                    <div className="text-xs text-gray-400 font-normal">{doctor.email}</div>
+                    <div className="text-xs text-gray-400 font-normal">
+                      {doctor.email}
+                    </div>
                   </td>
                   <td className="px-6 py-4">{doctor.specialization}</td>
                   <td className="px-6 py-4">{doctor.requestDate}</td>
@@ -79,4 +67,4 @@ const DoctorRequests = () => {
   );
 };
 
-export default DoctorRequests;
+export default DoctorRequestTable;

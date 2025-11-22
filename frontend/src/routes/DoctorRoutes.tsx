@@ -1,10 +1,13 @@
-import { Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import DoctorLayout from "../layouts/DoctorLayout";
 import NotFound from "@/features/NotFound";
 import Loading from "@/features/Loading";
-import Dashboard from "@/features/doctorPanel/Dashboard";
 import { ProtectedDoctor } from "./ProtectedRoute";
+
+
+const Dashboard = lazy(()=>import("@/features/doctorPanel/Dashboard"))
+
 
 export const DoctorRoutes = {
   path: "/doktor/panel",

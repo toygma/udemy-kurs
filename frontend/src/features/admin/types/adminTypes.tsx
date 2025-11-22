@@ -1,3 +1,13 @@
+import type {
+  Control,
+  FieldErrors,
+  UseFormGetValues,
+  UseFormRegister,
+  UseFormSetValue,
+  UseFormWatch,
+} from "react-hook-form";
+import type { TAddDoctorFormSchema } from "../validation/admin.schema";
+
 interface Image {
   public_id: string;
   url: string;
@@ -31,7 +41,7 @@ interface TimeSlot {
 }
 
 interface WorkingHours {
-  day: "Pazartesi" | "Salı" | "Çarşamba" | "Perşembe" | "Cuma" | "Cumartesi" | "Pazar";
+  day: "monday" | "tuesday" | "wednesday" | "thursday" | "friday" | "saturday" | "sunday";
   isAvailable: boolean;
   slots: TimeSlot[];
 }
@@ -66,7 +76,7 @@ export interface DoctorRequest {
     email: string;
     phone: string;
     requestDate: string;
-    status: 'bekliyor' | 'onaylandı' | 'reddedildi';
+    status: 'pending' | 'approved' | 'rejected';
 }
 
 
@@ -79,4 +89,13 @@ export interface User {
     role: UserRole;     
     isBlocked: boolean;  
     createdAt: string;
+}
+
+export interface FormProps {
+  register?: UseFormRegister<TAddDoctorFormSchema>;
+  error: FieldErrors<TAddDoctorFormSchema>;
+  getValues?: UseFormGetValues<TAddDoctorFormSchema>;
+  setValue?: UseFormSetValue<TAddDoctorFormSchema>;
+  control?: Control<TAddDoctorFormSchema>;
+  watch?: UseFormWatch<TAddDoctorFormSchema>;
 }

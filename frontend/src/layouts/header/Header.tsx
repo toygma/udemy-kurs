@@ -112,19 +112,19 @@ const Header = () => {
                 {avatarMenu && (
                   <div className="absolute right-0 mt-2 w-40 bg-white  rounded-lg shadow-md overflow-hidden z-50 flex flex-col">
                     <span className="px-4 py-2 border-b">
-                      Welcome, {user.name}
+                      Hoş geldin, {user.name}
                     </span>
                     <Link
                       onClick={handleAvatarMenuClose}
-                      to={"/my-profile"}
+                      to={"/profil"}
                       className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer"
                     >
-                      My Profile
+                      Profil
                     </Link>
                     {user.role === "admin" && (
                       <Link
                         onClick={handleAvatarMenuClose}
-                        to={"/admin"}
+                        to={"/admin/panel"}
                         className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer"
                       >
                         Admin Panel
@@ -133,24 +133,24 @@ const Header = () => {
                     {user.role === "doctor" && (
                       <Link
                         onClick={handleAvatarMenuClose}
-                        to={`/doctor/${user?._id}`}
+                        to={`/doktor/panel/${user?._id}`}
                         className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer"
                       >
-                        Doctor Panel
+                        Doktor Panel
                       </Link>
                     )}
                     <Link
                       onClick={handleAvatarMenuClose}
-                      to={"/my-appointment"}
+                      to={"/randevularim"}
                       className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer"
                     >
-                      My Appointment
+                      Randevularım
                     </Link>
                     <button
                       onClick={handleAvatarMenuClose}
                       className="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-gray-100 cursor-pointer"
                     >
-                      Logout
+                      Çıkış Yap
                     </button>
                   </div>
                 )}

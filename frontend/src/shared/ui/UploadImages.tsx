@@ -109,7 +109,11 @@ const UploadImages = ({
       </div>
 
       {isEdit && (
-        <button type="button" onClick={handleUploadClick} className="absolute bottom-0 right-0 rounded-lg bg-blue-500 text-white hover:bg-blue-600 p-2 cursor-pointer">
+        <button
+          type="button"
+          onClick={handleUploadClick}
+          className="absolute bottom-0 right-0 rounded-lg bg-blue-500 text-white hover:bg-blue-600 p-2 cursor-pointer"
+        >
           <Edit2Icon className="w-4 h-4" />
         </button>
       )}

@@ -65,7 +65,7 @@ export const appointmentList = [
     user: { name: "Ali Koç" },
     date: "2025-02-13T10:00:00",
     timeSlot: "10:00 - 10:30",
-    status: "tamamlandı",
+    status: "confirmed",
   },
   {
     _id: "a2",
@@ -73,7 +73,7 @@ export const appointmentList = [
     user: { name: "Merve Ay" },
     date: "2025-02-12T15:00:00",
     timeSlot: "15:00 - 15:30",
-    status: "bekleniyor",
+    status: "pending",
   },
   {
     _id: "a3",
@@ -81,7 +81,7 @@ export const appointmentList = [
     user: { name: "Ceren Öz" },
     date: "2025-02-11T11:00:00",
     timeSlot: "11:00 - 11:30",
-    status: "tamamlandı",
+    status: "confirmed",
   },
   {
     _id: "a4",
@@ -89,7 +89,7 @@ export const appointmentList = [
     user: { name: "Ahmet Yılmaz" },
     date: "2025-02-14T09:30:00",
     timeSlot: "09:30 - 10:00",
-    status: "bekleniyor",
+    status: "pending",
   },
   {
     _id: "a5",
@@ -97,7 +97,7 @@ export const appointmentList = [
     user: { name: "Ahmet Yılmaz" },
     date: "2025-02-14T09:30:00",
     timeSlot: "09:30 - 10:00",
-    status: "iptal",
+    status: "rejected",
   },
 ];
 
@@ -124,7 +124,7 @@ export const MOCK_DOCTOR_REQUESTS: DoctorRequest[] = [
         email: "ahmet.yilmaz@ornek.com",
         phone: "0555 111 22 33",
         requestDate: "2023-10-25",
-        status: "bekliyor"
+        status: "pending"
     },
     {
         id: 2,
@@ -133,7 +133,7 @@ export const MOCK_DOCTOR_REQUESTS: DoctorRequest[] = [
         email: "ayse.kaya@ornek.com",
         phone: "0555 444 55 66",
         requestDate: "2023-10-26",
-        status: "bekliyor"
+        status: "approved"
     },
     {
         id: 3,
@@ -142,7 +142,7 @@ export const MOCK_DOCTOR_REQUESTS: DoctorRequest[] = [
         email: "mehmet.demir@ornek.com",
         phone: "0555 777 88 99",
         requestDate: "2023-10-27",
-        status: "bekliyor"
+        status: "rejected"
     }
 ];
 
@@ -180,4 +180,18 @@ export const MOCK_USERS: User[] = [
         isBlocked: true, 
         createdAt: "2023-11-02"
     }
+];
+
+
+export const specialistData = [
+  { id: 1, name: "Kardiyolog" },
+  { id: 2, name: "Dermatolog" },
+  { id: 3, name: "Pediatrist" },
+  { id: 4, name: "Nörolog" },
+  { id: 5, name: "Ortopedik Cerrah" },
+  { id: 6, name: "Göz Doktoru" },
+  { id: 7, name: "Psikiyatrist" },
+  { id: 8, name: "Endokrinolog" },
+  { id: 9, name: "Gastroenterolog" },
+  { id: 10, name: "Diş Hekimi" },
 ];

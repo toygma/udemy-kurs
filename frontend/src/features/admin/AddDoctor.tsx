@@ -1,17 +1,17 @@
-import Button from "@/shared/ui/Button";
 import { useForm } from "react-hook-form";
 import {
   AddDoctorFormSchema,
   type TAddDoctorFormSchema,
 } from "./validation/admin.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import BasicSection from "./_components/BasicSection";
+import Button from "@/shared/ui/Button";
+import AddressSection from "./_components/AddressSection";
 import UploadImages from "@/shared/ui/UploadImages";
 import EducationSection from "./_components/EducationSection";
 import AwardSection from "./_components/AwardSection";
 import ServiceSection from "./_components/ServiceSection";
 import WorkingInSection from "./_components/WorkingInSection";
-import BasicSection from "./_components/BasicSection";
-import AddresSection from "./_components/AddresSection";
 
 const AddDoctor = () => {
   const {
@@ -21,7 +21,7 @@ const AddDoctor = () => {
     watch,
     control,
     getValues,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<TAddDoctorFormSchema>({
     resolver: zodResolver(AddDoctorFormSchema),
     mode: "onChange",
@@ -55,52 +55,54 @@ const AddDoctor = () => {
       awards: [
         {
           title: "",
-          year: "",
+          year: 0,
           description: "",
           organization: "",
         },
       ],
       workingHours: [
         {
-          day: "Pazartesi",
+          day: "monday",
           isAvailable: false,
           slots: [{ start: "09:00", end: "17:00" }],
         },
         {
-          day: "Salı",
+          day: "tuesday",
           isAvailable: false,
           slots: [{ start: "09:00", end: "17:00" }],
         },
         {
-          day: "Çarşamba",
+          day: "wednesday",
           isAvailable: false,
           slots: [{ start: "09:00", end: "17:00" }],
         },
         {
-          day: "Perşembe",
+          day: "thursday",
           isAvailable: false,
           slots: [{ start: "09:00", end: "17:00" }],
         },
         {
-          day: "Cuma",
+          day: "friday",
           isAvailable: false,
           slots: [{ start: "09:00", end: "17:00" }],
         },
         {
-          day: "Cumartesi",
+          day: "saturday",
           isAvailable: false,
           slots: [{ start: "09:00", end: "17:00" }],
         },
         {
-          day: "Pazar",
+          day: "sunday",
           isAvailable: false,
           slots: [{ start: "09:00", end: "17:00" }],
         },
       ],
     },
   });
+
+  console.log(watch());
+
   const imageValue = watch("image");
-  console.log(errors);
 
   const onSubmit = (data: TAddDoctorFormSchema) => {
     console.log(data);
@@ -119,17 +121,19 @@ const AddDoctor = () => {
       <div className="mt-12 flex justify-center">
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="bg-white shadow-md rounded-lg p-8 w-full max-w-8xl"
+          className="bg-white shadowm-md rounded-lg p-8 w-full max-w-8xl"
         >
-          {/* ----- Temel Bilgiler ----- */}
+          {/* TEMEL BİLGİLER */}
+
           <BasicSection
             register={register}
             error={errors}
             getValues={getValues}
-            setValues={setValue}
+            setValue={setValue}
           />
 
-          {/* ----- Fotoğraflar ----- */}
+          {/* FOTOĞRAF BİLGİLERİ */}
+
           <div className="space-y-3 flex flex-col items-start pb-4">
             <h3 className="text-xl font-semibold mb-4">Fotoğraf Yükle</h3>
             <UploadImages
@@ -140,10 +144,11 @@ const AddDoctor = () => {
             />
           </div>
 
-          {/* ADDRESS */}
-          <AddresSection register={register} error={errors} />
+          {/* ADRES BİLGİLERİ */}
 
-          {/* EDUCATION */}
+          <AddressSection register={register} error={errors} />
+
+          {/* EĞİTİM BİLGİLERİ */}
 
           <EducationSection
             register={register}
@@ -151,38 +156,26 @@ const AddDoctor = () => {
             control={control}
           />
 
-          {/* AWARDS */}
-
+          {/* ÖDÜL BİLGİLERİ */}
           <AwardSection register={register} error={errors} control={control} />
 
-          {/* SERVICE */}
-
+          {/* SERVİS BİLGİLERİ */}
           <ServiceSection
+            register={register}
             error={errors}
-            getValues={getValues}
-            setValues={setValue}
+            setValue={setValue}
           />
 
-          {/* WORKING */}
+          {/* ÇALIŞMA ZAMANLARI */}
 
           <WorkingInSection
             error={errors}
-            control={control}
             setValue={setValue}
+            control={control}
             watch={watch}
           />
 
-          {/* Submit Button */}
-          <div className="mt-8 flex justify-end">
-            <Button
-              type="submit"
-              disabled={isSubmitting}
-              loading={isSubmitting}
-              className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50"
-            >
-              {isSubmitting ? "kaydediliyor..." : "Ekle"}
-            </Button>
-          </div>
+          <Button children="Doktor Ekle" type="submit" className="mt-6" />
         </form>
       </div>
     </div>

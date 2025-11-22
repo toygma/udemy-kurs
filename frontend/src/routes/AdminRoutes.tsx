@@ -1,12 +1,14 @@
-import Dashboard from "@/features/admin/Dashboard";
-import Loading from "@/features/Loading";
+import { lazy, Suspense } from "react";
+
 import NotFound from "@/features/NotFound";
-import { Suspense } from "react";
+import Loading from "@/features/Loading";
 import { ProtectedAdmin } from "./ProtectedRoute";
 import AdminLayout from "@/layouts/AdminLayout";
-import AddDoctor from "@/features/admin/AddDoctor";
-import DoctorRequests from "@/features/admin/DoctorRequestTable";
-import UsersManagement from "@/features/admin/UsersManagement";
+
+const Dashboard = lazy(() => import("@/features/admin/Dashboard"));
+const AddDoctor = lazy(() => import("@/features/admin/AddDoctor"));
+const DoctorRequestTable = lazy(() => import("@/features/admin/DoctorRequestTable"));
+const UsersManagement = lazy(() => import("@/features/admin/UsersManagement"));
 
 export const AdminRoutes = {
   path: "/admin/panel",
@@ -17,7 +19,7 @@ export const AdminRoutes = {
       element: <ProtectedAdmin />,
       children: [
         {
-          path: "",
+          index: true,
           element: (
             <Suspense fallback={<Loading />}>
               <Dashboard />
@@ -25,28 +27,28 @@ export const AdminRoutes = {
           ),
         },
         {
-          path: "doktor-ekle",
-          element: (
-            <Suspense fallback={<Loading />}>
-              <AddDoctor />
+          path:"doktor-ekle",
+          element:(
+            <Suspense fallback={<Loading/>}>
+              <AddDoctor/>
             </Suspense>
-          ),
+          )
         },
-        {
-          path: "doktor-onayla",
-          element: (
-            <Suspense fallback={<Loading />}>
-              <DoctorRequests />
+         {
+          path:"doktor-onayla",
+          element:(
+            <Suspense fallback={<Loading/>}>
+              <DoctorRequestTable/>
             </Suspense>
-          ),
+          )
         },
-        {
-          path: "kullanici-ayarlari",
-          element: (
-            <Suspense fallback={<Loading />}>
-              <UsersManagement />
+          {
+          path:"kullanici-ayarlari",
+          element:(
+            <Suspense fallback={<Loading/>}>
+              <UsersManagement/>
             </Suspense>
-          ),
+          )
         },
       ],
     },
