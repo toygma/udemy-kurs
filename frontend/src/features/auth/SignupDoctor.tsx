@@ -15,6 +15,7 @@ import ProfessionalInfoSection from "./_components/ProfessionalInfoSection";
 import BasicInfoSection from "./_components/BasicInfoSection";
 import AddressSection from "./_components/AddressSection";
 import AwardSection from "./_components/AwardSection";
+import { Activity } from "react";
 
 const SignupDoctor = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -135,11 +136,11 @@ const SignupDoctor = () => {
       >
         <ArrowLeft size={20} />
       </Link>
-      
+
       <div className="max-w-4xl mx-auto">
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
           {/* Header */}
-          <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-8 text-white">
+          <div className="bg-linear-to-r from-blue-600 to-indigo-600 px-6 py-8 text-white">
             <h1 className="text-3xl font-bold">Doktor Kayıt Sayfası</h1>
             <p className="mt-2 text-blue-100">
               Profesyonel hesabınızı oluşturun
@@ -148,9 +149,12 @@ const SignupDoctor = () => {
 
           {/* Step Indicator - Responsive */}
           <div className="px-4 py-6 bg-gray-50 border-b overflow-x-auto">
-            <div className="flex justify-between items-start min-w-max md:min-w-0 mx-auto" style={{ maxWidth: '800px' }}>
+            <div
+              className="flex justify-between items-start min-w-max md:min-w-0 mx-auto"
+              style={{ maxWidth: "800px" }}
+            >
               {steps.map((step, index) => (
-                <div key={step.number} className="flex items-start flex-shrink-0">
+                <div key={step.number} className="flex items-start shrink-0">
                   {/* Step Circle and Title */}
                   <div className="flex flex-col items-center">
                     <div
@@ -201,23 +205,23 @@ const SignupDoctor = () => {
           {/* Form */}
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="p-6 min-h-[400px]">
-              {currentStep === 1 && (
+              <Activity mode={currentStep === 1 ? "visible" : "hidden"}>
                 <BasicInfoSection register={register} errors={errors} />
-              )}
+              </Activity>
 
-              {currentStep === 2 && (
+              <Activity mode={currentStep === 2 ? "visible" : "hidden"}>
                 <AddressSection register={register} errors={errors} />
-              )}
+              </Activity>
 
-              {currentStep === 3 && (
+              <Activity mode={currentStep === 3 ? "visible" : "hidden"}>
                 <ProfessionalInfoSection
                   register={register}
                   errors={errors}
                   setValue={setValue}
                 />
-              )}
+              </Activity>
 
-              {currentStep === 4 && (
+              <Activity mode={currentStep === 4 ? "visible" : "hidden"}>
                 <div className="space-y-6">
                   <ServicesAddressSection
                     register={register}
@@ -231,17 +235,17 @@ const SignupDoctor = () => {
                     control={control}
                   />
                 </div>
-              )}
+              </Activity>
 
-              {currentStep === 5 && (
+              <Activity mode={currentStep === 5 ? "visible" : "hidden"}>
                 <AwardSection
                   register={register}
                   errors={errors}
                   control={control}
                 />
-              )}
+              </Activity>
 
-              {currentStep === 6 && (
+              <Activity mode={currentStep === 6 ? "visible" : "hidden"}>
                 <WorkingHoursSection
                   register={register}
                   errors={errors}
@@ -249,7 +253,7 @@ const SignupDoctor = () => {
                   setValue={setValue}
                   watch={watch}
                 />
-              )}
+              </Activity>
             </div>
 
             {/* Navigation Buttons */}
@@ -295,7 +299,7 @@ const SignupDoctor = () => {
           {/* Progress Bar */}
           <div className="h-2 bg-gray-200">
             <div
-              className="h-full bg-gradient-to-r from-blue-600 to-indigo-600 transition-all duration-500 ease-out"
+              className="h-full bg-linear-to-r from-blue-600 to-indigo-600 transition-all duration-500 ease-out"
               style={{ width: `${(currentStep / steps.length) * 100}%` }}
             />
           </div>
