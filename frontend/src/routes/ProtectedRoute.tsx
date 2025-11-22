@@ -16,6 +16,21 @@ export const ProtectedRoute = () => {
   }
 };
 
+export const GuestRoute = () => {
+  const user = false;
+  const loading = false;
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  if (user) {
+    return <Navigate to="/" replace />;
+  } else {
+    return <Outlet />;
+  }
+};
+
 export const ProtectedDoctor = () => {
   const user = { role: "doctor" };
   const loading = false;
@@ -28,7 +43,7 @@ export const ProtectedDoctor = () => {
     return <Navigate to={"/"} replace />;
   }
 
-  return <Outlet/>
+  return <Outlet />;
 };
 
 export const ProtectedAdmin = () => {
@@ -43,6 +58,5 @@ export const ProtectedAdmin = () => {
     return <Navigate to={"/"} replace />;
   }
 
-  return <Outlet/>
+  return <Outlet />;
 };
-

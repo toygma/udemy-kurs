@@ -2,6 +2,10 @@ import { Suspense, lazy } from "react";
 import NotFound from "@/features/NotFound";
 import MainLayout from "@/layouts/MainLayout";
 import Loading from "@/features/Loading";
+import Login from "@/features/auth/Login";
+import { GuestRoute } from "./ProtectedRoute";
+import SignupDoctor from "@/features/auth/SignupDoctor";
+import SignupPatient from "@/features/auth/SignupPatient";
 
 const HomePage = lazy(() => import("@/features/home/HomePage"));
 const Doctors = lazy(() => import("@/features/doctor/Doctors"));
@@ -46,13 +50,42 @@ export const MainRoutes = {
         </Suspense>
       ),
     },
-     {
+    {
       path: "/randevularim",
       element: (
         <Suspense fallback={<Loading />}>
           <MyAppointments />
         </Suspense>
       ),
+    },
+    {
+      element: <GuestRoute />,
+      children: [
+        {
+          path: "/giris-yap",
+          element: (
+            <Suspense fallback={<Loading />}>
+              <Login />
+            </Suspense>
+          ),
+        },
+         {
+          path: "/hasta/kayit-ol",
+          element: (
+            <Suspense fallback={<Loading />}>
+              <SignupPatient />
+            </Suspense>
+          ),
+        },
+         {
+          path: "/doktor/kayit-ol",
+          element: (
+            <Suspense fallback={<Loading />}>
+              <SignupDoctor />
+            </Suspense>
+          ),
+        },
+      ],
     },
   ],
 };

@@ -44,7 +44,7 @@ const BasicSection = ({
           name="name"
           register={register}
           type="text"
-          label="İsim ve soyisim"
+          label="İsim ve soy isim"
           placeholder="isim ve soyisminizi girin."
         />
         {/* Email */}

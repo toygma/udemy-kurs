@@ -1,0 +1,308 @@
+import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import {
+  DoctorSignupFormSchema,
+  type TDoctorSignupFormSchema,
+} from "./validation/doctor.signup.schema";
+import Button from "@/shared/ui/Button";
+import { Link } from "react-router";
+import { ArrowLeft, Check } from "lucide-react";
+import WorkingHoursSection from "./_components/WorkingHoursSection";
+import ServicesAddressSection from "./_components/ServicesAddressSection";
+import EducationSection from "./_components/EducationSection";
+import ProfessionalInfoSection from "./_components/ProfessionalInfoSection";
+import BasicInfoSection from "./_components/BasicInfoSection";
+import AddressSection from "./_components/AddressSection";
+import AwardSection from "./_components/AwardSection";
+
+const SignupDoctor = () => {
+  const [currentStep, setCurrentStep] = useState(1);
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    control,
+    setValue,
+    formState: { errors, isSubmitting },
+  } = useForm<TDoctorSignupFormSchema>({
+    resolver: zodResolver(DoctorSignupFormSchema),
+    mode: "onChange",
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+      image: "",
+      speciality: "",
+      available: true,
+      role: "doctor",
+      experience: 0,
+      about: "",
+      education: [
+        {
+          degree: "",
+          institution: "",
+          year: 0,
+        },
+      ],
+      services: "",
+      address: {
+        street: "",
+        city: "",
+        postalCode: "",
+        country: "",
+      },
+      phone: "",
+      fee: 0,
+      patients: 0,
+      awards: [
+        {
+          title: "",
+          year: 0,
+          description: "",
+          organization: "",
+        },
+      ],
+      workingHours: [
+        {
+          day: "monday",
+          isAvailable: false,
+          slots: [{ start: "09:00", end: "17:00" }],
+        },
+        {
+          day: "tuesday",
+          isAvailable: false,
+          slots: [{ start: "09:00", end: "17:00" }],
+        },
+        {
+          day: "wednesday",
+          isAvailable: false,
+          slots: [{ start: "09:00", end: "17:00" }],
+        },
+        {
+          day: "thursday",
+          isAvailable: false,
+          slots: [{ start: "09:00", end: "17:00" }],
+        },
+        {
+          day: "friday",
+          isAvailable: false,
+          slots: [{ start: "09:00", end: "17:00" }],
+        },
+        {
+          day: "saturday",
+          isAvailable: false,
+          slots: [{ start: "09:00", end: "17:00" }],
+        },
+        {
+          day: "sunday",
+          isAvailable: false,
+          slots: [{ start: "09:00", end: "17:00" }],
+        },
+      ],
+    },
+  });
+
+  console.log(watch());
+
+  const onSubmit = (data: TDoctorSignupFormSchema) => {
+    console.log(data);
+  };
+
+  const steps = [
+    { number: 1, title: "Temel" },
+    { number: 2, title: "Adres" },
+    { number: 3, title: "Profesyonel" },
+    { number: 4, title: "Eğitim" },
+    { number: 5, title: "Ödül" },
+    { number: 6, title: "Çalışma" },
+  ];
+
+  const nextStep = () => {
+    if (currentStep < 6) setCurrentStep(currentStep + 1);
+  };
+
+  const prevStep = () => {
+    if (currentStep > 1) setCurrentStep(currentStep - 1);
+  };
+
+  return (
+    <div className="min-h-screen py-8 px-4 relative">
+      <Link
+        to={"/login"}
+        className="absolute top-4 left-4 border border-gray-300 rounded-full p-2 cursor-pointer hover:bg-gray-200 transition-colors"
+      >
+        <ArrowLeft size={20} />
+      </Link>
+      
+      <div className="max-w-4xl mx-auto">
+        <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+          {/* Header */}
+          <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-8 text-white">
+            <h1 className="text-3xl font-bold">Doktor Kayıt Sayfası</h1>
+            <p className="mt-2 text-blue-100">
+              Profesyonel hesabınızı oluşturun
+            </p>
+          </div>
+
+          {/* Step Indicator - Responsive */}
+          <div className="px-4 py-6 bg-gray-50 border-b overflow-x-auto">
+            <div className="flex justify-between items-start min-w-max md:min-w-0 mx-auto" style={{ maxWidth: '800px' }}>
+              {steps.map((step, index) => (
+                <div key={step.number} className="flex items-start flex-shrink-0">
+                  {/* Step Circle and Title */}
+                  <div className="flex flex-col items-center">
+                    <div
+                      className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 ${
+                        currentStep > step.number
+                          ? "bg-green-500 text-white"
+                          : currentStep === step.number
+                          ? "bg-blue-600 text-white ring-4 ring-blue-200"
+                          : "bg-gray-200 text-gray-500"
+                      }`}
+                    >
+                      {currentStep > step.number ? (
+                        <Check size={18} />
+                      ) : (
+                        step.number
+                      )}
+                    </div>
+                    <span
+                      className={`text-xs mt-2 font-medium whitespace-nowrap transition-colors ${
+                        currentStep === step.number
+                          ? "text-blue-600"
+                          : currentStep > step.number
+                          ? "text-green-600"
+                          : "text-gray-500"
+                      }`}
+                    >
+                      {step.title}
+                    </span>
+                  </div>
+
+                  {/* Connector Line */}
+                  {index < steps.length - 1 && (
+                    <div className="flex items-center px-2 pt-5">
+                      <div
+                        className={`h-0.5 w-12 transition-all duration-500 ${
+                          currentStep > step.number
+                            ? "bg-green-500"
+                            : "bg-gray-300"
+                        }`}
+                      />
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Form */}
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="p-6 min-h-[400px]">
+              {currentStep === 1 && (
+                <BasicInfoSection register={register} errors={errors} />
+              )}
+
+              {currentStep === 2 && (
+                <AddressSection register={register} errors={errors} />
+              )}
+
+              {currentStep === 3 && (
+                <ProfessionalInfoSection
+                  register={register}
+                  errors={errors}
+                  setValue={setValue}
+                />
+              )}
+
+              {currentStep === 4 && (
+                <div className="space-y-6">
+                  <ServicesAddressSection
+                    register={register}
+                    errors={errors}
+                    control={control}
+                    setValue={setValue}
+                  />
+                  <EducationSection
+                    register={register}
+                    errors={errors}
+                    control={control}
+                  />
+                </div>
+              )}
+
+              {currentStep === 5 && (
+                <AwardSection
+                  register={register}
+                  errors={errors}
+                  control={control}
+                />
+              )}
+
+              {currentStep === 6 && (
+                <WorkingHoursSection
+                  register={register}
+                  errors={errors}
+                  control={control}
+                  setValue={setValue}
+                  watch={watch}
+                />
+              )}
+            </div>
+
+            {/* Navigation Buttons */}
+            <div className="px-6 py-4 bg-gray-50 border-t flex justify-between items-center">
+              <button
+                type="button"
+                onClick={prevStep}
+                disabled={currentStep === 1}
+                className={`px-6 py-2.5 rounded-lg font-medium transition-all ${
+                  currentStep === 1
+                    ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                    : "bg-gray-300 text-gray-700 hover:bg-gray-400 hover:shadow-md"
+                }`}
+              >
+                Geri
+              </button>
+
+              <div className="text-sm text-gray-600 font-medium">
+                Adım {currentStep} / {steps.length}
+              </div>
+
+              {currentStep < 6 ? (
+                <button
+                  type="button"
+                  onClick={nextStep}
+                  className="px-6 py-2.5 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 hover:shadow-md transition-all"
+                >
+                  İleri
+                </button>
+              ) : (
+                <Button
+                  type="submit"
+                  loading={isSubmitting}
+                  disabled={isSubmitting}
+                  className="px-8 py-2.5 bg-green-600 hover:bg-green-700"
+                >
+                  {isSubmitting ? "Kaydediliyor..." : "Kayıt Ol"}
+                </Button>
+              )}
+            </div>
+          </form>
+
+          {/* Progress Bar */}
+          <div className="h-2 bg-gray-200">
+            <div
+              className="h-full bg-gradient-to-r from-blue-600 to-indigo-600 transition-all duration-500 ease-out"
+              style={{ width: `${(currentStep / steps.length) * 100}%` }}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default SignupDoctor;

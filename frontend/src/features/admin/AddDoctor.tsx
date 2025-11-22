@@ -13,6 +13,8 @@ import AwardSection from "./_components/AwardSection";
 import ServiceSection from "./_components/ServiceSection";
 import WorkingInSection from "./_components/WorkingInSection";
 
+
+
 const AddDoctor = () => {
   const {
     register,
