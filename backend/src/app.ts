@@ -1,14 +1,16 @@
 import express, { Express } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import path from "path";
+
+import RegisterUser from "./test"; // örnek controller
+import errorMiddleware from "./middlewares/error.middleware";
 
 const app: Express = express();
-
-//path deploy
-import path from "path";
+const router = express.Router();
 const __dirname = path.resolve();
 
-//middleware
+// Middleware
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -20,15 +22,22 @@ app.use(
   })
 );
 
-//deploy
+// Routes
+router.post("/auth", RegisterUser);
 
+// Router'ı app'e eklemeyi unutma
+app.use("/api", router);
+
+// Deploy (production)
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.resolve(__dirname, "../frontend/dist")));
+  app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
-  app.use((req, res) => {
-    const indexPath = path.resolve(__dirname, "../frontend/dist/index.html");
-    res.sendFile(indexPath);
+  app.get("*", (_req, res) => {
+    res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
   });
 }
 
-export default app
+app.use(errorMiddleware);
+
+
+export default app;
