@@ -63,7 +63,7 @@ const workingHoursSchema = z
     }
   );
 
-export const DoctorSignupFormSchema = z.object({
+export const SignupDoctorFormSchema = z.object({
   name: z
     .string({ error: "Boş bırakılamaz" })
     .min(3, "İsim en az 3 karakter olmalı")
@@ -150,4 +150,4 @@ export const DoctorSignupFormSchema = z.object({
     ),
 });
 
-export type TDoctorSignupFormSchema = z.infer<typeof DoctorSignupFormSchema>;
+export type TDoctorSignupFormSchema = z.infer<typeof SignupDoctorFormSchema>;

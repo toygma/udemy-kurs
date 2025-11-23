@@ -5,8 +5,7 @@ import type { AuthFormProps } from "../types/authTypes";
 const BasicInfoSection = ({ register, errors }: AuthFormProps) => {
   return (
     <div className="space-y-4">
-      <h3 className="text-lg font-semibold text-gray-700">Basic Information</h3>
-
+      <h3 className="text-lg font-semibold text-gray-700">Temel Bilgiler</h3>
 
       <FormInput
         error={errors.name?.message}

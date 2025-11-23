@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router";
-import { MainRoutes } from "./MainRoutes";
+import { AuthRoutes, MainRoutes } from "./MainRoutes";
 import { DoctorRoutes } from "./DoctorRoutes";
 import { AdminRoutes } from "./AdminRoutes";
 
-export const router = createBrowserRouter([MainRoutes,DoctorRoutes,AdminRoutes]);
+export const router = createBrowserRouter([MainRoutes,DoctorRoutes,AdminRoutes,AuthRoutes]);

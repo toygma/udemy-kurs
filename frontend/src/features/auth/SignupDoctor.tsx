@@ -1,34 +1,32 @@
-import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import {
-  DoctorSignupFormSchema,
+  SignupDoctorFormSchema,
   type TDoctorSignupFormSchema,
 } from "./validation/doctor.signup.schema";
-import Button from "@/shared/ui/Button";
+import { Activity, useState } from "react";
 import { Link } from "react-router";
 import { ArrowLeft, Check } from "lucide-react";
-import WorkingHoursSection from "./_components/WorkingHoursSection";
-import ServicesAddressSection from "./_components/ServicesAddressSection";
-import EducationSection from "./_components/EducationSection";
-import ProfessionalInfoSection from "./_components/ProfessionalInfoSection";
 import BasicInfoSection from "./_components/BasicInfoSection";
 import AddressSection from "./_components/AddressSection";
+import ProfessionalInfoSection from "./_components/ProfessionalInfoSection";
+import ServicesAddressSection from "./_components/ServicesAddressSection";
+import EducationSection from "./_components/EducationSection";
 import AwardSection from "./_components/AwardSection";
-import { Activity } from "react";
+import WorkingHoursSection from "./_components/WorkingHoursSection";
+import Button from "@/shared/ui/Button";
 
 const SignupDoctor = () => {
   const [currentStep, setCurrentStep] = useState(1);
-
   const {
     register,
     handleSubmit,
+    setValue,
     watch,
     control,
-    setValue,
     formState: { errors, isSubmitting },
   } = useForm<TDoctorSignupFormSchema>({
-    resolver: zodResolver(DoctorSignupFormSchema),
+    resolver: zodResolver(SignupDoctorFormSchema),
     mode: "onChange",
     defaultValues: {
       name: "",
@@ -105,12 +103,6 @@ const SignupDoctor = () => {
     },
   });
 
-  console.log(watch());
-
-  const onSubmit = (data: TDoctorSignupFormSchema) => {
-    console.log(data);
-  };
-
   const steps = [
     { number: 1, title: "Temel" },
     { number: 2, title: "Adres" },
@@ -127,35 +119,34 @@ const SignupDoctor = () => {
   const prevStep = () => {
     if (currentStep > 1) setCurrentStep(currentStep - 1);
   };
+  const onSubmit = (data: TDoctorSignupFormSchema) => {
+    console.log(data);
+  };
 
   return (
     <div className="min-h-screen py-8 px-4 relative">
       <Link
-        to={"/login"}
-        className="absolute top-4 left-4 border border-gray-300 rounded-full p-2 cursor-pointer hover:bg-gray-200 transition-colors"
+        to={"/giris-yap"}
+        className="absolute top-4 left-4 border border-gray-300 rounded-full p-2 cursor-pointer hover:bg-gray-200"
       >
         <ArrowLeft size={20} />
       </Link>
 
       <div className="max-w-4xl mx-auto">
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
-          {/* Header */}
-          <div className="bg-linear-to-r from-blue-600 to-indigo-600 px-6 py-8 text-white">
+          {/* HEADER */}
+          <div className="bg-linear-to-r from-blue-600 to-indigo-600 px-6 py-7 text-white">
             <h1 className="text-3xl font-bold">Doktor Kayıt Sayfası</h1>
             <p className="mt-2 text-blue-100">
-              Profesyonel hesabınızı oluşturun
+              Profesyonel Hesabınızı oluşturun.
             </p>
           </div>
 
-          {/* Step Indicator - Responsive */}
+          {/* STEP */}
           <div className="px-4 py-6 bg-gray-50 border-b overflow-x-auto">
-            <div
-              className="flex justify-between items-start min-w-max md:min-w-0 mx-auto"
-              style={{ maxWidth: "800px" }}
-            >
+            <div className={`flex justify-between items-center`}>
               {steps.map((step, index) => (
                 <div key={step.number} className="flex items-start shrink-0">
-                  {/* Step Circle and Title */}
                   <div className="flex flex-col items-center">
                     <div
                       className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 ${
@@ -173,91 +164,85 @@ const SignupDoctor = () => {
                       )}
                     </div>
                     <span
-                      className={`text-xs mt-2 font-medium whitespace-nowrap transition-colors ${
+                      className={`text-xs mt-2 font-medium whitespace-nowrap ${
                         currentStep === step.number
                           ? "text-blue-600"
                           : currentStep > step.number
                           ? "text-green-600"
                           : "text-gray-500"
-                      }`}
+                      } `}
                     >
                       {step.title}
                     </span>
                   </div>
-
-                  {/* Connector Line */}
                   {index < steps.length - 1 && (
                     <div className="flex items-center px-2 pt-5">
                       <div
-                        className={`h-0.5 w-12 transition-all duration-500 ${
+                        className={`h-0.5 w-22 transition-all duration-500 mx-2 ${
                           currentStep > step.number
                             ? "bg-green-500"
                             : "bg-gray-300"
                         }`}
-                      />
+                      ></div>
                     </div>
                   )}
                 </div>
               ))}
             </div>
           </div>
+          <form className="p-6 " onSubmit={handleSubmit(onSubmit)}>
+            <Activity mode={currentStep === 1 ? "visible" : "hidden"}>
+              <BasicInfoSection register={register} errors={errors} />
+            </Activity>
 
-          {/* Form */}
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="p-6 min-h-[400px]">
-              <Activity mode={currentStep === 1 ? "visible" : "hidden"}>
-                <BasicInfoSection register={register} errors={errors} />
-              </Activity>
+            <Activity mode={currentStep === 2 ? "visible" : "hidden"}>
+              <AddressSection register={register} errors={errors} />
+            </Activity>
 
-              <Activity mode={currentStep === 2 ? "visible" : "hidden"}>
-                <AddressSection register={register} errors={errors} />
-              </Activity>
+            <Activity mode={currentStep === 3 ? "visible" : "hidden"}>
+              <ProfessionalInfoSection
+                register={register}
+                errors={errors}
+                setValue={setValue}
+              />
+            </Activity>
 
-              <Activity mode={currentStep === 3 ? "visible" : "hidden"}>
-                <ProfessionalInfoSection
-                  register={register}
-                  errors={errors}
-                  setValue={setValue}
-                />
-              </Activity>
-
-              <Activity mode={currentStep === 4 ? "visible" : "hidden"}>
-                <div className="space-y-6">
-                  <ServicesAddressSection
-                    register={register}
-                    errors={errors}
-                    control={control}
-                    setValue={setValue}
-                  />
-                  <EducationSection
-                    register={register}
-                    errors={errors}
-                    control={control}
-                  />
-                </div>
-              </Activity>
-
-              <Activity mode={currentStep === 5 ? "visible" : "hidden"}>
-                <AwardSection
-                  register={register}
-                  errors={errors}
-                  control={control}
-                />
-              </Activity>
-
-              <Activity mode={currentStep === 6 ? "visible" : "hidden"}>
-                <WorkingHoursSection
+            <Activity mode={currentStep === 4 ? "visible" : "hidden"}>
+              <div className="space-y-6">
+                <ServicesAddressSection
                   register={register}
                   errors={errors}
                   control={control}
                   setValue={setValue}
-                  watch={watch}
                 />
-              </Activity>
-            </div>
+                <EducationSection
+                  register={register}
+                  errors={errors}
+                  control={control}
+                />
+              </div>
+            </Activity>
 
-            {/* Navigation Buttons */}
-            <div className="px-6 py-4 bg-gray-50 border-t flex justify-between items-center">
+            <Activity mode={currentStep === 5 ? "visible" : "hidden"}>
+              <AwardSection
+                register={register}
+                errors={errors}
+                control={control}
+              />
+            </Activity>
+
+            <Activity mode={currentStep === 6 ? "visible" : "hidden"}>
+              <WorkingHoursSection
+                register={register}
+                errors={errors}
+                control={control}
+                setValue={setValue}
+                watch={watch}
+              />
+            </Activity>
+
+            {/* Navigation BUTTON */}
+            <div className="px-6 py-4 mt-4  border-t flex justify-between items-center">
               <button
                 type="button"
                 onClick={prevStep}
@@ -270,11 +255,9 @@ const SignupDoctor = () => {
               >
                 Geri
               </button>
-
               <div className="text-sm text-gray-600 font-medium">
                 Adım {currentStep} / {steps.length}
               </div>
-
               {currentStep < 6 ? (
                 <button
                   type="button"
@@ -296,7 +279,7 @@ const SignupDoctor = () => {
             </div>
           </form>
 
-          {/* Progress Bar */}
+          {/* Progress bar */}
           <div className="h-2 bg-gray-200">
             <div
               className="h-full bg-linear-to-r from-blue-600 to-indigo-600 transition-all duration-500 ease-out"
