@@ -1,17 +1,20 @@
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import {
+  PatientSchema,
+  type TPatientSignupSchema,
+} from "./validation/patient.signup.schema";
 import { Link } from "react-router";
 import { ArrowLeft } from "lucide-react";
 import FormInput from "@/shared/ui/FormInput";
 import Button from "@/shared/ui/Button";
-import { PatientSchema, type TPatientSignUpSchema } from "./validation/test";
 
 const SignupPatient = () => {
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<TPatientSignUpSchema>({
+  } = useForm<TPatientSignupSchema>({
     resolver: zodResolver(PatientSchema),
     mode: "onChange",
     defaultValues: {
@@ -21,8 +24,7 @@ const SignupPatient = () => {
       role: "patient",
     },
   });
-
-  const onSubmit = async (data: TPatientSignUpSchema) => {
+  const onSubmit = async (data: TPatientSignupSchema) => {
     console.log(data);
   };
   return (
