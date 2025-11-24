@@ -39,8 +39,8 @@ const errorMiddleware = (
 
   if (err.name === "ValidationError") {
     const validationError = err as ValidationError;
-    const errorsObject = validationError.errors || {};
-    message = Object.values(errorsObject)
+    const errorObject = validationError.errors || {};
+    message = Object.values(errorObject)
       .map((error) => error.message)
       .join(",");
     statusCode = 400;

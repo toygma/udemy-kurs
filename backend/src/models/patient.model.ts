@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document, Model } from "mongoose";
+import mongoose, { Schema, Types } from "mongoose";
 import bcrypt from "bcrypt";
 import jwt, { SignOptions } from "jsonwebtoken";
 
@@ -15,11 +15,12 @@ interface IAddress {
 }
 
 export interface IPatient extends Document {
+  _id: Types.ObjectId;
   name: string;
   email: string;
   password: string;
   address?: IAddress;
-  gender?: "male" | "female" |  "not_selected";
+  gender?: "male" | "female" | "not_selected";
   phone?: string;
   image?: IImage;
   dateOfBirth?: Date;
@@ -38,13 +39,13 @@ const patientSchema = new Schema<IPatient>(
       type: String,
       required: [true, "İsim gereklidir"],
       trim: true,
-      minlength: [2, "İsim en az 2 karakter olmalıdır"],
-      maxlength: [50, "İsim en fazla 50 karakter olabilir"],
+      minLength: [2, "isim en az 2 karakter olmalıdır"],
+      maxLength: [50, "isim en az 50 karakter olmalıdır"],
     },
     password: {
       type: String,
       required: [true, "Şifre gereklidir"],
-      minlength: [6, "Şifre en az 6 karakter olmalıdır"],
+      minLength: [6, "Şifre en az 6 karakter olmalıdır"],
       select: false,
     },
     email: {
@@ -69,7 +70,7 @@ const patientSchema = new Schema<IPatient>(
       type: String,
     },
     dateOfBirth: {
-      type: Date,
+      type: String,
     },
     role: {
       type: String,
@@ -87,21 +88,17 @@ const patientSchema = new Schema<IPatient>(
       default: true,
     },
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
 
 patientSchema.pre("save", async function () {
-  if (!this.isModified("password")) {
-    return;
-  }
-  
+  if (!this.isModified("password")) return;
+
   try {
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
   } catch (error) {
-    throw error; 
+    throw error;
   }
 });
 
@@ -119,6 +116,7 @@ patientSchema.methods.comparePassword = async function (
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
+const Patient =
+  mongoose.models.Patient || mongoose.model<IPatient>("Patient", patientSchema);
 
-
-export default mongoose.model("Patient", patientSchema);
+export default Patient;

@@ -6,6 +6,7 @@ import errorMiddleware from "./middlewares/error.middleware";
 import authRoute from "./routes/auth.route";
 
 
+
 const app: Express = express();
 
 
