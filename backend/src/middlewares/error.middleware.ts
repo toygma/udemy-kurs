@@ -1,11 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import ErrorHandler from "../utils/errorHandler";
 
-
 interface ValidationError extends Error {
   errors: Record<string, { message: string }>;
 }
-
 
 interface CastError extends Error {
   path: string;
@@ -16,7 +14,6 @@ interface MongoError extends Error {
   code: number;
   keyValue: Record<string, any>;
 }
-
 
 interface ErrorResponse {
   success: false;
@@ -30,9 +27,9 @@ const errorMiddleware = (
   req: Request,
   res: Response,
   next: NextFunction
-): void => {
+) => {
   let statusCode = (err as ErrorHandler).statusCode || 500;
-  let message = err.message || "Internal Server Error";
+  let message = err.message || "Server Hatası";
 
   if (err.name === "CastError") {
     const castError = err as CastError;
@@ -42,9 +39,10 @@ const errorMiddleware = (
 
   if (err.name === "ValidationError") {
     const validationError = err as ValidationError;
-    message = Object.values(validationError.errors)
+    const errorsObject = validationError.errors || {};
+    message = Object.values(errorsObject)
       .map((error) => error.message)
-      .join(", ");
+      .join(",");
     statusCode = 400;
   }
 
@@ -52,18 +50,18 @@ const errorMiddleware = (
     const mongoError = err as MongoError;
     const field = Object.keys(mongoError.keyValue)[0];
     const value = mongoError.keyValue[field];
-    message = `'${value}' değeri ${field} alanında zaten kullanılıyor`;
+    message = `${value} değeri ${field} alanında zaten kullanılıyor.`;
     statusCode = 400;
   }
 
   if (err.name === "JsonWebTokenError") {
-    message = "Geçersiz token. Lütfen tekrar giriş yapın.";
-    statusCode = 401;
+    (message = `Geçersiz token. Lütfen tekrar giriş yapınız. `),
+      (statusCode = 401);
   }
 
   if (err.name === "TokenExpiredError") {
-    message = "Token süresi doldu. Lütfen tekrar giriş yapın.";
-    statusCode = 401;
+    (message = `Token süresi doldu.Lütfen tekrar giriş yapınız. `),
+      (statusCode = 401);
   }
 
   const response: ErrorResponse = {
@@ -74,11 +72,11 @@ const errorMiddleware = (
   if (process.env.NODE_ENV === "development") {
     response.stack = err.stack;
     response.error = {
-      name:err.name,
-      message:err.message,
-      path:req.path,
-      method:req.method
-    }
+      name: err.name,
+      message: err.message,
+      path: req.path,
+      method: req.method,
+    };
   }
 
   res.status(statusCode).json(response);

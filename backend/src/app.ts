@@ -2,12 +2,13 @@ import express, { Express } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import path from "path";
-
-import RegisterUser from "./test"; // örnek controller
 import errorMiddleware from "./middlewares/error.middleware";
+import authRoute from "./routes/auth.route";
+
 
 const app: Express = express();
-const router = express.Router();
+
+
 const __dirname = path.resolve();
 
 // Middleware
@@ -23,10 +24,8 @@ app.use(
 );
 
 // Routes
-router.post("/auth", RegisterUser);
+app.use("/api/v1",authRoute)
 
-// Router'ı app'e eklemeyi unutma
-app.use("/api", router);
 
 // Deploy (production)
 if (process.env.NODE_ENV === "production") {
@@ -37,7 +36,6 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-app.use(errorMiddleware);
-
+app.use(errorMiddleware)
 
 export default app;
