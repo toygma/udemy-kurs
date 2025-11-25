@@ -3,7 +3,9 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import path from "path";
 import errorMiddleware from "./middlewares/error.middleware";
-import authRoute from "./routes/auth.route";
+import patientRoute from "./routes/patient.route";
+import userRoute from "./routes/user.route";
+import doctorRoute from "./routes/doctor.route";
 
 
 
@@ -25,7 +27,9 @@ app.use(
 );
 
 // Routes
-app.use("/api/v1",authRoute)
+app.use("/api/v1",patientRoute)
+app.use("/api/v1",userRoute)
+app.use("/api/v1",doctorRoute)
 
 
 // Deploy (production)

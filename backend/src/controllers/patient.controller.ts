@@ -4,7 +4,7 @@ import ErrorHandler from "../utils/errorHandler";
 import Patient from "../models/patient.model";
 import sendToken from "../utils/sendToken";
 
-const registerPatient = catchAsyncError(
+const register = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     const { name, email, password } = req.body;
 
@@ -33,5 +33,5 @@ const registerPatient = catchAsyncError(
 );
 
 export default {
-  registerPatient,
+  register,
 };

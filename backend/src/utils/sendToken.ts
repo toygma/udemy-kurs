@@ -1,8 +1,9 @@
 import { Response } from "express";
 import { IPatient } from "../models/patient.model";
+import { IDoctor } from "../models/doctor.model";
 
 interface SendTokenOptions {
-  user: IPatient;
+  user: IPatient | IDoctor;
   statusCode: number;
   res: Response;
 }
