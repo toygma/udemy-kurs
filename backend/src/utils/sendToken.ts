@@ -11,7 +11,7 @@ interface SendTokenOptions {
 const sendToken = (options: SendTokenOptions) => {
   const { user, statusCode, res } = options;
 
-  const jwtToken = user.getJwtToken;
+  const jwtToken = user.getJwtToken();
 
   const cookieExpiresTime = parseInt(process.env.COOKIE_EXPIRES_TIME!, 10);
 

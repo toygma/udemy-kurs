@@ -9,4 +9,5 @@ patientRoute.post("/patient/register",patientController.register);
 patientRoute.put("/patient/update",isAuthenticatedUser,patientController.updateMyProfile);
 
 
+
 export default patientRoute
