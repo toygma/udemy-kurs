@@ -1,6 +1,7 @@
-import mongoose, { Schema, Document, Types } from "mongoose";
+import { Document, Schema } from "mongoose";
 import bcrypt from "bcrypt";
 import jwt, { SignOptions } from "jsonwebtoken";
+import mongoose from "mongoose";
 
 interface IEducation {
   degree: string;
@@ -14,16 +15,17 @@ interface IImage {
 }
 
 export interface IWorkingHours {
-  day: number;
+  day: string;
   isWorking: boolean;
   startTime: string;
   endTime: string;
 }
+
 interface IAddress {
-  street?: string;
-  city?: string;
-  zipCode?: string;
-  country?: string;
+  street: string;
+  city: string;
+  zipCode: string;
+  country: string;
 }
 
 interface IAwards {
@@ -32,7 +34,6 @@ interface IAwards {
   organization: string;
 }
 
-// Ana Doktor arayüzü
 export interface IDoctor extends Document {
   name: string;
   email: string;
@@ -45,7 +46,7 @@ export interface IDoctor extends Document {
   role: "doctor";
   education: IEducation[];
   services: string;
-  address: IAddress;
+  address?: IAddress;
   phone: string;
   fee: number;
   patients: string;
@@ -78,7 +79,6 @@ const doctorSchema = new Schema<IDoctor>(
       select: false,
     },
     speciality: { type: String },
-    available: { type: Boolean, default: true },
     role: { type: String, default: "doctor" },
     image: {
       public_id: String,
@@ -128,6 +128,7 @@ const doctorSchema = new Schema<IDoctor>(
   },
   { timestamps: true }
 );
+
 
 doctorSchema.pre("save", async function () {
   if (!this.isModified("password")) return;

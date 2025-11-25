@@ -3,9 +3,12 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import path from "path";
 import errorMiddleware from "./middlewares/error.middleware";
+
+
+//ROUTES
 import patientRoute from "./routes/patient.route";
-import userRoute from "./routes/user.route";
 import doctorRoute from "./routes/doctor.route";
+import userRoute from "./routes/user.route";
 
 
 
@@ -18,7 +21,6 @@ const __dirname = path.resolve();
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-
 app.use(
   cors({
     origin: process.env.FRONTEND_URL,
@@ -28,8 +30,8 @@ app.use(
 
 // Routes
 app.use("/api/v1",patientRoute)
-app.use("/api/v1",userRoute)
 app.use("/api/v1",doctorRoute)
+app.use("/api/v1",userRoute)
 
 
 // Deploy (production)

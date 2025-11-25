@@ -70,7 +70,7 @@ const patientSchema = new Schema<IPatient>(
       type: String,
     },
     dateOfBirth: {
-      type: String,
+      type: Date,
     },
     role: {
       type: String,

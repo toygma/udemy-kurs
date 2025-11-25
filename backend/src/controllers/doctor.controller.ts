@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import catchAsyncError from "../middlewares/catch.middleware";
 import ErrorHandler from "../utils/errorHandler";
-import sendToken from "../utils/sendToken";
 import Doctor from "../models/doctor.model";
+import sendToken from "../utils/sendToken";
 
 const register = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -22,7 +22,21 @@ const register = catchAsyncError(
       workingHours,
     } = req.body;
 
-    if (!name || !email || !password || !phone || !speciality || !experience || !about || !fee || !education || !services || !awards || !workingHours) {
+    if (
+      !name ||
+      !email ||
+      !password ||
+      !phone ||
+      !speciality ||
+      !experience ||
+      !about ||
+      !fee ||
+      !education ||
+      !services ||
+      !awards ||
+      !workingHours ||
+      !address
+    ) {
       return next(new ErrorHandler("Tüm alanlar zorunludur.", 400));
     }
 
@@ -32,7 +46,8 @@ const register = catchAsyncError(
       return next(new ErrorHandler("Bu email zaten kullanılıyor", 400));
     }
 
-    const doctor = await Doctor.create({
+
+     const doctor = await Doctor.create({
       name,
       email,
       password,
@@ -48,14 +63,13 @@ const register = catchAsyncError(
       workingHours,
     });
 
-    sendToken({
+     sendToken({
       user: doctor,
       statusCode: 201,
       res,
     });
   }
 );
-
 export default {
   register,
 };
