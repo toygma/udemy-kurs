@@ -9,6 +9,7 @@ import errorMiddleware from "./middlewares/error.middleware";
 import patientRoute from "./routes/patient.route";
 import doctorRoute from "./routes/doctor.route";
 import userRoute from "./routes/user.route";
+import appointmentRoute from "./routes/appointment.route";
 
 
 
@@ -28,10 +29,13 @@ app.use(
   })
 );
 
-// Routes
-app.use("/api/v1",patientRoute)
-app.use("/api/v1",doctorRoute)
-app.use("/api/v1",userRoute)
+app.use("/api/v1/patients", patientRoute);
+
+app.use("/api/v1/doctors", doctorRoute);
+
+app.use("/api/v1/users", userRoute);
+
+app.use("/api/v1/appointments", appointmentRoute);
 
 
 // Deploy (production)

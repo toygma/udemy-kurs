@@ -4,9 +4,12 @@ import { isAuthenticatedUser } from "../middlewares/auth.middleware";
 
 const patientRoute = Router();
 
-patientRoute.post("/patient/register",patientController.register);
+patientRoute.post("/register",patientController.register);
 
-patientRoute.put("/patient/update",isAuthenticatedUser,patientController.updateMyProfile);
+patientRoute.put("/update",isAuthenticatedUser,patientController.updateMyProfile);
+
+patientRoute.get("/",isAuthenticatedUser,patientController.getAppointments);
+
 
 
 

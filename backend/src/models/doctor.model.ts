@@ -2,6 +2,7 @@ import { Document, Schema } from "mongoose";
 import bcrypt from "bcrypt";
 import jwt, { SignOptions } from "jsonwebtoken";
 import mongoose from "mongoose";
+import { IAppointment } from "./appointment.model";
 
 interface IEducation {
   degree: string;
@@ -35,11 +36,11 @@ interface IAwards {
 }
 
 export interface IDoctor extends Document {
+  appointments: IAppointment[];
   name: string;
   email: string;
   password: string;
   speciality: string;
-  available: boolean;
   image?: IImage;
   experience: string;
   about: string;
@@ -64,6 +65,7 @@ export interface IDoctor extends Document {
 
 const doctorSchema = new Schema<IDoctor>(
   {
+    appointments: [{ type: Schema.Types.ObjectId, ref: "Appointment" }],
     name: { type: String, required: [true, "İsim alanı zorunludur."] },
     email: {
       type: String,
@@ -128,7 +130,6 @@ const doctorSchema = new Schema<IDoctor>(
   },
   { timestamps: true }
 );
-
 
 doctorSchema.pre("save", async function () {
   if (!this.isModified("password")) return;

@@ -4,6 +4,7 @@ import ErrorHandler from "../utils/errorHandler";
 import Patient from "../models/patient.model";
 import sendToken from "../utils/sendToken";
 import { upload_file } from "../utils/cloudinary";
+import Appointment from "../models/appointment.model";
 
 const register = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -76,7 +77,32 @@ const updateMyProfile = catchAsyncError(
   }
 );
 
+const getAppointments = catchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.user?._id;
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: "Kullanıcı bulunamadı",
+      });
+    }
+
+    const appointments = await Appointment.find({ patient: userId })
+      .populate("doctor")
+      .sort({ date: 1 });
+
+    res.status(200).json({
+      success: true,
+      count: appointments.length,
+      data: appointments,
+    });
+  }
+);
+
+
 export default {
   register,
   updateMyProfile,
+  getAppointments
 };
