@@ -138,7 +138,7 @@ const deleteReview = catchAsyncError(
       return next(new ErrorHandler("Yorum bulunamadı.", 404));
     }
 
-    if (review.patient.toString() !== userId.toString()) {
+    if (review.patient._id.toString() !== userId.toString()) {
       return next(
         new ErrorHandler("Sadece kendi yorumlarınızı silebilirsiniz.", 403)
       );
