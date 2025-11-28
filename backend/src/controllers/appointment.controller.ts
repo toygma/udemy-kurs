@@ -7,22 +7,22 @@ import Doctor from "../models/doctor.model";
 const createAppointment = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     const { doctorId, date, timeSlot } = req.body;
+
     const userId = req.user?._id;
 
     if (!userId) {
-      return next(new ErrorHandler("Kullanıcı bulunamadı", 400));
+      return next(new ErrorHandler("Kullanıcı bulunamadı", 401));
     }
 
     if (!doctorId || !date || !timeSlot) {
       return next(new ErrorHandler("Alanlar zorunlu", 400));
     }
 
-    // Aynı doktor, tarih ve saat için randevu var mı kontrol et
     const existingAppointment = await Appointment.findOne({
       doctor: doctorId,
       date: new Date(date),
       timeSlot,
-      status: { $ne: "cancelled" }, // İptal edilmemiş randevular
+      status: { $ne: "cancelled" },
     });
 
     if (existingAppointment) {
@@ -57,88 +57,72 @@ const createAppointment = catchAsyncError(
 const updateAppointmentStatus = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
-    const { newStatus } = req.body; // Yeni statüyü (örneğin "cancelled" veya "confirmed") request body'den almalısınız
+    const { newStatus } = req.body;
+
     const user = req.user;
 
-    // 1. Gerekli Alan Kontrolü
-    if (!id || !user || !newStatus) {
-      return next(
-        new ErrorHandler(
-          "Gerekli bilgiler (id, kullanıcı veya yeni statü) eksik.",
-          400
-        )
-      );
+    if (!id) {
+      return next(new ErrorHandler("id bulunamadı", 400));
     }
 
-    // İzin verilen statüleri kontrol edin
+    if (!newStatus || !user) {
+      return next(new ErrorHandler("statü veya user bilgisi eksik", 400));
+    }
+
     const allowedStatuses = ["cancelled", "confirmed"];
     if (!allowedStatuses.includes(newStatus)) {
       return next(
         new ErrorHandler(
-          `Geçersiz statü: ${newStatus}. Yalnızca 'cancelled' veya 'confirmed' olabilir.`,
+          `Geçersiz statü: ${newStatus}.Yalnızca cancelled veya confirmed olabilir`,
           400
         )
       );
     }
 
-    // 2. Randevuyu Bulma ve Kontrol (Düzeltildi: İlk Bulma)
-    // findById, ObjectId bekler, bu yüzden {id} yerine id kullanın.
     let appointment = await Appointment.findById(id);
 
     if (!appointment) {
-      return next(new ErrorHandler("Randevu bulunamadı.", 404)); // Randevu yoksa hemen hata döndür
+      return next(new ErrorHandler("Randevu bulunamadı", 404));
     }
 
-    // 3. Yetkilendirme Kontrolü
     const isPatient =
       user.role === "patient" &&
-      appointment.user.toString() === user._id.toString();
+      appointment.patient.toString() === user._id.toString();
+
     const isDoctor =
       user.role === "doctor" &&
       appointment.doctor.toString() === user._id.toString();
 
-    // Sadece randevunun sahibi (hasta) veya doktoru yetkilidir
     if (!isPatient && !isDoctor) {
       return next(
         new ErrorHandler(
-          "Yalnızca kendi randevularınızı güncelleyebilirsiniz.",
+          "Yalnızca kendi randevularınızı güncelleyebilirsiniz",
           403
         )
       );
     }
 
-    // Statüye Göre Yetkilendirme Kontrolü (İstenen gereksinime göre eklendi)
     if (newStatus === "confirmed" && !isDoctor) {
-      // Sadece doktorlar randevuyu onaylayabilir
-      return next(
-        new ErrorHandler("Randevuyu yalnızca doktor onaylayabilir.", 403)
-      );
+      appointment.isPaid = "paid";
+      await appointment.save();
+      return next(new ErrorHandler("Yalnızca doktor onaylayabilir.", 403));
     }
 
     if (newStatus === "cancelled") {
-      // İptal durumunda, hem hasta hem de doktorun iptal yetkisi var
-      // (Hasta/Doktor kontrolü zaten yapılmıştı)
-
-      // Randevu doktordan çekilmeli (SADECE iptal durumunda)
       await Doctor.findByIdAndUpdate(appointment.doctor, {
         $pull: { appointments: appointment._id },
       });
     }
-    if (newStatus === "confirmed") {
-      appointment.isPaid = "paid";
-      await appointment.save();
-    }
-    // 4. Randevu Durumunu Güncelleme (Düzeltildi: Tekrar Tanımlama Yok)
+
     appointment = await Appointment.findByIdAndUpdate(
       id,
-      { status: newStatus }, // Body'den gelen yeni statü
+      { status: newStatus },
       { new: true }
     );
 
-    // 5. Başarı Yanıtı (Düzeltildi: Dinamik mesaj)
     const successMessage = `Randevu başarıyla ${
-      newStatus === "cancelled" ? "iptal edildi" : "onaylandı"
-    }.`;
+      newStatus === "cancelled" ? "İptal edildi" : "onaylandı"
+    }`;
 
     res.status(200).json({
       success: true,
@@ -150,5 +134,5 @@ const updateAppointmentStatus = catchAsyncError(
 
 export default {
   createAppointment,
-  updateAppointmentStatus,
+  updateAppointmentStatus
 };

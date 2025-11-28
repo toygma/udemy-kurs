@@ -1,16 +1,17 @@
-import {Router} from "express"
+import { Router } from "express";
 import patientController from "../controllers/patient.controller";
 import { isAuthenticatedUser } from "../middlewares/auth.middleware";
 
 const patientRoute = Router();
 
-patientRoute.post("/register",patientController.register);
+patientRoute.post("/register", patientController.register);
 
-patientRoute.put("/update",isAuthenticatedUser,patientController.updateMyProfile);
+patientRoute.put(
+  "/update",
+  isAuthenticatedUser,
+  patientController.updateMyProfile
+);
 
-patientRoute.get("/",isAuthenticatedUser,patientController.getAppointments);
+patientRoute.get("/", isAuthenticatedUser, patientController.getAppointmets);
 
-
-
-
-export default patientRoute
+export default patientRoute;

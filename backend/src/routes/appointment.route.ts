@@ -2,12 +2,19 @@ import { Router } from "express";
 import appointmentController from "../controllers/appointment.controller";
 import { isAuthenticatedUser } from "../middlewares/auth.middleware";
 
+const appointmentRoute = Router();
 
-const router = Router();
+appointmentRoute.post(
+  "/",
+  isAuthenticatedUser,
+  appointmentController.createAppointment
+);
+appointmentRoute.put(
+  "/:id",
+  isAuthenticatedUser,
+  appointmentController.updateAppointmentStatus
+);
 
 
-router.post("/",isAuthenticatedUser, appointmentController.createAppointment);
 
-router.put("/:id",isAuthenticatedUser, appointmentController.updateAppointmentStatus);
-
-export default router;
+export default appointmentRoute;

@@ -8,8 +8,7 @@ doctorRoute.post("/register",doctorController.register);
 
 doctorRoute.get("/",isAuthenticatedUser,doctorController.getAppointments);
 
-doctorRoute.get("/:doctorId",isAuthenticatedUser,doctorController.getDoctorAvailability);
-
+doctorRoute.get("/:doctorId",doctorController.getDoctorAvailability);
 
 
 export default doctorRoute

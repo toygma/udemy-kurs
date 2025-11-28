@@ -77,15 +77,12 @@ const updateMyProfile = catchAsyncError(
   }
 );
 
-const getAppointments = catchAsyncError(
+const getAppointmets = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     const userId = req.user?._id;
 
     if (!userId) {
-      return res.status(401).json({
-        success: false,
-        message: "Kullanıcı bulunamadı",
-      });
+      return next(new ErrorHandler("Kullanıcı bulunamadı", 401));
     }
 
     const appointments = await Appointment.find({ patient: userId })
@@ -100,9 +97,8 @@ const getAppointments = catchAsyncError(
   }
 );
 
-
 export default {
   register,
   updateMyProfile,
-  getAppointments
+  getAppointmets,
 };

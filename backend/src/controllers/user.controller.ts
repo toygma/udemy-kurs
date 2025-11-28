@@ -56,19 +56,12 @@ const logout = catchAsyncError(
   }
 );
 
-const getMeProfile = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const userId = req?.user?._id;
+const getMeProfile = catchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.user?._id;
 
     if (!userId) {
-      return res.status(401).json({
-        success: false,
-        message: "Kullanıcı bulunamadı",
-      });
+      return next(new ErrorHandler("Kullanıcı bulunamadı", 401));
     }
 
     const [patient, doctor] = await Promise.all([
@@ -79,21 +72,15 @@ const getMeProfile = async (
     const currentUser = patient || doctor;
 
     if (!currentUser) {
-      return res.status(404).json({
-        success: false,
-        message: "Böyle bir kullanıcı yok",
-      });
+      return next(new ErrorHandler("Böyle bir kullanıcı bulunamadı", 404));
     }
 
     return res.status(200).json({
       success: true,
       user: currentUser,
     });
-  } catch (error) {
-    console.error("Profil getirilirken hata oluştu:", error);
-    next(error);
   }
-};
+);
 
 export default {
   login,
