@@ -37,6 +37,7 @@ interface IAwards {
 
 export interface IDoctor extends Document {
   appointments: IAppointment[];
+  reviews: Schema.Types.ObjectId[];
   name: string;
   email: string;
   password: string;
@@ -66,6 +67,12 @@ export interface IDoctor extends Document {
 const doctorSchema = new Schema<IDoctor>(
   {
     appointments: [{ type: Schema.Types.ObjectId, ref: "Appointment" }],
+    reviews: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Review",
+      },
+    ],
     name: { type: String, required: [true, "İsim alanı zorunludur."] },
     email: {
       type: String,

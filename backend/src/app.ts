@@ -10,6 +10,7 @@ import patientRoute from "./routes/patient.route";
 import doctorRoute from "./routes/doctor.route";
 import userRoute from "./routes/user.route";
 import appointmentRoute from "./routes/appointment.route";
+import reviewsRoute from "./routes/reviews.route";
 
 
 
@@ -36,6 +37,8 @@ app.use("/api/v1/doctors", doctorRoute);
 app.use("/api/v1/users", userRoute);
 
 app.use("/api/v1/appointments", appointmentRoute);
+
+app.use("/api/v1/reviews", reviewsRoute);
 
 
 
