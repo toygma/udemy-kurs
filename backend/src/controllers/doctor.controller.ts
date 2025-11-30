@@ -63,11 +63,10 @@ const register = catchAsyncError(
       awards,
       workingHours,
     });
-
-    sendToken({
-      user: doctor,
-      statusCode: 201,
-      res,
+    res.status(201).json({
+      success: true,
+      message:
+        "Doktor başvurunuz başarıyla alındı. Yönetici onayından sonra giriş yapabilirsiniz.",
     });
   }
 );
@@ -189,5 +188,6 @@ const getDoctorAvailability = catchAsyncError(
 
 export default {
   register,
-  getAppointments,getDoctorAvailability
+  getAppointments,
+  getDoctorAvailability,
 };

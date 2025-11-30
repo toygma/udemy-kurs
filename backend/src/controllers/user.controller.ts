@@ -34,6 +34,19 @@ const login = catchAsyncError(
       return next(new ErrorHandler("Hesabınız engellenmiştir..", 401));
     }
 
+    if (role === "doctor") {
+      if (user.approvalStatus === "pending") {
+        return next(
+          new ErrorHandler(
+            "Hesabınız henüz onaylanmamıştır. Lütfen admin onayını bekleyiniz.",
+            403
+          )
+        );
+      } else if (user.approvalStatus === "rejected") {
+        return next(new ErrorHandler(`Hesabınız reddedilmiştir`, 403));
+      }
+    }
+
     sendToken({
       user,
       statusCode: 201,

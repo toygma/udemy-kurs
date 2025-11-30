@@ -56,6 +56,7 @@ export interface IDoctor extends Document {
   totalRating: number;
   averageRating: number;
   workingHours: IWorkingHours[];
+  approvalStatus: "pending" | "approved" | "rejected";
   isPaid: "unpaid" | "paid";
   getJwtToken: () => string;
   comparePassword: (enteredPassword: string) => Promise<boolean>;
@@ -126,6 +127,12 @@ const doctorSchema = new Schema<IDoctor>(
         organization: { type: String },
       },
     ],
+    approvalStatus: {
+      type: String,
+      enum: ["pending", "approved", "rejected"],
+      default: "pending",
+    },
+
     workingHours: [
       {
         day: { type: String, required: true },
