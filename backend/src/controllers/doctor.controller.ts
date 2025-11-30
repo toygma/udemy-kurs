@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from "express";
 import catchAsyncError from "../middlewares/catch.middleware";
 import ErrorHandler from "../utils/errorHandler";
 import Doctor from "../models/doctor.model";
-import sendToken from "../utils/sendToken";
 import moment from "moment";
 import Appointment from "../models/appointment.model";
 
@@ -47,22 +46,6 @@ const register = catchAsyncError(
     if (existingDoctor) {
       return next(new ErrorHandler("Bu email zaten kullanılıyor", 400));
     }
-
-    const doctor = await Doctor.create({
-      name,
-      email,
-      password,
-      phone,
-      speciality,
-      experience,
-      about,
-      fee,
-      education,
-      services,
-      address,
-      awards,
-      workingHours,
-    });
 
     res.status(201).json({
       success:true,

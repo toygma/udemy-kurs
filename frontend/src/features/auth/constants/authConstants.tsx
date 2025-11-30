@@ -4,7 +4,7 @@ export const SPECIALITIES = [
   "Nöroloji",
   "Pediatri",
   "Ortopedi",
-  "Oftalmoloji",
+  "Göz Hastalıkları",
   "Kulak Burun Boğaz",
   "Genel Cerrahi",
   "İç Hastalıkları",
