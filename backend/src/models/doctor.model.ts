@@ -55,6 +55,7 @@ export interface IDoctor extends Document {
   awards: IAwards[];
   totalRating: number;
   averageRating: number;
+  isActive:boolean;
   workingHours: IWorkingHours[];
   approvalStatus: "pending" | "approved" | "rejected";
   isPaid: "unpaid" | "paid";
@@ -120,6 +121,15 @@ const doctorSchema = new Schema<IDoctor>(
     phone: { type: String },
     fee: { type: Number, default: 100 },
     patients: { type: String },
+    approvalStatus: {
+      type: String,
+      enum: ["pending", "approved", "rejected"],
+      default: "pending",
+    },
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
     awards: [
       {
         title: { type: String },
@@ -127,12 +137,6 @@ const doctorSchema = new Schema<IDoctor>(
         organization: { type: String },
       },
     ],
-    approvalStatus: {
-      type: String,
-      enum: ["pending", "approved", "rejected"],
-      default: "pending",
-    },
-
     workingHours: [
       {
         day: { type: String, required: true },

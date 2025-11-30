@@ -38,12 +38,12 @@ const login = catchAsyncError(
       if (user.approvalStatus === "pending") {
         return next(
           new ErrorHandler(
-            "Hesabınız henüz onaylanmamıştır. Lütfen admin onayını bekleyiniz.",
+            "Hesabınız henüz onaylanmamıştır. Lütfen admin onayını bekleyiniz",
             403
           )
         );
       } else if (user.approvalStatus === "rejected") {
-        return next(new ErrorHandler(`Hesabınız reddedilmiştir`, 403));
+        return next(new ErrorHandler("Hesabınız reddedilmiştir", 403));
       }
     }
 
