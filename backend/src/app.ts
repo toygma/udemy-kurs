@@ -44,8 +44,6 @@ app.use("/api/v1/reviews", reviewsRoute);
 app.use("/api/v1/admin", adminRoute);
 
 
-
-
 // Deploy (production)
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
