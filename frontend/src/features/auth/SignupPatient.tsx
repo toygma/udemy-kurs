@@ -4,16 +4,24 @@ import {
   PatientSchema,
   type TPatientSignupSchema,
 } from "./validation/patient.signup.schema";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { ArrowLeft } from "lucide-react";
 import FormInput from "@/shared/ui/FormInput";
 import Button from "@/shared/ui/Button";
+import { useRegisterPatientMutation } from "@/store/api/patient-api";
+import { useEffect } from "react";
+import toast from "react-hot-toast";
 
 const SignupPatient = () => {
+  const [
+    registerMutation,
+    { error: registerError, isLoading: registerLoading, isSuccess },
+  ] = useRegisterPatientMutation();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<TPatientSignupSchema>({
     resolver: zodResolver(PatientSchema),
     mode: "onChange",
@@ -24,8 +32,17 @@ const SignupPatient = () => {
       role: "patient",
     },
   });
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("Kayıt Başarılı");
+      navigate("/giris-yap");
+    } else if (registerError && "data" in registerError) {
+      toast.error((registerError as any)?.data?.message || "Kayıt başarısız!");
+    }
+  }, [isSuccess, registerError]);
+
   const onSubmit = async (data: TPatientSignupSchema) => {
-    console.log(data);
+    await registerMutation(data);
   };
   return (
     <div className="py-8 px-4 relative">
@@ -77,11 +94,11 @@ const SignupPatient = () => {
 
             <Button
               type="submit"
-              loading={isSubmitting}
-              disabled={isSubmitting}
+              loading={registerLoading}
+              disabled={registerLoading}
               className="px-6 py-2"
             >
-              {isSubmitting ? "Yükleniyor..." : "Kayıt ol"}
+              {registerLoading ? "Yükleniyor..." : "Kayıt ol"}
             </Button>
           </form>
         </div>

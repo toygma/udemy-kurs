@@ -6,28 +6,46 @@ import {
 import { useForm } from "react-hook-form";
 import FormInput from "@/shared/ui/FormInput";
 import Button from "@/shared/ui/Button";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { Stethoscope, User } from "lucide-react";
+import { useLoginMutation } from "@/store/api/user-api";
+import toast from "react-hot-toast";
+import { useEffect } from "react";
 
 const Login = () => {
+  const [
+    loginMutation,
+    { error: loginError, isLoading: loginLoading, isSuccess },
+  ] = useLoginMutation();
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<TLoginFormSchema>({
     resolver: zodResolver(LoginFormSchema),
     mode: "onChange",
     defaultValues: {
       email: "",
       password: "",
+      role:"patient"
     },
   });
 
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("Giriş Başarılı");
+      navigate("/",{replace:true})
+    } else if (loginError && "data" in loginError) {
+      toast.error((loginError as any)?.data?.message || "Giriş başarısız!");
+    }
+  }, [isSuccess, loginError]);
+
   const onSubmit = async (data: TLoginFormSchema) => {
-    console.log(data);
+    await loginMutation(data);
   };
 
-  
   return (
     <div className="flex items-center justify-center">
       <div className="bg-white rounded-2xl w-[450px]">
@@ -58,7 +76,7 @@ const Login = () => {
             />
 
             <Button type="submit" className="py-3 mt-2">
-              {isSubmitting ? "Giriş yapılıyor..." : "Giriş Yap"}
+              {loginLoading ? "Giriş yapılıyor..." : "Giriş Yap"}
             </Button>
           </form>
 
@@ -86,7 +104,7 @@ const Login = () => {
               </div>
             </Link>
 
-             <Link
+            <Link
               to="/doktor/kayit"
               className="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-transparent hover:border-green-500"
             >
