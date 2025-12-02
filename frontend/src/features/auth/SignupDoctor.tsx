@@ -4,7 +4,7 @@ import {
   SignupDoctorFormSchema,
   type TDoctorSignupFormSchema,
 } from "./validation/doctor.signup.schema";
-import { Activity, useEffect, useState } from "react";
+import { Activity, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router";
 import { ArrowLeft, Check } from "lucide-react";
 import BasicInfoSection from "./_components/BasicInfoSection";
@@ -19,18 +19,18 @@ import { useRegisterDoctorMutation } from "@/store/api/doctor-api";
 import toast from "react-hot-toast";
 
 const SignupDoctor = () => {
+  const [
+    registerMutation,
+    { error: registerError, isLoading: registerLoading, isSuccess },
+  ] = useRegisterDoctorMutation();
   const [currentStep, setCurrentStep] = useState(1);
-   const [
-      registerMutation,
-      { error: registerError, isLoading: registerLoading, isSuccess },
-    ] = useRegisterDoctorMutation();
   const {
     register,
     handleSubmit,
     setValue,
     watch,
     control,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<TDoctorSignupFormSchema>({
     resolver: zodResolver(SignupDoctorFormSchema),
     mode: "onChange",
@@ -72,43 +72,43 @@ const SignupDoctor = () => {
       workingHours: [
         {
           day: "monday",
-          isAvailable: false,
+          isWorking: false,
           slots: [{ start: "09:00", end: "17:00" }],
         },
         {
           day: "tuesday",
-          isAvailable: false,
+          isWorking: false,
           slots: [{ start: "09:00", end: "17:00" }],
         },
         {
           day: "wednesday",
-          isAvailable: false,
+          isWorking: false,
           slots: [{ start: "09:00", end: "17:00" }],
         },
         {
           day: "thursday",
-          isAvailable: false,
+          isWorking: false,
           slots: [{ start: "09:00", end: "17:00" }],
         },
         {
           day: "friday",
-          isAvailable: false,
+          isWorking: false,
           slots: [{ start: "09:00", end: "17:00" }],
         },
         {
           day: "saturday",
-          isAvailable: false,
+          isWorking: false,
           slots: [{ start: "09:00", end: "17:00" }],
         },
         {
           day: "sunday",
-          isAvailable: false,
+          isWorking: false,
           slots: [{ start: "09:00", end: "17:00" }],
         },
       ],
     },
   });
-
+  console.log(errors)
   const steps = [
     { number: 1, title: "Temel" },
     { number: 2, title: "Adres" },
@@ -127,17 +127,18 @@ const SignupDoctor = () => {
   };
   const navigate = useNavigate();
 
-    useEffect(() => {
-      if (isSuccess) {
-        toast.success("Kayıt Başarılı");
-        navigate("/giris-yap");
-      } else if (registerError && "data" in registerError) {
-        toast.error((registerError as any)?.data?.message || "Kayıt başarısız");
-      }
-    }, [isSuccess, registerError, navigate]);
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("Kayıt Başarılı");
+      // navigate("/giris-yap");
+    } else if (registerError && "data" in registerError) {
+      toast.error((registerError as any)?.data?.message || "Kayıt başarısız");
+    }
+  }, [isSuccess, registerError, navigate]);
 
-  const onSubmit = async (data: TDoctorSignupFormSchema) => {
-    await registerMutation(data)
+  const onSubmit =async (data: TDoctorSignupFormSchema) => {
+     console.log("🚀 ~ onSubmit ~ data:", data)
+     await registerMutation(data)
   };
 
   return (
@@ -286,11 +287,11 @@ const SignupDoctor = () => {
               ) : (
                 <Button
                   type="submit"
-                  loading={isSubmitting}
-                  disabled={isSubmitting}
+                  loading={registerLoading}
+                  disabled={registerLoading}
                   className="px-8 py-2.5 bg-green-600 hover:bg-green-700"
                 >
-                  {isSubmitting ? "Kaydediliyor..." : "Kayıt Ol"}
+                  {registerLoading ? "Kaydediliyor..." : "Kayıt Ol"}
                 </Button>
               )}
             </div>

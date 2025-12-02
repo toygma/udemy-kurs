@@ -47,7 +47,7 @@ const register = catchAsyncError(
       return next(new ErrorHandler("Bu email zaten kullanılıyor", 400));
     }
 
-    const doctor = await Doctor.create({
+    await Doctor.create({
       name,
       email,
       password,
@@ -61,14 +61,12 @@ const register = catchAsyncError(
       address,
       awards,
       workingHours,
-      role: "doctor",
     });
 
     res.status(201).json({
       success: true,
       message:
         "Doktor başvurunuz başarıyla alındı. Yönetici onayından sonra giriş yapabilirsiniz.",
-      doctor,
     });
   }
 );

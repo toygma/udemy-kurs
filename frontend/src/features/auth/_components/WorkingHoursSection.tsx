@@ -26,7 +26,7 @@ const WorkingInSection = ({ errors, control, setValue, watch }: AuthFormProps) =
 
     const current = workingHours || [];
     const updated = [...current];
-    updated[index] = { ...updated[index], isAvailable: value };
+    updated[index] = { ...updated[index], isWorking: value };
     setValue("workingHours", updated);
   };
 
@@ -49,7 +49,7 @@ const WorkingInSection = ({ errors, control, setValue, watch }: AuthFormProps) =
               <label className="flex items-center gap-2 w-40">
                 <input
                   type="checkbox"
-                  checked={currentDay.isAvailable || false}
+                  checked={currentDay.isWorking || false}
                   onChange={(e) =>
                     handleAvailabilityChange(index, e.target.checked)
                   }
@@ -61,7 +61,7 @@ const WorkingInSection = ({ errors, control, setValue, watch }: AuthFormProps) =
               </label>
             </div>
 
-            {currentDay?.isAvailable &&
+            {currentDay?.isWorking &&
               currentDay.slots.map((_slot, slotIndex) => (
                 <div>
                   <Controller

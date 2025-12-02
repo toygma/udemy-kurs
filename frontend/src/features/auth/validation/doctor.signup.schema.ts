@@ -47,12 +47,12 @@ const workingHoursSchema = z
       "saturday",
       "sunday",
     ]),
-    isAvailable: z.boolean(),
+    isWorking: z.boolean(),
     slots: z.array(timeSlotSchema).min(0),
   })
   .refine(
     (data) => {
-      if (data.isAvailable && data.slots.length === 0) {
+      if (data.isWorking && data.slots.length === 0) {
         return false;
       }
       return true;
@@ -82,8 +82,7 @@ export const SignupDoctorFormSchema = z.object({
 
   image: z.string().optional(),
 
-  speciality: z
-    .string({ error: "Boş bırakılamaz" }),
+  speciality: z.string({ error: "Boş bırakılamaz" }),
 
   available: z.boolean(),
 
@@ -137,17 +136,7 @@ export const SignupDoctorFormSchema = z.object({
 
   awards: z.array(awardSchema).optional(),
 
-  workingHours: z
-    .array(workingHoursSchema)
-    .length(7, "7 gün için çalışma saatleri girilmelidir")
-    .refine(
-      (hours) => {
-        return hours.some((h) => h.isAvailable);
-      },
-      {
-        message: "En az bir gün müsait olmalıdır",
-      }
-    ),
+  workingHours: z.array(workingHoursSchema),
 });
 
 export type TDoctorSignupFormSchema = z.infer<typeof SignupDoctorFormSchema>;
