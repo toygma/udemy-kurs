@@ -1,3 +1,5 @@
+import type { RoleValue } from "./doctor.types";
+
 interface IImage {
   public_id: string;
   url: string;
@@ -10,7 +12,10 @@ interface IAddress {
   country: string;
 }
 
+
+
 export interface IPatient {
+  _id:string;
   name: string;
   email: string;
   password: string;
@@ -20,7 +25,7 @@ export interface IPatient {
   image?: IImage;
   dateOfBirth?: Date;
   paymentId?: string;
-  role: "patient";
+  role: RoleValue;
   isActive: boolean;
   createdAt: Date;
   updatedAt: Date;

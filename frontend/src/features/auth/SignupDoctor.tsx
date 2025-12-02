@@ -4,8 +4,8 @@ import {
   SignupDoctorFormSchema,
   type TDoctorSignupFormSchema,
 } from "./validation/doctor.signup.schema";
-import { Activity, useState } from "react";
-import { Link } from "react-router";
+import { Activity, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router";
 import { ArrowLeft, Check } from "lucide-react";
 import BasicInfoSection from "./_components/BasicInfoSection";
 import AddressSection from "./_components/AddressSection";
@@ -15,9 +15,15 @@ import EducationSection from "./_components/EducationSection";
 import AwardSection from "./_components/AwardSection";
 import WorkingHoursSection from "./_components/WorkingHoursSection";
 import Button from "@/shared/ui/Button";
+import { useRegisterDoctorMutation } from "@/store/api/doctor-api";
+import toast from "react-hot-toast";
 
 const SignupDoctor = () => {
   const [currentStep, setCurrentStep] = useState(1);
+   const [
+      registerMutation,
+      { error: registerError, isLoading: registerLoading, isSuccess },
+    ] = useRegisterDoctorMutation();
   const {
     register,
     handleSubmit,
@@ -119,8 +125,19 @@ const SignupDoctor = () => {
   const prevStep = () => {
     if (currentStep > 1) setCurrentStep(currentStep - 1);
   };
-  const onSubmit = (data: TDoctorSignupFormSchema) => {
-    console.log(data);
+  const navigate = useNavigate();
+
+    useEffect(() => {
+      if (isSuccess) {
+        toast.success("Kayıt Başarılı");
+        navigate("/giris-yap");
+      } else if (registerError && "data" in registerError) {
+        toast.error((registerError as any)?.data?.message || "Kayıt başarısız");
+      }
+    }, [isSuccess, registerError, navigate]);
+
+  const onSubmit = async (data: TDoctorSignupFormSchema) => {
+    await registerMutation(data)
   };
 
   return (

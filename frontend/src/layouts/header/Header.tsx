@@ -4,13 +4,16 @@ import { DoctorAvatar, Logo } from "@/core/images";
 import { menuData } from "./constants/headerConstants";
 import MobileHeader from "./_components/MobileHeader";
 import Button from "@/shared/ui/Button";
+import { useAppSelector } from "@/store/hook";
+import { useLogoutMutation } from "@/store/api/user-api";
 
 const Header = () => {
   const [activeItemId, setActiveItemId] = useState<number | null>(null);
   const [openMobileMenu, setOpenMobileMenu] = useState(false);
   const [avatarMenu, setAvatarMenu] = useState(false);
   const navigate = useNavigate();
-  const user = { _id: 1, name: "toygma", role: "admin" };
+  const { user } = useAppSelector((state) => state.auth);
+  const [logoutMutation] = useLogoutMutation();
 
   const activeDropdown = menuData.find((item) => item.id === activeItemId);
 
@@ -24,6 +27,7 @@ const Header = () => {
   const handleMenuOpen = () => {
     setOpenMobileMenu((prev) => !prev);
   };
+
   return (
     <header className="fixed top-0 left-0 w-full bg-white shadow-lg z-40 font-ibm!">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -114,13 +118,15 @@ const Header = () => {
                     <span className="px-4 py-2 border-b">
                       Hoş geldin, {user.name}
                     </span>
-                    <Link
-                      onClick={handleAvatarMenuClose}
-                      to={"/profil"}
-                      className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer"
-                    >
-                      Profil
-                    </Link>
+                    {user.role === "patient" && (
+                      <Link
+                        onClick={handleAvatarMenuClose}
+                        to={"/profil"}
+                        className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer"
+                      >
+                        Profil
+                      </Link>
+                    )}
                     {user.role === "admin" && (
                       <Link
                         onClick={handleAvatarMenuClose}
@@ -139,15 +145,20 @@ const Header = () => {
                         Doktor Panel
                       </Link>
                     )}
-                    <Link
-                      onClick={handleAvatarMenuClose}
-                      to={"/randevularim"}
-                      className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer"
-                    >
-                      Randevularım
-                    </Link>
+                    {user.role === "patient" && (
+                      <Link
+                        onClick={handleAvatarMenuClose}
+                        to={"/randevularim"}
+                        className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer"
+                      >
+                        Randevularım
+                      </Link>
+                    )}
                     <button
-                      onClick={handleAvatarMenuClose}
+                      onClick={() => {
+                        handleAvatarMenuClose();
+                        logoutMutation(null);
+                      }}
                       className="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-gray-100 cursor-pointer"
                     >
                       Çıkış Yap
@@ -182,7 +193,12 @@ const Header = () => {
             </button>
 
             {/* Mobile Menu */}
-            <MobileHeader onClose={handleMenuOpen} openMenu={openMobileMenu} />
+            <MobileHeader
+              onClose={handleMenuOpen}
+              openMenu={openMobileMenu}
+              handleAvatarMenuClose={handleAvatarMenuClose}
+              avatarMenu={avatarMenu}
+            />
           </div>
         </div>
       </div>

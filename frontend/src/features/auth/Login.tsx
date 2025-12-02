@@ -9,19 +9,23 @@ import Button from "@/shared/ui/Button";
 import { Link, useNavigate } from "react-router";
 import { Stethoscope, User } from "lucide-react";
 import { useLoginMutation } from "@/store/api/user-api";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { useEffect } from "react";
 
 const Login = () => {
   const [
     loginMutation,
     { error: loginError, isLoading: loginLoading, isSuccess },
   ] = useLoginMutation();
+
+  const [activeRole, setActiveRole] = useState<"patient" | "doctor">("patient");
+
   const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<TLoginFormSchema>({
     resolver: zodResolver(LoginFormSchema),
@@ -29,21 +33,26 @@ const Login = () => {
     defaultValues: {
       email: "",
       password: "",
-      role:"patient"
+      role: "patient",
     },
   });
 
   useEffect(() => {
     if (isSuccess) {
       toast.success("Giriş Başarılı");
-      navigate("/",{replace:true})
+      navigate("/", { replace: true });
     } else if (loginError && "data" in loginError) {
-      toast.error((loginError as any)?.data?.message || "Giriş başarısız!");
+      toast.error((loginError as any)?.data?.message || "Giriş başarısız");
     }
-  }, [isSuccess, loginError]);
+  }, [isSuccess, loginError, navigate]);
+
+  const handleRoleChange = (role: "patient" | "doctor") => {
+    setActiveRole(role);
+    setValue("role", role);
+  };
 
   const onSubmit = async (data: TLoginFormSchema) => {
-    await loginMutation(data);
+    await loginMutation(data)
   };
 
   return (
@@ -52,7 +61,30 @@ const Login = () => {
         <div className="flex flex-col gap-2">
           <h1 className="text-2xl">Oturun açarak başlayın.</h1>
           <p>Güvenli, hızlı ve kolay</p>
-
+          <div className="flex justify-center mb-2">
+            <button
+              type="button"
+              onClick={() => handleRoleChange("patient")}
+              className={`px-4 py-2 ${
+                activeRole === "patient"
+                  ? "border-b-2 border-blue-600 text-blue-600 font-bold"
+                  : "text-gray-500"
+              }`}
+            >
+              Hasta Girişi
+            </button>
+            <button
+              type="button"
+              onClick={() => handleRoleChange("doctor")}
+              className={`px-4 py-2 ${
+                activeRole === "doctor"
+                  ? "border-b-2 border-blue-600 text-blue-600 font-bold"
+                  : "text-gray-500"
+              }`}
+            >
+              Doktor Girişi
+            </button>
+          </div>
           <form
             onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col gap-4 mt-4"

@@ -1,4 +1,3 @@
-
 export interface IEducation {
   degree: string;
   university: string;
@@ -47,7 +46,10 @@ export interface IReviews {
   createdAt: Date;
 }
 
+export type RoleValue = "patient" | "doctor" | "admin"
+
 export interface IDoctor {
+  _id: string;
   appointments: IAppointment[];
   reviews: IReviews[];
   name: string;
@@ -57,7 +59,7 @@ export interface IDoctor {
   image?: IImage;
   experience: string;
   about: string;
-  role: "doctor";
+  role:RoleValue;
   education: IEducation[];
   services: string;
   address?: IAddress;

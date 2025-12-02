@@ -2,14 +2,27 @@ import { useState } from "react";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { Link } from "react-router";
 import { menuData } from "../constants/headerConstants";
+import { useAppSelector } from "@/store/hook";
+import { DoctorAvatar } from "@/core/images";
+import Button from "@/shared/ui/Button";
+import { useLogoutMutation } from "@/store/api/user-api";
 
 interface Props {
   onClose: () => void;
+  handleAvatarMenuClose: () => void;
   openMenu: boolean;
+  avatarMenu: boolean;
 }
 
-const MobileHeader = ({ onClose, openMenu }: Props) => {
+const MobileHeader = ({
+  onClose,
+  openMenu,
+  avatarMenu,
+  handleAvatarMenuClose,
+}: Props) => {
   const [expandedMenu, setExpandedMenu] = useState(null);
+  const { user } = useAppSelector((state) => state.auth);
+  const [logoutMutation] = useLogoutMutation();
 
   const handleMenuClick = (id: any) => {
     setExpandedMenu(expandedMenu === id ? null : id);
@@ -18,7 +31,7 @@ const MobileHeader = ({ onClose, openMenu }: Props) => {
   const handleBackClick = () => {
     setExpandedMenu(null);
   };
-  
+
   return (
     <div className="lg:hidden block">
       {/* Arka Plan (Karartma) */}
@@ -118,7 +131,88 @@ const MobileHeader = ({ onClose, openMenu }: Props) => {
 
         {/* Ayırıcı Çizgi */}
         <div className="border-t border-gray-200" />
+        {user ? (
+          <div className="relative flex items-center justify-center mt-4 mb-4">
+            <img
+              src={DoctorAvatar}
+              alt="avatar"
+              className="w-12 h-12 object-cover rounded-full cursor-pointer"
+              onClick={handleAvatarMenuClose}
+            />
 
+            {avatarMenu && (
+              <div className="absolute right-0 top-12 mt-2 w-40 bg-white  rounded-lg shadow-md overflow-hidden z-50 flex flex-col">
+                <span className="px-4 py-2 border-b">
+                  Hoş geldin, {user.name}
+                </span>
+                {user.role === "patient" && (
+                  <Link
+                    onClick={() => {
+                      handleAvatarMenuClose();
+                      onClose();
+                    }}
+                    to={"/profil"}
+                    className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer"
+                  >
+                    Profil
+                  </Link>
+                )}
+                {user.role === "admin" && (
+                  <Link
+                    onClick={() => {
+                      handleAvatarMenuClose();
+                      onClose();
+                    }}
+                    to={"/admin/panel"}
+                    className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer"
+                  >
+                    Admin Panel
+                  </Link>
+                )}
+                {user.role === "doctor" && (
+                  <Link
+                    onClick={() => {
+                      handleAvatarMenuClose();
+                      onClose();
+                    }}
+                    to={`/doktor/panel/${user?._id}`}
+                    className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer"
+                  >
+                    Doktor Panel
+                  </Link>
+                )}
+                {user.role === "patient" && (
+                  <Link
+                    onClick={() => {
+                      handleAvatarMenuClose();
+                      onClose();
+                    }}
+                    to={"/randevularim"}
+                    className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer"
+                  >
+                    Randevularım
+                  </Link>
+                )}
+                <button
+                  onClick={() => {
+                    handleAvatarMenuClose();
+                    onClose();
+                    logoutMutation(null);
+                  }}
+                  className="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-gray-100 cursor-pointer"
+                >
+                  Çıkış Yap
+                </button>
+              </div>
+            )}
+          </div>
+        ) : (
+          <Link to={"/giris-yap"}>
+            <Button type="button" className="py-2">
+              Giriş Yap
+            </Button>
+          </Link>
+        )}
         {/* Alt Kısım */}
         <div className="p-4 bg-linear-to-b from-gray-50 to-white">
           <button className="w-full bg-linear-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105 active:scale-95 text-sm cursor-pointer">

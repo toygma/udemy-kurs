@@ -1,7 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { setUser, setisAuthenticated, setLoading } from "../features/user-slice";
 import type { IPatient } from "../types/patient.types";
 import type { IDoctor } from "../types/doctor.types";
+import {
+  setIsAuthenticated,
+  setLoading,
+  setUser,
+} from "../features/user-slice";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: `${import.meta.env.VITE_REACT_APP_API}/api/v1/users`,
@@ -20,50 +24,59 @@ export const userApi = createApi({
         body,
       }),
       invalidatesTags: ["User"],
+
       async onQueryStarted(_args, { queryFulfilled }) {
         try {
           await queryFulfilled;
         } catch (error) {
-          console.error("Login hatası:", error);
+          console.log("login hatası", error);
         }
       },
     }),
+
     getUser: builder.query({
       query: () => "/me",
-      transformResponse: (response: { user: IPatient | IDoctor }) => response.user,
+      transformResponse: (response: { user: IPatient | IDoctor }) =>
+        response.user,
+
       async onQueryStarted(_args, { dispatch, queryFulfilled }) {
         dispatch(setLoading(true));
+
         try {
           const { data } = await queryFulfilled;
           dispatch(setUser(data));
-          dispatch(setisAuthenticated(true));
+          dispatch(setIsAuthenticated(true));
         } catch (error) {
+          console.log("profil hatası", error);
           dispatch(setUser(null));
-          dispatch(setisAuthenticated(false));
+          dispatch(setIsAuthenticated(false));
         } finally {
           dispatch(setLoading(false));
         }
       },
       providesTags: ["User"],
     }),
+
     logout: builder.mutation({
       query: () => ({
         url: "/logout",
         method: "POST",
       }),
       invalidatesTags: ["User"],
+
       async onQueryStarted(_args, { dispatch, queryFulfilled }) {
         try {
           await queryFulfilled;
           dispatch(setUser(null));
-          dispatch(setisAuthenticated(false));
+          dispatch(setIsAuthenticated(false));
+
           dispatch(userApi.util.resetApiState());
         } catch (error) {
-          console.error("Logout hatası:", error);
+          console.log("logout hatası", error);
         }
       },
     }),
   }),
 });
 
-export const { useLoginMutation, useGetUserQuery, useLogoutMutation } = userApi;
+export const { useLogoutMutation, useLoginMutation, useGetUserQuery } = userApi;

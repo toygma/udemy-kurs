@@ -1,6 +1,6 @@
-import { createSlice } from "@reduxjs/toolkit";
 import type { IDoctor } from "../types/doctor.types";
 import type { IPatient } from "../types/patient.types";
+import { createSlice } from "@reduxjs/toolkit";
 
 interface AuthState {
   user: IDoctor | IPatient | null;
@@ -21,7 +21,7 @@ export const userSlice = createSlice({
     setUser(state, action) {
       state.user = action.payload;
     },
-    setisAuthenticated(state, action) {
+    setIsAuthenticated(state, action) {
       state.isAuthenticated = action.payload;
     },
     setLoading(state, action) {
@@ -31,4 +31,4 @@ export const userSlice = createSlice({
 });
 
 export default userSlice.reducer;
-export const { setUser, setisAuthenticated, setLoading } = userSlice.actions;
+export const { setIsAuthenticated, setLoading, setUser } = userSlice.actions;

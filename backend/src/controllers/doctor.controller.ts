@@ -47,10 +47,29 @@ const register = catchAsyncError(
       return next(new ErrorHandler("Bu email zaten kullanılıyor", 400));
     }
 
+    const doctor = await Doctor.create({
+      name,
+      email,
+      password,
+      phone,
+      speciality,
+      experience,
+      about,
+      fee,
+      education,
+      services,
+      address,
+      awards,
+      workingHours,
+      role: "doctor",
+    });
+
     res.status(201).json({
-      success:true,
-      message:"Doktor başvurunuz başarıyla alındı. Yönetici onayından sonra giriş yapabilirsiniz."
-    })
+      success: true,
+      message:
+        "Doktor başvurunuz başarıyla alındı. Yönetici onayından sonra giriş yapabilirsiniz.",
+      doctor,
+    });
   }
 );
 
@@ -171,5 +190,6 @@ const getDoctorAvailability = catchAsyncError(
 
 export default {
   register,
-  getAppointments,getDoctorAvailability
+  getAppointments,
+  getDoctorAvailability,
 };
