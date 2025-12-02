@@ -178,7 +178,6 @@ const toggleUserRole = catchAsyncError(
     res.status(200).json({
       success: true,
       message: `Kullanıcının rolü başarıyla ${role} olarak değiştirildi.`,
-      data: user,
     });
   }
 );
