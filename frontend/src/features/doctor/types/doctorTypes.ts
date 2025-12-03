@@ -13,6 +13,13 @@ export interface Education {
   year: string;
 }
 
+export interface Awards {
+  title: string;
+  organization: string;
+  description: string;
+  year: string;
+}
+
 export interface Doctor {
   _id: string;
   name: string;
@@ -54,6 +61,7 @@ export interface Doctor {
     day: string;
     startTime: string;
     endTime: string;
+    isWorking: boolean;
   }[];
 
   image: {

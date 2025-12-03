@@ -1,5 +1,4 @@
 import { useParams } from "react-router";
-import { useDoctorDetail } from "./hooks/useDoctorDetail";
 import {
   Calendar,
   MapPin,
@@ -13,15 +12,16 @@ import {
 import DoctorSlot from "./_components/DoctorSlot";
 import ReviewSection from "../reviews/Reviews";
 import LayoutContainer from "@/shared/ui/LayoutContainer";
+import { useGetDoctorFindIdQuery } from "@/store/api/doctor-api";
+import type { Awards,  Education } from "./types/doctorTypes";
 
 const DoctorDetail = () => {
   const { id } = useParams<{ id: string }>();
-  const { doctor } = useDoctorDetail(id);
-  console.log("🚀 ~ DoctorDetail ~ doctor:", doctor);
+  const { data: doctor } = useGetDoctorFindIdQuery(id);
 
-  if (!doctor?.data) {
+  if (!doctor) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center ">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-gray-800">
             Doktor bulunamadı
@@ -34,7 +34,8 @@ const DoctorDetail = () => {
     );
   }
 
-  const d = doctor.data; // kısaltma olarak d kullandım
+  const d = doctor.data;
+  console.log("🚀 ~ DoctorDetail ~ d:", d);
 
   return (
     <div className="min-h-screen">
@@ -71,7 +72,9 @@ const DoctorDetail = () => {
                   </div>
                   <div className="flex items-center gap-2 text-gray-600">
                     <Award className="w-5 h-5" />
-                    <span className="text-sm">{d.experience ?? "10"} yıllık deneyim</span>
+                    <span className="text-sm">
+                      {d.experience ?? "10"} yıllık deneyim
+                    </span>
                   </div>
                 </div>
               </div>
@@ -86,11 +89,12 @@ const DoctorDetail = () => {
             {/* About */}
             <div className="bg-white rounded-2xl shadow-lg p-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                <Stethoscope className="w-6 h-6 text-indigo-600" /> {d.name} Hakkında
+                <Stethoscope className="w-6 h-6 text-indigo-600" />
+                {d.name} Hakkında
               </h2>
               <p className="text-gray-700 leading-relaxed">
                 {d.about ||
-                  `${d.name}, alanında deneyimli bir ${d.speciality} olup, yüksek kaliteli hasta bakımı sunmayı hedeflemektedir.`}
+                  ` ${d.name}, alanında deneyimli bir ${d.speciality} olup, yüksek kaliteli hasta bakımı sunmayı hedeflemektedir.`}
               </p>
             </div>
 
@@ -98,16 +102,22 @@ const DoctorDetail = () => {
             {d.education?.length > 0 && (
               <div className="bg-white rounded-2xl shadow-lg p-8">
                 <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-                  <GraduationCap className="w-6 h-6 text-indigo-600" /> Eğitim & Nitelikler
+                  <GraduationCap className="w-6 h-6 text-indigo-600" />
+                  Eğitim & Nitelikler
                 </h2>
                 <div className="space-y-4">
-                  {d.education.map((edu: any, index: number) => (
-                    <div key={index} className="flex gap-4 p-4 bg-gray-50 rounded-xl">
+                  {d.education.map((edu:Education, index:number) => (
+                    <div
+                      key={index}
+                      className="flex gap-4 p-4 bg-gray-50 rounded-xl"
+                    >
                       <div className="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center shrink-0">
                         <GraduationCap className="w-6 h-6 text-indigo-600" />
                       </div>
                       <div>
-                        <h3 className="font-semibold text-gray-900">{edu.degree}</h3>
+                        <h3 className="font-semibold text-gray-900">
+                          {edu.degree}
+                        </h3>
                         <p className="text-gray-600">{edu.university}</p>
                         <p className="text-sm text-gray-500">{edu.year}</p>
                       </div>
@@ -117,13 +127,48 @@ const DoctorDetail = () => {
               </div>
             )}
 
+            {/* AWARDS */}
+            {d.awards?.length > 0 && (
+              <div className="bg-white rounded-2xl shadow-lg p-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                  <GraduationCap className="w-6 h-6 text-indigo-600" />
+                  Ödüller
+                </h2>
+                <div className="space-y-4">
+                  {d.awards.map((award:Awards, index:number) => (
+                    <div
+                      key={index}
+                      className="flex gap-4 p-4 bg-gray-50 rounded-xl"
+                    >
+                      <div className="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center shrink-0">
+                        <GraduationCap className="w-6 h-6 text-indigo-600" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-gray-900">
+                          {award.title}
+                        </h3>
+                        <p className="text-gray-600">{award.organization}</p>
+                        <p className="text-gray-600 pt-2">{award.description}</p>
+                        <p className="text-sm text-gray-500">{award.year}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {/* Services */}
+
             <div className="bg-white rounded-2xl shadow-lg p-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Sunulan Hizmetler</h2>
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                Sunulan Hizmetler
+              </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="flex items-center gap-3 p-4 bg-indigo-50 rounded-xl">
                   <div className="w-2 h-2 bg-indigo-600 rounded-full"></div>
-                  <span className="text-gray-700 font-medium">{d.services}</span>
+                  <span className="text-gray-700 font-medium">
+                    {d.services}
+                  </span>
                 </div>
               </div>
             </div>
@@ -133,22 +178,29 @@ const DoctorDetail = () => {
           <div className="space-y-6">
             {/* Appointment Info */}
             <div className="bg-white rounded-2xl shadow-lg p-6">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Randevu Bilgileri</h3>
+              <h3 className="text-xl font-bold text-gray-900 mb-4">
+                Randevu Bilgileri
+              </h3>
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
                   <MapPin className="w-5 h-5 text-indigo-600 mt-1" />
                   <div>
                     <p className="font-semibold text-gray-900">Konum</p>
                     <p className="text-gray-600 text-sm">
-                      {d.address?.city} - {d.address?.country} - {d.address?.street}
+                      {d.address?.city} - {d.address?.country}-
+                      {d.address?.street}
                     </p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <Calendar className="w-5 h-5 text-indigo-600 mt-1" />
                   <div>
-                    <p className="font-semibold text-gray-900">Konsültasyon Ücreti</p>
-                    <p className="text-gray-600 text-sm">{d.fee ? `$${d.fee}` : "$100"}</p>
+                    <p className="font-semibold text-gray-900">
+                      Konsültasyon Ücreti
+                    </p>
+                    <p className="text-gray-600 text-sm">
+                      {d.fee ? `$${d.fee}` : "$100"}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -174,30 +226,39 @@ const DoctorDetail = () => {
 
             {/* Quick Stats */}
             <div className="bg-white rounded-2xl shadow-lg p-6">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Hızlı İstatistikler</h3>
+              <h3 className="text-xl font-bold text-gray-900 mb-4">
+                Hızlı İstatistikler
+              </h3>
               <div className="grid grid-cols-2 gap-4">
                 <div className="text-center p-4 bg-blue-50 rounded-xl">
-                  <p className="text-3xl font-bold text-blue-600">{d.patients || "500"}+</p>
+                  <p className="text-3xl font-bold text-blue-600">
+                    {d.patients || "500"}+
+                  </p>
                   <p className="text-sm text-gray-600 mt-1">Hasta</p>
                 </div>
                 <div className="text-center p-4 bg-green-50 rounded-xl">
-                  <p className="text-3xl font-bold text-green-600">{d.experience ?? "10"}+</p>
+                  <p className="text-3xl font-bold text-green-600">
+                    {d.experience ?? "10"}+
+                  </p>
                   <p className="text-sm text-gray-600 mt-1">Yıl Deneyim</p>
                 </div>
                 <div className="text-center p-4 bg-purple-50 rounded-xl">
-                  <p className="text-3xl font-bold text-purple-600">{d.awards?.length || "15"}+</p>
+                  <p className="text-3xl font-bold text-purple-600">
+                    {d.awards?.length || "15"}+
+                  </p>
                   <p className="text-sm text-gray-600 mt-1">Ödül</p>
                 </div>
                 <div className="text-center p-4 bg-yellow-50 rounded-xl">
-                  <p className="text-3xl font-bold text-yellow-600">{d.totalRating || "4.8"}</p>
+                  <p className="text-3xl font-bold text-yellow-600">
+                    {d.totalRating || "4.8"}
+                  </p>
                   <p className="text-sm text-gray-600 mt-1">Puan</p>
                 </div>
               </div>
             </div>
           </div>
         </div>
-
-        <DoctorSlot doctor={doctor.data} />
+        <DoctorSlot doctor={doctor?.data} />
         <ReviewSection />
       </LayoutContainer>
     </div>

@@ -46,8 +46,9 @@ const DoctorSlot = ({ doctor }: { doctor: Doctor }) => {
     const dayName = dayMap[date.getDay()];
 
     const workDay = doctor.workingHours.find((wh) => wh.day === dayName);
+    console.log("🚀 ~ generateTimeSlots ~ workDay:", workDay)
 
-    if (!workDay) {
+    if (!workDay || !workDay.isWorking) {
       setAvailableSlots([]);
       return;
     }
