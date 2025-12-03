@@ -64,9 +64,13 @@ export interface Doctor {
   createdAt: string;
   updatedAt: string;
 }
-
+export interface DoctorApiResponse {
+  success: boolean;
+  count: number;
+  data: Doctor[];
+}
 export interface IDoctorCardProps {
-  filteredDoctors: Doctor[];
+  filteredDoctors: DoctorApiResponse;
 }
 
 export interface ITimeSlot {

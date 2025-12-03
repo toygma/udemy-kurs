@@ -8,4 +8,5 @@ export interface AuthFormProps {
   setValue?: UseFormSetValue<TDoctorSignupFormSchema>;
   control?: Control<TDoctorSignupFormSchema>;
   watch?: UseFormWatch<TDoctorSignupFormSchema>;
+  imageValue?:any;
 }

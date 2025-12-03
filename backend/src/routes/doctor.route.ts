@@ -1,14 +1,24 @@
-import {Router} from "express"
+import { Router } from "express";
 import doctorController from "../controllers/doctor.controller";
 import { isAuthenticatedUser } from "../middlewares/auth.middleware";
 
 const doctorRoute = Router();
 
-doctorRoute.post("/register",doctorController.register);
+// ÖNEMLİ: Spesifik route'lar parametreli route'lardan ÖNCE gelmeli!
 
-doctorRoute.get("/",isAuthenticatedUser,doctorController.getAppointments);
+// 1. Tüm doktorları listele (PUBLIC veya AUTH - ihtiyaca göre)
+doctorRoute.get("/all", doctorController.getAllDoctors);
 
-doctorRoute.get("/:doctorId",doctorController.getDoctorAvailability);
+// 2. Doktor kaydı oluştur
+doctorRoute.post("/register", doctorController.register);
 
+// 3. Kullanıcının randevularını getir (AUTH gerekli)
+doctorRoute.get("/appointments", isAuthenticatedUser, doctorController.getAppointments);
 
-export default doctorRoute
+// 4. Belirli bir doktorun müsaitlik durumu (PUBLIC)
+doctorRoute.get("/:doctorId/availability", doctorController.getDoctorAvailability);
+
+// 5. Belirli bir doktorun detaylarını getir (PUBLIC - ihtiyaca göre ekleyin)
+// doctorRoute.get("/:doctorId", doctorController.getDoctorById);
+
+export default doctorRoute;

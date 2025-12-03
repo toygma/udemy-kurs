@@ -1,35 +1,31 @@
-import { useMemo, useState, useTransition } from "react";
-import { doctors } from "../constants/doctorConstants";
+import { useEffect, useState } from "react";
+import { useGetAllDoctorsQuery } from "@/store/api/doctor-api";
+import type { Doctor } from "../types/doctorTypes";
 
 export const useDoctors = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  const [isPending, startTransition] = useTransition();
 
-    const filteredDoctors = useMemo(() => {
-      if (!doctors) return [];
+  const { data: doctors, isLoading } = useGetAllDoctorsQuery(null);
 
-      if (selectedCategory === "all") {
-        return doctors;
-      }
+  useEffect(() => {
+    if (selectedCategory === "all") {
+      return doctors;
+    }
 
-      return doctors.filter(
-        (doc) =>
-          doc.specialityKey.toLowerCase() === selectedCategory.toLowerCase()
-      );
-    }, [selectedCategory]);
-
-
+    return doctors.filter(
+      (doc: Doctor) =>
+        doc.specialityKey.toLowerCase() === selectedCategory.toLowerCase()
+    );
+  }, [selectedCategory]);
 
   const handleCategoryChange = (categoryId: string) => {
-    startTransition(() => {
-      setSelectedCategory(categoryId);
-    });
+    setSelectedCategory(categoryId);
   };
 
   return {
     selectedCategory,
-    filteredDoctors,
-    isPending,
     handleCategoryChange,
+    doctors,
+    isLoading,
   };
 };

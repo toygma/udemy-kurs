@@ -4,6 +4,7 @@ import ErrorHandler from "../utils/errorHandler";
 import Doctor from "../models/doctor.model";
 import moment from "moment";
 import Appointment from "../models/appointment.model";
+import { upload_file } from "../utils/cloudinary";
 
 const register = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -21,6 +22,7 @@ const register = catchAsyncError(
       address,
       awards,
       workingHours,
+      image,
     } = req.body;
 
     if (
@@ -36,7 +38,8 @@ const register = catchAsyncError(
       !services ||
       !awards ||
       !workingHours ||
-      !address
+      !address ||
+      !image
     ) {
       return next(new ErrorHandler("Tüm alanlar zorunludur.", 400));
     }
@@ -45,6 +48,14 @@ const register = catchAsyncError(
 
     if (existingDoctor) {
       return next(new ErrorHandler("Bu email zaten kullanılıyor", 400));
+    }
+
+    let uploadedImage: { public_id: string; url: string } | undefined;
+
+    if (image) {
+      const folder = "udemy-kurs";
+      const uploaded = await upload_file(image, folder);
+      uploadedImage = { public_id: uploaded.public_id, url: uploaded.url };
     }
 
     await Doctor.create({
@@ -61,6 +72,7 @@ const register = catchAsyncError(
       address,
       awards,
       workingHours,
+      image: uploadedImage,
     });
 
     res.status(201).json({
@@ -186,8 +198,21 @@ const getDoctorAvailability = catchAsyncError(
   }
 );
 
+const getAllDoctors = catchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const doctors = await Doctor.find().sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      count: doctors.length,
+      data: doctors,
+    });
+  }
+);
+
 export default {
   register,
   getAppointments,
   getDoctorAvailability,
+  getAllDoctors,
 };

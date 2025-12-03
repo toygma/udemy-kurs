@@ -136,6 +136,9 @@ const SignupDoctor = () => {
     }
   }, [isSuccess, registerError, navigate]);
 
+  const imageValue = watch("image");
+
+
   const onSubmit =async (data: TDoctorSignupFormSchema) => {
      console.log("🚀 ~ onSubmit ~ data:", data)
      await registerMutation(data)
@@ -210,7 +213,7 @@ const SignupDoctor = () => {
           </div>
           <form className="p-6 " onSubmit={handleSubmit(onSubmit)}>
             <Activity mode={currentStep === 1 ? "visible" : "hidden"}>
-              <BasicInfoSection register={register} errors={errors} />
+              <BasicInfoSection register={register} errors={errors} setValue={setValue} imageValue={imageValue} />
             </Activity>
 
             <Activity mode={currentStep === 2 ? "visible" : "hidden"}>

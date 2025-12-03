@@ -1,8 +1,13 @@
 import FormInput from "@/shared/ui/FormInput";
 import type { AuthFormProps } from "../types/authTypes";
+import UploadImages from "@/shared/ui/UploadImages";
 
-
-const BasicInfoSection = ({ register, errors }: AuthFormProps) => {
+const BasicInfoSection = ({
+  register,
+  errors,
+  setValue,
+  imageValue,
+}: AuthFormProps) => {
   return (
     <div className="space-y-4">
       <h3 className="text-lg font-semibold text-gray-700">Temel Bilgiler</h3>
@@ -42,6 +47,18 @@ const BasicInfoSection = ({ register, errors }: AuthFormProps) => {
         label="Şifre"
         placeholder="Şifrenizi girin."
       />
+
+      {/* FOTOĞRAF BİLGİLERİ */}
+
+      <div className="space-y-3 flex flex-col items-start pb-4">
+        <h3 className="text-xl font-semibold mb-4">Fotoğraf Yükle</h3>
+        <UploadImages
+          currentImage={imageValue}
+          onImageChange={(img) =>
+            setValue && setValue("image", img, { shouldValidate: true })
+          }
+        />
+      </div>
     </div>
   );
 };

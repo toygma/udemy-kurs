@@ -5,8 +5,9 @@ import { useDoctors } from "./hooks/useDoctors";
 import DoctorCard from "./_components/DoctorCard";
 
 const Doctors = () => {
-  const { filteredDoctors, handleCategoryChange, isPending, selectedCategory } =
+  const { doctors, handleCategoryChange, selectedCategory,isLoading } =
     useDoctors();
+  console.log("🚀 ~ Doctors ~ doctors:", doctors)
 
   return (
     <LayoutContainer>
@@ -41,7 +42,7 @@ const Doctors = () => {
           </div>
         </aside>
         {/* MAIN CONTENT */}
-        {isPending ? (
+        {isLoading ? (
           <div>Yükleniyor...</div>
         ) : (
           <div className="flex flex-col gap-2 w-full">
@@ -52,10 +53,10 @@ const Doctors = () => {
                   : categories.find((c) => c.id === selectedCategory)?.name}
               </h1>
               <p className="text-sm sm:text-base text-gray-600">
-                {filteredDoctors.length} Doktor Gösteriliyor.
+                {doctors.count} Doktor Gösteriliyor.
               </p>
             </div>
-            <DoctorCard filteredDoctors={filteredDoctors} />
+            <DoctorCard filteredDoctors={doctors} />
           </div>
         )}
       </div>
