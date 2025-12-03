@@ -102,8 +102,6 @@ const AddDoctor = () => {
     },
   });
 
-  console.log(watch());
-
   const imageValue = watch("image");
 
   const onSubmit = (data: TAddDoctorFormSchema) => {

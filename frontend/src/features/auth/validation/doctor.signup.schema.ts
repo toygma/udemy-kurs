@@ -73,12 +73,7 @@ export const SignupDoctorFormSchema = z.object({
 
   password: z
     .string({ error: "Boş bırakılamaz" })
-    .min(8, "Şifre en az 8 karakter olmalı")
-    .regex(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
-      "Şifre en az bir büyük harf, bir küçük harf ve bir rakam içermelidir"
-    )
-    .optional(),
+    .min(6, "Şifre en az 6 karakter olmalı"),
 
   image: z.string().optional(),
 
@@ -102,7 +97,7 @@ export const SignupDoctorFormSchema = z.object({
     .array(
       z.object({
         degree: z.string({ error: "Boş bırakılamaz" }).min(1, "Derece gerekli"),
-        institution: z
+        university: z
           .string({ error: "Boş bırakılamaz" })
           .min(1, "Kurum gerekli"),
         year: z

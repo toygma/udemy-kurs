@@ -56,11 +56,9 @@ export interface Doctor {
     endTime: string;
   }[];
 
-  images: [
-    {
-      url: string;
-    }
-  ];
+  image: {
+    url: string;
+  };
   createdAt: string;
   updatedAt: string;
 }
@@ -70,7 +68,7 @@ export interface DoctorApiResponse {
   data: Doctor[];
 }
 export interface IDoctorCardProps {
-  filteredDoctors: DoctorApiResponse;
+  filteredDoctors: DoctorApiResponse | undefined;
 }
 
 export interface ITimeSlot {

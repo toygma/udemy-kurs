@@ -5,9 +5,9 @@ import { useDoctors } from "./hooks/useDoctors";
 import DoctorCard from "./_components/DoctorCard";
 
 const Doctors = () => {
-  const { doctors, handleCategoryChange, selectedCategory,isLoading } =
+  const { handleCategoryChange, selectedCategory, isLoading, filteredDoctors } =
     useDoctors();
-  console.log("🚀 ~ Doctors ~ doctors:", doctors)
+  console.log("🚀 ~ Doctors ~ doctors:", filteredDoctors);
 
   return (
     <LayoutContainer>
@@ -28,11 +28,11 @@ const Doctors = () => {
                 <button
                   key={cat.id}
                   className={`w-[250px] h-full shrink-0 md:w-full text-left px-3 sm:px-4 py-2 sm:py-3 rounded-xl flex items-center gap-3 text-sm sm.text-base ${
-                    selectedCategory === cat.id
+                    selectedCategory === cat.name
                       ? "bg-linear-to-r from-blue-500 to-indigo-600 text-white shadow-md"
                       : "bg-gray-50 text-gray-700 hover:bg-gray-100"
                   }`}
-                  onClick={() => handleCategoryChange(cat.id)}
+                  onClick={() => handleCategoryChange(cat.name)}
                 >
                   <span className="text-xl sm:text-2xl">{cat.icon}</span>
                   <span className="font-medium truncate">{cat.name}</span>
@@ -53,10 +53,10 @@ const Doctors = () => {
                   : categories.find((c) => c.id === selectedCategory)?.name}
               </h1>
               <p className="text-sm sm:text-base text-gray-600">
-                {doctors.count} Doktor Gösteriliyor.
+                {filteredDoctors?.count} Doktor Gösteriliyor.
               </p>
             </div>
-            <DoctorCard filteredDoctors={doctors} />
+            <DoctorCard filteredDoctors={filteredDoctors} />
           </div>
         )}
       </div>

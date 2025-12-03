@@ -1,22 +1,38 @@
 import { useEffect, useState } from "react";
+
 import { useGetAllDoctorsQuery } from "@/store/api/doctor-api";
-import type { Doctor } from "../types/doctorTypes";
+import type { Doctor, DoctorApiResponse } from "../types/doctorTypes";
 
 export const useDoctors = () => {
-  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [selectedCategory, setSelectedCategory] =
+    useState<string>("Tüm Doktorlar");
+  const [filteredDoctors, setFilteredDoctors] = useState<
+    DoctorApiResponse | undefined
+  >();
 
   const { data: doctors, isLoading } = useGetAllDoctorsQuery(null);
 
   useEffect(() => {
-    if (selectedCategory === "all") {
-      return doctors;
+    if (!doctors) {
+      setFilteredDoctors(undefined);
+      return;
     }
 
-    return doctors.filter(
-      (doc: Doctor) =>
-        doc.specialityKey.toLowerCase() === selectedCategory.toLowerCase()
-    );
-  }, [selectedCategory]);
+    if (selectedCategory === "Tüm Doktorlar") {
+      setFilteredDoctors(doctors);
+      return;
+    }
+
+    const filtered = doctors.data.filter((doc: Doctor) => {
+      return doc.speciality.toLowerCase() === selectedCategory.toLowerCase();
+    });
+
+    setFilteredDoctors({
+      data: filtered,
+      count: filtered.length,
+      success:true
+    });
+  }, [doctors, selectedCategory]);
 
   const handleCategoryChange = (categoryId: string) => {
     setSelectedCategory(categoryId);
@@ -24,8 +40,8 @@ export const useDoctors = () => {
 
   return {
     selectedCategory,
+    filteredDoctors,
     handleCategoryChange,
-    doctors,
     isLoading,
   };
 };

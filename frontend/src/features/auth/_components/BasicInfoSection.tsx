@@ -2,12 +2,7 @@ import FormInput from "@/shared/ui/FormInput";
 import type { AuthFormProps } from "../types/authTypes";
 import UploadImages from "@/shared/ui/UploadImages";
 
-const BasicInfoSection = ({
-  register,
-  errors,
-  setValue,
-  imageValue,
-}: AuthFormProps) => {
+const BasicInfoSection = ({ register, errors,imageValue,setValue }: AuthFormProps) => {
   return (
     <div className="space-y-4">
       <h3 className="text-lg font-semibold text-gray-700">Temel Bilgiler</h3>

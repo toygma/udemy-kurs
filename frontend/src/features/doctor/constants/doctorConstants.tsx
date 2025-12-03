@@ -25,8 +25,10 @@ export const categories = [
   { id: "psychiatrist", name: "Psikiyatrist", icon: <MessageCircle /> },
   { id: "endocrinologist", name: "Endokrinolog", icon: <Dna /> },
   { id: "gastroenterologist", name: "Gastroenterolog", icon: <Coffee /> },
-  { id: "dentist", name: "Diş Doktoru", icon: <Smile /> },
+  { id: "dentist", name: "Diş Hekimi", icon: <Smile /> },
 ];
+
+
 
 export const doctors: Doctor[] = [
   {

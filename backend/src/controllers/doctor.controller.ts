@@ -210,9 +210,23 @@ const getAllDoctors = catchAsyncError(
   }
 );
 
+const getDoctorById = catchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { doctorId } = req.params;
+
+    const doctor = await Doctor.findById(doctorId);
+
+    res.status(200).json({
+      success: true,
+      data: doctor,
+    });
+  }
+);
+
 export default {
   register,
   getAppointments,
   getDoctorAvailability,
   getAllDoctors,
+  getDoctorById,
 };

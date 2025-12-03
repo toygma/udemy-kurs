@@ -33,6 +33,7 @@ interface IAwards {
   title: string;
   year: string;
   organization: string;
+  description: string;
 }
 
 export interface IDoctor extends Document {
@@ -48,8 +49,8 @@ export interface IDoctor extends Document {
   role: "doctor";
   education: IEducation[];
   services: string;
-  available: boolean;
   address?: IAddress;
+  available: boolean;
   phone: string;
   fee: number;
   patients: string;
@@ -100,7 +101,6 @@ const doctorSchema = new Schema<IDoctor>(
     averageRating: { type: Number, default: 0, min: 0, max: 5 },
     experience: { type: String },
     about: { type: String },
-    available: { type: Boolean, default: true },
     isPaid: {
       type: String,
       enum: ["unpaid", "paid"],
@@ -123,6 +123,7 @@ const doctorSchema = new Schema<IDoctor>(
     phone: { type: String },
     fee: { type: Number, default: 100 },
     patients: { type: String },
+    available: { type: Boolean, default: true },
     approvalStatus: {
       type: String,
       enum: ["pending", "approved", "rejected"],
@@ -137,6 +138,7 @@ const doctorSchema = new Schema<IDoctor>(
         title: { type: String },
         year: { type: String },
         organization: { type: String },
+        description: { type: String },
       },
     ],
     workingHours: [

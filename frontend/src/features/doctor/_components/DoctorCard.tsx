@@ -14,16 +14,13 @@ const DoctorCard = ({ filteredDoctors }: IDoctorCardProps) => {
           >
             <div className="bg-white rounded-2xl shadow-md hover:shadow-lg overflow-hidden h-full flex flex-col">
               <div className="relative">
-                {doctor?.images?.length > 0 && (
                   <img
-                    src={doctor.images[0].url}
+                    src={doctor.image.url}
                     alt={doctor.name}
                     title={doctor.name}
                     loading="lazy"
                     className="w-full h-52 object-cover"
                   />
-                )}
-
                 <div
                   className={`absolute top-4 right-4  px-3  py-1 rounded-full text-xs font-semibold flex items-center gap-2 ${
                     doctor.available
@@ -61,7 +58,7 @@ const DoctorCard = ({ filteredDoctors }: IDoctorCardProps) => {
         ))}
       </div>
       {/* NO DOCTOR FOUND */}
-      {filteredDoctors.count === 0 && (
+      {filteredDoctors?.count === 0 && (
         <div className="text-center text-gray-500 mt-20 py-10">
           <User className="w-16 h-16 mx-auto mb-4 text-gray-400" />
           <p className="text-lg font-medium">Doktor Bulunamadı.</p>

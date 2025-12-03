@@ -27,8 +27,8 @@ const EducationSection = ({ register, errors, control }: AuthFormProps) => {
           {/* KURUM */}
           <FormInput
             label="Kurum"
-            error={errors?.education?.[index]?.institution}
-            name={`education.${index}.institution`}
+            error={errors?.education?.[index]?.university}
+            name={`education.${index}.university`}
             register={register}
             placeholder="Üniversite / Okul Adı"
             type="text"
@@ -55,7 +55,7 @@ const EducationSection = ({ register, errors, control }: AuthFormProps) => {
 
       <Button
         type="button"
-        onClick={() => append({ degree: "", institution: "", year: 0 })}
+        onClick={() => append({ degree: "", university: "", year: 0 })}
         className="bg-blue-500"
         children="Eğitim Ekle"
       />

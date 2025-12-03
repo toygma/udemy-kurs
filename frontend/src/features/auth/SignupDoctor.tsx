@@ -47,7 +47,7 @@ const SignupDoctor = () => {
       education: [
         {
           degree: "",
-          institution: "",
+          university: "",
           year: 0,
         },
       ],
@@ -108,7 +108,6 @@ const SignupDoctor = () => {
       ],
     },
   });
-  console.log(errors)
   const steps = [
     { number: 1, title: "Temel" },
     { number: 2, title: "Adres" },
@@ -130,7 +129,7 @@ const SignupDoctor = () => {
   useEffect(() => {
     if (isSuccess) {
       toast.success("Kayıt Başarılı");
-      // navigate("/giris-yap");
+     navigate("/giris-yap");
     } else if (registerError && "data" in registerError) {
       toast.error((registerError as any)?.data?.message || "Kayıt başarısız");
     }
@@ -138,9 +137,7 @@ const SignupDoctor = () => {
 
   const imageValue = watch("image");
 
-
   const onSubmit =async (data: TDoctorSignupFormSchema) => {
-     console.log("🚀 ~ onSubmit ~ data:", data)
      await registerMutation(data)
   };
 
@@ -213,7 +210,7 @@ const SignupDoctor = () => {
           </div>
           <form className="p-6 " onSubmit={handleSubmit(onSubmit)}>
             <Activity mode={currentStep === 1 ? "visible" : "hidden"}>
-              <BasicInfoSection register={register} errors={errors} setValue={setValue} imageValue={imageValue} />
+              <BasicInfoSection register={register} errors={errors} setValue={setValue} imageValue={imageValue}/>
             </Activity>
 
             <Activity mode={currentStep === 2 ? "visible" : "hidden"}>
