@@ -9,6 +9,16 @@ const DoctorSlot = ({ doctor }: { doctor: Doctor }) => {
   const [dates, setDates] = useState<Date[]>([]);
 
   const dayMap: Record<number, string> = {
+    0: "sunday",
+    1: "monday",
+    2: "tuesday",
+    3: "wednesday",
+    4: "thursday",
+    5: "friday",
+    6: "saturday",
+  };
+
+  const dayMapTR: Record<number, string> = {
     0: "Pazar",
     1: "Pazartesi",
     2: "Salı",
@@ -17,7 +27,6 @@ const DoctorSlot = ({ doctor }: { doctor: Doctor }) => {
     5: "Cuma",
     6: "Cumartesi",
   };
-  //7 günlük tarih
 
   const generateNext7Days = () => {
     const days: Date[] = [];
@@ -75,7 +84,7 @@ const DoctorSlot = ({ doctor }: { doctor: Doctor }) => {
       slots.push({
         time: timeStr,
         dateTime: slotDateTime,
-        available: !isBooked && !isPast,
+        isWorking: !isBooked && !isPast,
       });
     }
 
@@ -85,19 +94,19 @@ const DoctorSlot = ({ doctor }: { doctor: Doctor }) => {
     generateNext7Days();
   }, []);
 
-  useEffect(()=>{
-    if(selectedDate){
-        generateTimeSlots(selectedDate)
+  useEffect(() => {
+    if (selectedDate) {
+      generateTimeSlots(selectedDate);
     }
-  },[selectedDate])
+  }, [selectedDate]);
 
-  const handleSlotClick = (slot:ITimeSlot)=> {
-    if(slot.available){
-        const dateStr = formatDate(slot.dateTime);
-        const dayName = dayMap[slot.dateTime.getDay()];
-        console.log(dateStr,dayName,slot.time)
+  const handleSlotClick = (slot: ITimeSlot) => {
+    if (slot.isWorking) {
+      const dateStr = formatDate(slot.dateTime);
+      const dayName = dayMap[slot.dateTime.getDay()];
+      console.log(dateStr, dayName, slot.time);
     }
-  }
+  };
 
   return (
     <div className="mt-12">
@@ -115,7 +124,7 @@ const DoctorSlot = ({ doctor }: { doctor: Doctor }) => {
           {dates.map((date, index) => {
             const isSelected =
               selectedDate?.toDateString() === date.toDateString();
-            const dayName = dayMap[date.getDay()];
+            const dayNameTR = dayMapTR[date.getDay()];
 
             return (
               <button
@@ -127,7 +136,7 @@ const DoctorSlot = ({ doctor }: { doctor: Doctor }) => {
                     : "border-gray-200 hover:border-blue-300"
                 }`}
               >
-                <div className="text-xs text-gray-600">{dayName}</div>
+                <div className="text-xs text-gray-600">{dayNameTR}</div>
                 <div className="font-bold text-gray-800">{date.getDate()}</div>
                 <div className="text-xs text-gray-500">
                   {date.toLocaleString("tr-TR", { month: "short" })}
@@ -143,7 +152,7 @@ const DoctorSlot = ({ doctor }: { doctor: Doctor }) => {
           <Clock className="w-5 h-5 text-blue-600" />
           <h3 className="text-lg font-semibold">Saat Seçin</h3>
         </div>
-      {availableSlots.length === 0 ? (
+        {availableSlots.length === 0 ? (
           <div className="text-center py-8 text-gray-500">
             Bu gün için çalışma saati bulunmuyor
           </div>
@@ -152,10 +161,10 @@ const DoctorSlot = ({ doctor }: { doctor: Doctor }) => {
             {availableSlots.map((slot, idx) => (
               <button
                 key={idx}
-                disabled={!slot.available}
-                onClick={()=>handleSlotClick(slot)}
+                disabled={!slot.isWorking}
+                onClick={() => handleSlotClick(slot)}
                 className={`p-3 rounded-lg border-2 font-medium transition-all ${
-                  slot.available
+                  slot.isWorking
                     ? "border-green-500 bg-green-50 hover:bg-green-100 text-green-700"
                     : "border-gray-200 bg-gray-100 text-gray-400 cursor-not-allowed"
                 }`}

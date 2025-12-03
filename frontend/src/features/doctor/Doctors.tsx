@@ -5,9 +5,8 @@ import { useDoctors } from "./hooks/useDoctors";
 import DoctorCard from "./_components/DoctorCard";
 
 const Doctors = () => {
-  const { handleCategoryChange, selectedCategory, isLoading, filteredDoctors } =
+  const { filteredDoctors, handleCategoryChange, isLoading, selectedCategory } =
     useDoctors();
-  console.log("🚀 ~ Doctors ~ doctors:", filteredDoctors);
 
   return (
     <LayoutContainer>

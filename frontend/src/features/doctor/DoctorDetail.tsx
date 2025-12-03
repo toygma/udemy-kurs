@@ -17,8 +17,9 @@ import LayoutContainer from "@/shared/ui/LayoutContainer";
 const DoctorDetail = () => {
   const { id } = useParams<{ id: string }>();
   const { doctor } = useDoctorDetail(id);
+  console.log("🚀 ~ DoctorDetail ~ doctor:", doctor);
 
-  if (!doctor) {
+  if (!doctor?.data) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
@@ -33,9 +34,11 @@ const DoctorDetail = () => {
     );
   }
 
+  const d = doctor.data; // kısaltma olarak d kullandım
+
   return (
     <div className="min-h-screen">
-      <LayoutContainer >
+      <LayoutContainer>
         {/* Header */}
         <div className="bg-white rounded-3xl shadow-xl overflow-hidden mb-8">
           <div className="bg-linear-to-r from-blue-600 to-indigo-600 h-32"></div>
@@ -43,39 +46,32 @@ const DoctorDetail = () => {
             <div className="flex flex-col md:flex-row items-start md:items-end -mt-16 mb-6">
               <div className="relative">
                 <img
-                  src={
-                    doctor?.images?.[0]?.url ||
-                    "https://via.placeholder.com/200"
-                  }
-                  alt={doctor.name}
+                  src={d.image.url}
+                  alt={d.name}
                   className="w-32 h-32 rounded-2xl border-4 border-white shadow-lg object-cover"
                 />
-                {doctor.available && (
+                {d.available && (
                   <div className="absolute -bottom-2 -right-2 bg-green-500 w-8 h-8 rounded-full border-4 border-white"></div>
                 )}
               </div>
               <div className="mt-4 md:mt-0 md:ml-6 flex-1">
-                <h1 className="text-3xl font-bold text-gray-900">
-                  {doctor.name}
-                </h1>
+                <h1 className="text-3xl font-bold text-gray-900">{d.name}</h1>
                 <p className="text-lg text-indigo-600 font-medium mt-1">
-                  {doctor.speciality}
+                  {d.speciality}
                 </p>
                 <div className="flex items-center gap-4 mt-3 flex-wrap">
                   <div className="flex items-center gap-1">
                     <Star className="w-5 h-5 fill-yellow-400 text-yellow-400" />
                     <span className="font-semibold text-gray-900">
-                      {doctor.averageRating ?? "4.8"}
+                      {d.averageRating ?? "4.8"}
                     </span>
                     <span className="text-gray-500 text-sm">
-                      ({doctor.reviews?.length ?? "124"} yorum)
+                      ({d.reviews?.length ?? "124"} yorum)
                     </span>
                   </div>
                   <div className="flex items-center gap-2 text-gray-600">
                     <Award className="w-5 h-5" />
-                    <span className="text-sm">
-                      {doctor.experience ?? "10"} yıllık deneyim
-                    </span>
+                    <span className="text-sm">{d.experience ?? "10"} yıllık deneyim</span>
                   </div>
                 </div>
               </div>
@@ -90,35 +86,28 @@ const DoctorDetail = () => {
             {/* About */}
             <div className="bg-white rounded-2xl shadow-lg p-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                <Stethoscope className="w-6 h-6 text-indigo-600" />
-                {doctor.name} Hakkında
+                <Stethoscope className="w-6 h-6 text-indigo-600" /> {d.name} Hakkında
               </h2>
               <p className="text-gray-700 leading-relaxed">
-                {doctor.about ||
-                  ` ${doctor.name}, alanında deneyimli bir ${doctor.speciality} olup, yüksek kaliteli hasta bakımı sunmayı hedeflemektedir.`}
+                {d.about ||
+                  `${d.name}, alanında deneyimli bir ${d.speciality} olup, yüksek kaliteli hasta bakımı sunmayı hedeflemektedir.`}
               </p>
             </div>
 
             {/* Education */}
-            {doctor.education?.length > 0 && (
+            {d.education?.length > 0 && (
               <div className="bg-white rounded-2xl shadow-lg p-8">
                 <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-                  <GraduationCap className="w-6 h-6 text-indigo-600" />
-                  Eğitim & Nitelikler
+                  <GraduationCap className="w-6 h-6 text-indigo-600" /> Eğitim & Nitelikler
                 </h2>
                 <div className="space-y-4">
-                  {doctor.education.map((edu, index) => (
-                    <div
-                      key={index}
-                      className="flex gap-4 p-4 bg-gray-50 rounded-xl"
-                    >
+                  {d.education.map((edu: any, index: number) => (
+                    <div key={index} className="flex gap-4 p-4 bg-gray-50 rounded-xl">
                       <div className="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center shrink-0">
                         <GraduationCap className="w-6 h-6 text-indigo-600" />
                       </div>
                       <div>
-                        <h3 className="font-semibold text-gray-900">
-                          {edu.degree}
-                        </h3>
+                        <h3 className="font-semibold text-gray-900">{edu.degree}</h3>
                         <p className="text-gray-600">{edu.university}</p>
                         <p className="text-sm text-gray-500">{edu.year}</p>
                       </div>
@@ -129,56 +118,37 @@ const DoctorDetail = () => {
             )}
 
             {/* Services */}
-            {doctor.services?.length > 0 && (
-              <div className="bg-white rounded-2xl shadow-lg p-8">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">
-                  Sunulan Hizmetler
-                </h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {doctor.services.map((service, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center gap-3 p-4 bg-indigo-50 rounded-xl"
-                    >
-                      <div className="w-2 h-2 bg-indigo-600 rounded-full"></div>
-                      <span className="text-gray-700 font-medium">
-                        {service}
-                      </span>
-                    </div>
-                  ))}
+            <div className="bg-white rounded-2xl shadow-lg p-8">
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">Sunulan Hizmetler</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="flex items-center gap-3 p-4 bg-indigo-50 rounded-xl">
+                  <div className="w-2 h-2 bg-indigo-600 rounded-full"></div>
+                  <span className="text-gray-700 font-medium">{d.services}</span>
                 </div>
               </div>
-            )}
+            </div>
           </div>
 
           {/* RIGHT SIDEBAR */}
           <div className="space-y-6">
             {/* Appointment Info */}
             <div className="bg-white rounded-2xl shadow-lg p-6">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">
-                Randevu Bilgileri
-              </h3>
+              <h3 className="text-xl font-bold text-gray-900 mb-4">Randevu Bilgileri</h3>
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
                   <MapPin className="w-5 h-5 text-indigo-600 mt-1" />
                   <div>
                     <p className="font-semibold text-gray-900">Konum</p>
                     <p className="text-gray-600 text-sm">
-                      {doctor.address?.city} - {doctor.address?.country} -{" "}
-                      {doctor.address?.district} - {doctor.address?.postalCode}{" "}
-                      - {doctor.address?.street}
+                      {d.address?.city} - {d.address?.country} - {d.address?.street}
                     </p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <Calendar className="w-5 h-5 text-indigo-600 mt-1" />
                   <div>
-                    <p className="font-semibold text-gray-900">
-                      Konsültasyon Ücreti
-                    </p>
-                    <p className="text-gray-600 text-sm">
-                      {doctor.fee ? `$${doctor.fee}` : "$100"}
-                    </p>
+                    <p className="font-semibold text-gray-900">Konsültasyon Ücreti</p>
+                    <p className="text-gray-600 text-sm">{d.fee ? `$${d.fee}` : "$100"}</p>
                   </div>
                 </div>
               </div>
@@ -190,11 +160,11 @@ const DoctorDetail = () => {
               <div className="space-y-3">
                 <div className="flex items-center gap-3">
                   <Phone className="w-5 h-5" />
-                  <span>{doctor.phone ?? "+1 (555) 123-4567"}</span>
+                  <span>{d.phone ?? "+1 (555) 123-4567"}</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <Mail className="w-5 h-5" />
-                  <span>{doctor.email ?? "doctor@hospital.com"}</span>
+                  <span>{d.email ?? "doctor@hospital.com"}</span>
                 </div>
               </div>
               <button className="w-full mt-6 bg-white text-indigo-600 py-3 rounded-xl font-semibold hover:bg-gray-100 transition-colors">
@@ -204,40 +174,31 @@ const DoctorDetail = () => {
 
             {/* Quick Stats */}
             <div className="bg-white rounded-2xl shadow-lg p-6">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">
-                Hızlı İstatistikler
-              </h3>
+              <h3 className="text-xl font-bold text-gray-900 mb-4">Hızlı İstatistikler</h3>
               <div className="grid grid-cols-2 gap-4">
                 <div className="text-center p-4 bg-blue-50 rounded-xl">
-                  <p className="text-3xl font-bold text-blue-600">
-                    {doctor.patients || "500"}+
-                  </p>
+                  <p className="text-3xl font-bold text-blue-600">{d.patients || "500"}+</p>
                   <p className="text-sm text-gray-600 mt-1">Hasta</p>
                 </div>
                 <div className="text-center p-4 bg-green-50 rounded-xl">
-                  <p className="text-3xl font-bold text-green-600">
-                    {doctor.experience ?? "10"}+
-                  </p>
+                  <p className="text-3xl font-bold text-green-600">{d.experience ?? "10"}+</p>
                   <p className="text-sm text-gray-600 mt-1">Yıl Deneyim</p>
                 </div>
                 <div className="text-center p-4 bg-purple-50 rounded-xl">
-                  <p className="text-3xl font-bold text-purple-600">
-                    {doctor.awards?.length || "15"}+
-                  </p>
+                  <p className="text-3xl font-bold text-purple-600">{d.awards?.length || "15"}+</p>
                   <p className="text-sm text-gray-600 mt-1">Ödül</p>
                 </div>
                 <div className="text-center p-4 bg-yellow-50 rounded-xl">
-                  <p className="text-3xl font-bold text-yellow-600">
-                    {doctor.totalRating || "4.8"}
-                  </p>
+                  <p className="text-3xl font-bold text-yellow-600">{d.totalRating || "4.8"}</p>
                   <p className="text-sm text-gray-600 mt-1">Puan</p>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <DoctorSlot doctor={doctor} />
-        <ReviewSection/>
+
+        <DoctorSlot doctor={doctor.data} />
+        <ReviewSection />
       </LayoutContainer>
     </div>
   );

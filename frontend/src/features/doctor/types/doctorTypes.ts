@@ -74,5 +74,5 @@ export interface IDoctorCardProps {
 export interface ITimeSlot {
   time: string;
   dateTime: Date;
-  available: boolean;
+  isWorking: boolean;
 }
