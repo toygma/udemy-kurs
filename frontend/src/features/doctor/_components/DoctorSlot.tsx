@@ -2,12 +2,16 @@ import { useEffect, useState } from "react";
 import type { Doctor, ITimeSlot } from "../types/doctorTypes";
 import { Calendar, Clock } from "lucide-react";
 import { formatDate } from "@/shared/utils/helper";
+import Modal from "@/shared/ui/Modal";
+import { useNavigate } from "react-router";
 
 const DoctorSlot = ({ doctor }: { doctor: Doctor }) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [availableSlots, setAvailableSlots] = useState<ITimeSlot[]>([]);
   const [dates, setDates] = useState<Date[]>([]);
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedSlot, setSelectedSlot] = useState<ITimeSlot | null>(null);
+  const navigate = useNavigate();
   const dayMap: Record<number, string> = {
     0: "sunday",
     1: "monday",
@@ -46,7 +50,6 @@ const DoctorSlot = ({ doctor }: { doctor: Doctor }) => {
     const dayName = dayMap[date.getDay()];
 
     const workDay = doctor.workingHours.find((wh) => wh.day === dayName);
-    console.log("🚀 ~ generateTimeSlots ~ workDay:", workDay)
 
     if (!workDay || !workDay.isWorking) {
       setAvailableSlots([]);
@@ -103,9 +106,30 @@ const DoctorSlot = ({ doctor }: { doctor: Doctor }) => {
 
   const handleSlotClick = (slot: ITimeSlot) => {
     if (slot.isWorking) {
-      const dateStr = formatDate(slot.dateTime);
-      const dayName = dayMap[slot.dateTime.getDay()];
-      console.log(dateStr, dayName, slot.time);
+      setSelectedSlot(slot);
+      setIsModalOpen(true);
+    }
+  };
+  const handleConfirmAppointment = async () => {
+    if (!selectedSlot) return;
+
+    try {
+      // API call yapılacak
+      const appointmentData = {
+        doctorId: doctor._id,
+        date: selectedSlot.dateTime.toISOString(),
+        timeSlot: selectedSlot.time,
+      };
+
+      console.log("🚀 Randevu Data:", appointmentData);
+
+      // await createAppointment(appointmentData);
+
+      setIsModalOpen(false);
+      setSelectedSlot(null);
+    } catch (error) {
+      // Error handling
+      console.error(error);
     }
   };
 
@@ -189,6 +213,16 @@ const DoctorSlot = ({ doctor }: { doctor: Doctor }) => {
           </div>
         </div>
       </div>
+      {isModalOpen && selectedSlot && (
+        <Modal
+          title="Randevu Onayı"
+          paragraph={`${formatDate(selectedSlot.dateTime)} tarihinde saat ${
+            selectedSlot.time
+          } için randevu almak istediğinize emin misiniz?`}
+          onCancel={() => setIsModalOpen(false)}
+          onConfirm={handleConfirmAppointment}
+        />
+      )}
     </div>
   );
 };

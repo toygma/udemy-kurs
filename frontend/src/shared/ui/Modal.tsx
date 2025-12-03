@@ -5,7 +5,7 @@ interface Props {
   onCancel: () => void;
   title: string;
   paragraph: string;
-  loading?: boolean; // yeni prop
+  loading?: boolean;
 }
 
 const Modal = ({
@@ -27,11 +27,18 @@ const Modal = ({
 
         <div className="flex justify-end gap-3 mt-4">
           <Button type="button" onClick={onCancel} disabled={loading}>
-            Cancel
+            İptal
           </Button>
 
-          <Button className={`${loading ? "bg-gray-200 border-none cursor-not-allowed":""}`} type="button" onClick={onConfirm} disabled={loading}>
-            {loading ? "Deleting..." : "Confirm"}
+          <Button
+            className={`${
+              loading ? "bg-gray-200 border-none cursor-not-allowed" : ""
+            }`}
+            type="button"
+            onClick={onConfirm}
+            disabled={loading}
+          >
+            {loading ? "Siliniyor..." : "Kabul et"}
           </Button>
         </div>
       </div>
