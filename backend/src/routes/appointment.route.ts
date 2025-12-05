@@ -15,6 +15,16 @@ appointmentRoute.put(
   appointmentController.updateAppointmentStatus
 );
 
-appointmentRoute.get("/my-appointment", isAuthenticatedUser, appointmentController.getAppointmets);
+appointmentRoute.get(
+  "/my-appointment",
+  isAuthenticatedUser,
+  appointmentController.getAppointmets
+);
+
+appointmentRoute.get(
+  "/doctor-appointment",
+  isAuthenticatedUser,
+  appointmentController.getDoctorAppointments
+);
 
 export default appointmentRoute;

@@ -18,10 +18,6 @@ export const doctorApi = createApi({
       }),
       invalidatesTags: ["Doctor"],
     }),
-    getDoctorAppointments: builder.query({
-      query: () => "/appointments",
-      providesTags: ["Doctor"],
-    }),
     getDoctorAvailability: builder.query({
       query: (doctorId) => `/${doctorId}/availability`,
       providesTags: ["Doctor"],
@@ -39,7 +35,6 @@ export const doctorApi = createApi({
 
 export const {
   useRegisterDoctorMutation,
-  useGetDoctorAppointmentsQuery,
   useGetDoctorAvailabilityQuery,
   useGetAllDoctorsQuery,
   useGetDoctorFindIdQuery,

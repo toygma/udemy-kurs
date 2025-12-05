@@ -1,32 +1,35 @@
-import { useState } from "react";
-import { doctorPanelConstants } from "../constants/doctorConstants";
-import type { IAppointment } from "../types/doctorPanelTypes";
-
+import {
+  useGetDoctorAppointmentsQuery,
+  useUpdateAppointmentMutation,
+} from "@/store/api/appointment-api";
+import toast from "react-hot-toast";
 export const useDoctorPanel = () => {
-  const [appointments, setAppointments] =
-    useState<IAppointment[]>(doctorPanelConstants);
+  const [updateAppointment] = useUpdateAppointmentMutation();
+  const { data, isLoading } = useGetDoctorAppointmentsQuery(null);
 
-  const updateAppointmentStatus = (appointmentId: string) => {
+  const appointments = data?.data;
+
+  const updateAppointmentStatus = async (appointmentId: string) => {
     try {
-      setAppointments((prev) =>
-        prev.map((apt) =>
-          apt._id === appointmentId ? { ...apt, status: "tamamlandı" } : apt
-        )
-      );
-    } catch (error) {
-      console.log(error);
+      await updateAppointment({
+        id: appointmentId,
+        body: { newStatus: "confirmed" },
+      });
+      toast.success("Randevu başarıyla onaylandı");
+    } catch (err: any) {
+      toast.error(err?.data?.message);
     }
   };
 
-  const deleteAppointmentStatus = (appointmentId: string) => {
+  const deleteAppointmentStatus = async (appointmentId: string) => {
     try {
-      setAppointments((prev) =>
-        prev.map((apt) =>
-          apt._id === appointmentId ? { ...apt, status: "iptal" } : apt
-        )
-      );
-    } catch (error) {
-      console.log(error);
+      await updateAppointment({
+        id: appointmentId,
+        body: { newStatus: "cancelled" },
+      });
+      toast.success("Randevu iptal edildi");
+    } catch (err: any) {
+      toast.error(err?.data?.message);
     }
   };
 
@@ -34,5 +37,6 @@ export const useDoctorPanel = () => {
     appointments,
     updateAppointmentStatus,
     deleteAppointmentStatus,
+    isLoading,
   };
 };

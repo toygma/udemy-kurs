@@ -7,17 +7,17 @@ export interface IUser {
     public_id?: string;
     url: string;
   };
-  isPaid: "ödendi" | "ödenmedi";
+  isPaid: "paid" | "unpaid";
   role: "admin" | "doktor" | "hasta";
 }
 
 export interface IAppointment {
   _id: string;
-  user: IUser;
+  patient: IUser;
   date: string | Date;
   timeSlot: string;
-  status: "bekleniyor" | "tamamlandı" | "iptal";
-  isPaid: "ödendi" | "ödenmedi";
+  status: "cancelled" | "confirmed" | "pending";
+  isPaid: "paid" | "unpaid";
   createdAt: string | Date;
   updatedAt: string | Date;
 }
@@ -29,4 +29,4 @@ export interface IStats {
   cancel: number;
 }
 
-export type FilterStatus = "hepsi" | "bekleniyor" | "tamamlandı" | "iptal";
+export type FilterStatus = "hepsi" | "pending" | "confirmed" | "cancelled";

@@ -152,9 +152,35 @@ const getAppointmets = catchAsyncError(
   }
 );
 
+const getDoctorAppointments = catchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.user?._id;
+
+    if (!userId) {
+      return next(new ErrorHandler("Kullanıcı bulunamadı", 401));
+    }
+
+    if (req.user?.role !== "doctor") {
+      return next(
+        new ErrorHandler("Bu işlem için doktor yetkisi gerekli", 403)
+      );
+    }
+
+    const appointments = await Appointment.find({ doctor: userId })
+      .populate("patient")
+      .sort({ createdAt: 1 });
+
+    res.status(200).json({
+      success: true,
+      count: appointments.length,
+      data: appointments,
+    });
+  }
+);
+
 export default {
   createAppointment,
   updateAppointmentStatus,
-    getAppointmets,
-  
+  getAppointmets,
+  getDoctorAppointments,
 };

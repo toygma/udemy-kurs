@@ -34,9 +34,9 @@ const FilterSearch = ({
           className="px-4 py-2 border rounded-lg outline-none"
         >
           <option value="hepsi">Hepsi</option>
-          <option value="bekleniyor">Bekleniyor</option>
-          <option value="tamamlandı">Tamamlandı</option>
-          <option value="iptal">İptal</option>
+          <option value="pending">Bekleniyor</option>
+          <option value="confirmed">Tamamlandı</option>
+          <option value="cancelled">İptal</option>
         </select>
       </div>
     </div>

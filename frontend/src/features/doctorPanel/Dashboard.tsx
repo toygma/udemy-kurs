@@ -6,20 +6,30 @@ import StatsCard from "./_components/StatsCard";
 import { Calendar } from "lucide-react";
 import FilterSearch from "./_components/FilterSearch";
 import AppointmentRow from "./_components/AppointmentRow";
+import Loading from "../Loading";
 
 const Dashboard = () => {
-  const { appointments, deleteAppointmentStatus, updateAppointmentStatus } =
-    useDoctorPanel();
+  const {
+    appointments,
+    deleteAppointmentStatus,
+    updateAppointmentStatus,
+    isLoading,
+  } = useDoctorPanel();
+
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState<FilterStatus>("hepsi");
 
   const [debounceSearch] = useDebounce(searchTerm, 500);
 
-  const filteredAppointments = appointments.filter((apt) => {
-    const matchesStatus =
-      filterStatus === "hepsi" || apt.status === filterStatus;
+  if (isLoading) {
+    return <Loading />;
+  }
 
-    const matchesSearch = apt.user.name
+  const filteredAppointments = appointments.filter((apt:IAppointment) => {
+    const matchesStatus =
+    filterStatus === "hepsi" || apt.status === filterStatus;
+
+    const matchesSearch = apt.patient?.name
       .toLowerCase()
       .includes(debounceSearch.toLowerCase());
 
@@ -28,9 +38,9 @@ const Dashboard = () => {
 
   const stats = {
     total: appointments.length,
-    pending: appointments.filter((a) => a.status === "bekleniyor").length,
-    confirmed: appointments.filter((a) => a.status === "tamamlandı").length,
-    cancel: appointments.filter((a) => a.status === "iptal").length,
+    pending: appointments.filter((a:IAppointment) => a.status === "pending").length,
+    confirmed: appointments.filter((a:IAppointment) => a.status === "confirmed").length,
+    cancel: appointments.filter((a:IAppointment) => a.status === "cancelled").length,
   };
 
   const getEmptyMessage = () => {
@@ -49,7 +59,7 @@ const Dashboard = () => {
     return "Henüz Randevu yok";
   };
 
-  const emptyMessage = getEmptyMessage()
+  const emptyMessage = getEmptyMessage();
 
   return (
     <div>
@@ -106,7 +116,7 @@ const Dashboard = () => {
                 </td>
               </tr>
             ) : (
-              filteredAppointments.map((apt: IAppointment) => (
+              filteredAppointments?.map((apt: IAppointment) => (
                 <AppointmentRow
                   key={apt._id}
                   appointment={apt}

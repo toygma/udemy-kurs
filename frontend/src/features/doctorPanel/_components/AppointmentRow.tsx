@@ -17,9 +17,9 @@ const AppointmentRow = ({
         <User className="text-blue-600" size={20} />
       </div>
       <div>
-        <p className="font-semibold text-gray-800">{appointment.user.name}</p>
+        <p className="font-semibold text-gray-800">{appointment.patient.name}</p>
         <p className="text-sm text-gray-500">
-          {appointment?.user?.phone || ""}
+          {appointment?.patient?.phone || ""}
         </p>
       </div>
     </td>
@@ -37,7 +37,7 @@ const AppointmentRow = ({
       <StatusBadge status={appointment.status} paid={appointment.isPaid} />
     </td>
     <td className="px-6 py-4">
-      {appointment.status === "bekleniyor" ? (
+      {appointment.status === "pending" ? (
         <div className="flex gap-2">
           <button
             onClick={() => onUpdate(appointment._id)}

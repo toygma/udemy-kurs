@@ -9,12 +9,6 @@ doctorRoute.get("/all", doctorController.getAllDoctors);
 doctorRoute.post("/register", doctorController.register);
 
 doctorRoute.get(
-  "/appointments",
-  isAuthenticatedUser,
-  doctorController.getAppointments
-);
-
-doctorRoute.get(
   "/:doctorId/availability",
   doctorController.getDoctorAvailability
 );

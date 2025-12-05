@@ -83,28 +83,6 @@ const register = catchAsyncError(
   }
 );
 
-const getAppointments = catchAsyncError(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const userId = req.user?._id;
-
-    if (!userId) {
-      return res.status(401).json({
-        success: false,
-        message: "Kullanıcı bulunamadı",
-      });
-    }
-
-    const appointments = await Appointment.find({ doctor: userId })
-      .populate("patient")
-      .sort({ date: 1 });
-
-    res.status(200).json({
-      success: true,
-      count: appointments.length,
-      data: appointments,
-    });
-  }
-);
 
 const getDoctorAvailability = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -225,7 +203,6 @@ const getDoctorById = catchAsyncError(
 
 export default {
   register,
-  getAppointments,
   getDoctorAvailability,
   getAllDoctors,
   getDoctorById,
