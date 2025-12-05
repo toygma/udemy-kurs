@@ -3,7 +3,8 @@ import type { Doctor, ITimeSlot } from "../types/doctorTypes";
 import { Calendar, Clock } from "lucide-react";
 import { formatDate } from "@/shared/utils/helper";
 import Modal from "@/shared/ui/Modal";
-import { useNavigate } from "react-router";
+import { useCreateAppointmentMutation } from "@/store/api/appointment-api";
+import toast from "react-hot-toast";
 
 const DoctorSlot = ({ doctor }: { doctor: Doctor }) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -11,7 +12,11 @@ const DoctorSlot = ({ doctor }: { doctor: Doctor }) => {
   const [dates, setDates] = useState<Date[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState<ITimeSlot | null>(null);
-  const navigate = useNavigate();
+  const [
+    createAppointment,
+    { isLoading: createLoading, error: createError, isSuccess },
+  ] = useCreateAppointmentMutation();
+
   const dayMap: Record<number, string> = {
     0: "sunday",
     1: "monday",
@@ -110,27 +115,29 @@ const DoctorSlot = ({ doctor }: { doctor: Doctor }) => {
       setIsModalOpen(true);
     }
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("Randevu oluşturma işlemi başarılı");
+    } else if (createError && "data" in createError) {
+      toast.error(
+        (createError as any)?.data?.message || "Randevu işlemi başarısız"
+      );
+    }
+  }, [isSuccess, createError]);
+
   const handleConfirmAppointment = async () => {
     if (!selectedSlot) return;
+    const appointmentData = {
+      doctorId: doctor._id,
+      date: selectedSlot.dateTime.toISOString(),
+      timeSlot: selectedSlot.time,
+    };
 
-    try {
-      // API call yapılacak
-      const appointmentData = {
-        doctorId: doctor._id,
-        date: selectedSlot.dateTime.toISOString(),
-        timeSlot: selectedSlot.time,
-      };
+    await createAppointment(appointmentData);
 
-      console.log("🚀 Randevu Data:", appointmentData);
-
-      // await createAppointment(appointmentData);
-
-      setIsModalOpen(false);
-      setSelectedSlot(null);
-    } catch (error) {
-      // Error handling
-      console.error(error);
-    }
+    setIsModalOpen(false);
+    setSelectedSlot(null);
   };
 
   return (
@@ -213,14 +220,15 @@ const DoctorSlot = ({ doctor }: { doctor: Doctor }) => {
           </div>
         </div>
       </div>
-      {isModalOpen && selectedSlot && (
+      {isModalOpen && (
         <Modal
           title="Randevu Onayı"
-          paragraph={`${formatDate(selectedSlot.dateTime)} tarihinde saat ${
-            selectedSlot.time
+          paragraph={`${formatDate(selectedSlot?.dateTime)} tarihinde saat ${
+            selectedSlot?.time
           } için randevu almak istediğinize emin misiniz?`}
           onCancel={() => setIsModalOpen(false)}
           onConfirm={handleConfirmAppointment}
+          loading={createLoading}
         />
       )}
     </div>

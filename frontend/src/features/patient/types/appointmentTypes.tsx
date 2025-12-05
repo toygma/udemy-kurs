@@ -2,7 +2,9 @@ export interface Doctor {
   _id: string;
   name: string;
   speciality: string;
-  images?: { url: string }[];
+  image:{
+    url:string;
+  }
   address?: {
     city: string;
     country?: string;
@@ -12,7 +14,7 @@ export interface Doctor {
 export type PaymentStatus = "ödenmedi" | "ödendi";
 
 
-export type AppointmentStatus = "bekleniyor" | "tamamlandı" | "iptal" ;
+export type AppointmentStatus = "cancelled" | "confirmed" | "pending" ;
 
 
 export interface Appointment {

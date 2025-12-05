@@ -5,7 +5,7 @@ interface Props {
   onCancel: () => void;
   title: string;
   paragraph: string;
-  loading?: boolean;
+  loading?: boolean; // yeni prop
 }
 
 const Modal = ({
@@ -38,7 +38,7 @@ const Modal = ({
             onClick={onConfirm}
             disabled={loading}
           >
-            {loading ? "Siliniyor..." : "Kabul et"}
+            {loading ? "Kabul ediliyor..." : "kabul et"}
           </Button>
         </div>
       </div>

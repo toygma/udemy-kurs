@@ -26,15 +26,12 @@ export const patientApi = createApi({
       }),
       invalidatesTags: ["Patient"],
     }),
-    getPatientAppointments: builder.query({
-      query: () => "/",
-      providesTags: ["Patient"],
-    }),
+  
   }),
 });
 
 export const {
   useRegisterPatientMutation,
   useUpdatePatientMutation,
-  useGetPatientAppointmentsQuery,
+
 } = patientApi;

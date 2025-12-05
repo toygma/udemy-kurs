@@ -77,28 +77,9 @@ const updateMyProfile = catchAsyncError(
   }
 );
 
-const getAppointmets = catchAsyncError(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const userId = req.user?._id;
 
-    if (!userId) {
-      return next(new ErrorHandler("Kullanıcı bulunamadı", 401));
-    }
-
-    const appointments = await Appointment.find({ patient: userId })
-      .populate("doctor")
-      .sort({ date: 1 });
-
-    res.status(200).json({
-      success: true,
-      count: appointments.length,
-      data: appointments,
-    });
-  }
-);
 
 export default {
   register,
   updateMyProfile,
-  getAppointmets,
 };

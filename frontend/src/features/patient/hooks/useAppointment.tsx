@@ -1,27 +1,29 @@
-import { useState } from "react";
-import type { Appointment } from "../types/appointmentTypes";
+import { useEffect } from "react";
 import toast from "react-hot-toast";
-import { mockAppointments } from "../constants/appointmentConstants";
+import { useGetAppointmentsQuery } from "@/store/api/appointment-api";
+import { useUpdateAppointmentMutation } from "@/store/api/appointment-api";
 
 export const useAppointments = () => {
-  const [appointments, setAppointments] = useState<Appointment[]>(mockAppointments);
+  const { data: appointments } = useGetAppointmentsQuery(null);
+  const [updateMutation, { error, isSuccess }] = useUpdateAppointmentMutation();
 
   const handleCheckout = (appointmentId: string) => {
-    setAppointments((prev) =>
-      prev.map((apt) =>
-        apt._id === appointmentId
-          ? { ...apt, isPaid: "ödendi", paymentId: crypto.randomUUID() }
-          : apt
-      )
-    );
-
     toast.success("Ödeme gerçekleşti.");
   };
 
-  const handleCancel = (appointmentId: string) => {
-    setAppointments((prev) => prev.filter((apt) => apt._id !== appointmentId));
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("İptal işlemi Başarılı");
+    } else if (error && "data" in error) {
+      toast.error((error as any)?.data?.message || "İptal işlemi başarısız");
+    }
+  }, [isSuccess, error]);
 
-    toast.success("Randevu başarıyla silindi.");
+  const handleCancel = async (appointmentId: string) => {
+    await updateMutation({
+      id: appointmentId,
+      body: { newStatus: "cancelled" },
+    });
   };
 
   return {

@@ -1,32 +1,25 @@
 import { Clock, CreditCard, MapPin, X } from "lucide-react";
-import moment from "moment";
 import type { AppointmentCardProps } from "../types/appointmentTypes";
+import { formatDate } from "@/shared/utils/helper";
 
 const AppointmentCard = ({
   appointment,
   onPayment,
   onCancel,
 }: AppointmentCardProps) => {
+  console.log("🚀 ~ AppointmentCard ~ appointment:", appointment)
   const isPaid = appointment.isPaid === "ödendi";
 
   return (
-    <div className="bg-white rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-200 overflow-hidden border border-gray-100">
-      <div className="flex flex-col md:flex-row">
+    <div className="bg-white rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-200 overflow-hidden border border-gray-100 relative">
+      <div className="flex flex-col md:flex-row ">
         {/* Doctor Image */}
-        <div className="md:w-1/4 bg-linear-to-br from-blue-100 to-blue-50 flex items-center justify-center overflow-hidden aspect-square" >
-          {appointment.doctor.images?.length ? (
-            <img
-              src={appointment.doctor.images[0].url}
-              alt={`Dr. ${appointment.doctor.name}`}
-              className="w-full h-full object-cover"
-            />
-          ) : (
-            <div className="w-32 h-32 bg-blue-200 rounded-full flex items-center justify-center">
-              <span className="text-4xl text-blue-600 font-bold">
-                {appointment.doctor.name.charAt(0)}
-              </span>
-            </div>
-          )}
+        <div className="md:w-1/4 bg-linear-to-br from-blue-100 to-blue-50 flex items-center justify-center overflow-hidden aspect-square">
+          <img
+            src={appointment.doctor?.image?.url}
+            alt={`Dr. ${appointment.doctor.name}`}
+            className="w-full h-full object-cover"
+          />
         </div>
 
         {/* Appointment Info */}
@@ -70,8 +63,7 @@ const AppointmentCard = ({
                 <div>
                   <p className="text-sm text-gray-500 mb-0.5">Tarih</p>
                   <p className="text-gray-800 font-semibold">
-                    {moment(appointment.date).format("LL")} -{" "}
-                    {appointment.timeSlot}
+                    {formatDate(appointment.date)} -{appointment.timeSlot}
                   </p>
                 </div>
               </div>
@@ -107,6 +99,22 @@ const AppointmentCard = ({
           </div>
         </div>
       </div>
+      {appointment?.status === "cancelled" && (
+        <>
+          {" "}
+          <div className="absolute inset-0 bg-black/30 backdrop-blur-sm z-40"></div>
+          <div className="absolute inset-0 flex items-center justify-center z-50">
+            <div className="bg-white p-6 rounded-2xl shadow-xl w-[300px]">
+              <h1 className="text-xl font-bold mb-3 text-center">
+                Randevu iptal edildi
+              </h1>
+              <p className="text-gray-600 mb-4">
+                Randevunuz başarıyla iptal edildi.
+              </p>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };

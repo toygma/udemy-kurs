@@ -15,6 +15,6 @@ appointmentRoute.put(
   appointmentController.updateAppointmentStatus
 );
 
-
+appointmentRoute.get("/my-appointment", isAuthenticatedUser, appointmentController.getAppointmets);
 
 export default appointmentRoute;

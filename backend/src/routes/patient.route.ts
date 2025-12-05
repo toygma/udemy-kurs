@@ -12,6 +12,6 @@ patientRoute.put(
   patientController.updateMyProfile
 );
 
-patientRoute.get("/", isAuthenticatedUser, patientController.getAppointmets);
+
 
 export default patientRoute;

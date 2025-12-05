@@ -35,7 +35,6 @@ const DoctorDetail = () => {
   }
 
   const d = doctor.data;
-  console.log("🚀 ~ DoctorDetail ~ d:", d);
 
   return (
     <div className="min-h-screen">
