@@ -4,7 +4,6 @@ import ErrorHandler from "../utils/errorHandler";
 import Patient from "../models/patient.model";
 import sendToken from "../utils/sendToken";
 import { upload_file } from "../utils/cloudinary";
-import Appointment from "../models/appointment.model";
 
 const register = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {

@@ -120,13 +120,10 @@ const updateAppointmentStatus = catchAsyncError(
       { new: true }
     );
 
-    const successMessage = `Randevu başarıyla ${
-      newStatus === "cancelled" ? "İptal edildi" : "onaylandı"
-    }`;
+  
 
     res.status(200).json({
       success: true,
-      message: successMessage,
       data: appointment,
     });
   }

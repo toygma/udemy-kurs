@@ -16,7 +16,7 @@ export interface UserProfile {
     name:string;
     email:string;
     phone:string;
-    gender:"Erkek" | "Kadın";
+    gender:"erkek" | "kadın";
     address?:Address;
     image?:UserImage;
     images?:UserImage[];

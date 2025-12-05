@@ -7,15 +7,16 @@ interface Props {
     error:FieldError | string | undefined;
     type:string;
     className?:string;
-    placeholder:string;
+    placeholder?:string;
     label:string;
     name:string;
+    disabled:boolean;
     onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void;
     onChange?:(e:React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 
-const FormInput = ({register,name,className,type,placeholder,error,label,onFocus,onChange}:Props) => {
+const FormInput = ({register,name,className,type,placeholder,error,label,onFocus,onChange,disabled}:Props) => {
 
 
     const errorMessage = typeof error === "string" ? error : error?.message;
@@ -24,6 +25,7 @@ const FormInput = ({register,name,className,type,placeholder,error,label,onFocus
     <div>
       <label className="block text-sm font-medium text-gray-700">{label}</label>
       <input
+      disabled={disabled}
         type={type}
         {...register(name,{
           valueAsNumber:type === "number",

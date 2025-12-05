@@ -7,7 +7,6 @@ const AppointmentCard = ({
   onPayment,
   onCancel,
 }: AppointmentCardProps) => {
-  console.log("🚀 ~ AppointmentCard ~ appointment:", appointment)
   const isPaid = appointment.isPaid === "ödendi";
 
   return (

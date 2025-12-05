@@ -20,7 +20,7 @@ export interface IPatient extends Document {
   email: string;
   password: string;
   address?: IAddress;
-  gender?: "male" | "female" | "not_selected";
+  gender?: "erkek" | "kadın" | "seçilmedi";
   phone?: string;
   image?: IImage;
   dateOfBirth?: Date;
@@ -63,8 +63,8 @@ const patientSchema = new Schema<IPatient>(
     },
     gender: {
       type: String,
-      enum: ["male", "female", "not_selected"],
-      default: "not_selected",
+      enum: ["erkek", "kadın", "seçilmedi"],
+      default: "seçilmedi",
     },
     phone: {
       type: String,

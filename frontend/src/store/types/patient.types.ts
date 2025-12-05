@@ -20,10 +20,10 @@ export interface IPatient {
   email: string;
   password: string;
   address?: IAddress;
-  gender?: "male" | "female" | "not_selected";
+  gender?: "erkek" | "kadın" | "seçilmedi";
   phone?: string;
   image?: IImage;
-  dateOfBirth?: Date;
+  dateOfBirth?: string;
   paymentId?: string;
   role: RoleValue;
   isActive: boolean;

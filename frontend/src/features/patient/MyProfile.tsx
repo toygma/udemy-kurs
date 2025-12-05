@@ -10,6 +10,7 @@ import Button from "@/shared/ui/Button";
 import { Edit, Save, X } from "lucide-react";
 import UploadImage from "@/shared/ui/UploadImages";
 import { useProfile } from "./hooks/useProfile";
+import FormInput from "@/shared/ui/FormInput";
 
 const MyProfile = () => {
   const [isEdit, setIsEdit] = useState(false);
@@ -18,7 +19,7 @@ const MyProfile = () => {
   const {
     register,
     handleSubmit,
-    formState: { isSubmitting },
+    formState: { errors, isSubmitting },
     reset,
     setValue,
     watch,
@@ -29,7 +30,8 @@ const MyProfile = () => {
       name: "",
       email: "",
       phone: "",
-      gender: "Erkek",
+      gender: "erkek",
+      dateOfBirth: "",
       image: "",
       address: {
         street: "",
@@ -39,7 +41,6 @@ const MyProfile = () => {
       },
     },
   });
-
   const imageValue = watch("image");
 
   useEffect(() => {
@@ -48,8 +49,11 @@ const MyProfile = () => {
         name: user.name || "",
         email: user.email || "",
         phone: user.phone || "",
-        gender: user.gender || "Erkek",
+        gender: user.gender || "seçilmedi",
         image: user.image?.url || "",
+        dateOfBirth: user.dateOfBirth
+          ? new Date(user.dateOfBirth).toISOString().split("T")[0]
+          : "",
         address: {
           street: user.address?.street || "",
           city: user.address?.city || "",
@@ -65,10 +69,10 @@ const MyProfile = () => {
       await updateProfile(data);
       setIsEdit(false);
     } catch (err: any) {
-      console.log("🚀 ~ onSubmit ~ err:", err);
       toast.error(err.message);
     }
   };
+
   return (
     <div className="min-h-screen py-12 px-4">
       <div className="max-w-2xl mx-auto">
@@ -123,70 +127,72 @@ const MyProfile = () => {
               </div>
 
               {/* Contact Info */}
-              <div className="bg-white rounded-2xl shadow-lg p-8 mb-6">
+              <div className="bg-white rounded-2xl shadow-lg p-8 mb-6 flex flex-col gap-2">
                 <h2 className="text-xl font-bold text-gray-800 mb-6">
                   İletişim Bilgileri
                 </h2>
 
-                <div className="space-y-6">
-                  {/* Email */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-600 mb-2">
-                      Email
-                    </label>
-                    <input
-                      {...register("email")}
-                      disabled={!isEdit}
-                      className="w-full bg-gray-50 border-2 border-gray-300 rounded-lg px-4 py-2"
-                    />
-                  </div>
+                <FormInput
+                  error={errors.email?.message}
+                  name="email"
+                  register={register}
+                  type="email"
+                  label="Email"
+                  placeholder="Email adresinizi giriniz"
+                  disabled={!isEdit}
+                />
 
-                  {/* Phone */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-600 mb-2">
-                      Telefon
-                    </label>
-                    <input
-                      {...register("phone")}
-                      disabled={!isEdit}
-                      className="w-full bg-gray-50 border-2 border-gray-300 rounded-lg px-4 py-2"
-                    />
-                  </div>
+                <FormInput
+                  error={errors.phone?.message}
+                  name="phone"
+                  register={register}
+                  type="tel"
+                  label="Telefon"
+                  placeholder="Telefon numaranızı giriniz"
+                  disabled={!isEdit}
+                />
 
-                  {/* Address */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-600 mb-2">
-                      Adres
-                    </label>
+                {/* Address */}
+                <div>
+                  <FormInput
+                    error={errors.address?.city?.message}
+                    name="address.city"
+                    register={register}
+                    type="text"
+                    label="Şehir"
+                    placeholder="Şehir giriniz"
+                    disabled={!isEdit}
+                  />
 
-                    <label>City</label>
-                    <input
-                      {...register("address.city")}
-                      disabled={!isEdit}
-                      className="w-full bg-gray-50 border-2 border-gray-300 rounded-lg px-4 py-2 mb-2"
-                    />
+                  <FormInput
+                    error={errors.address?.country?.message}
+                    name="address.country"
+                    register={register}
+                    type="text"
+                    label="Ülke"
+                    placeholder="Ülke giriniz"
+                    disabled={!isEdit}
+                  />
 
-                    <label>Country</label>
-                    <input
-                      {...register("address.country")}
-                      disabled={!isEdit}
-                      className="w-full bg-gray-50 border-2 border-gray-300 rounded-lg px-4 py-2 mb-2"
-                    />
+                  <FormInput
+                    error={errors.address?.street?.message}
+                    name="address.street"
+                    register={register}
+                    type="text"
+                    label="Sokak"
+                    placeholder="Sokak adresini giriniz"
+                    disabled={!isEdit}
+                  />
 
-                    <label>Street</label>
-                    <input
-                      {...register("address.street")}
-                      disabled={!isEdit}
-                      className="w-full bg-gray-50 border-2 border-gray-300 rounded-lg px-4 py-2 mb-2"
-                    />
-
-                    <label>ZipCode</label>
-                    <input
-                      {...register("address.zipCode")}
-                      disabled={!isEdit}
-                      className="w-full bg-gray-50 border-2 border-gray-300 rounded-lg px-4 py-2"
-                    />
-                  </div>
+                  <FormInput
+                    error={errors.address?.zipCode?.message}
+                    name="address.zipCode"
+                    register={register}
+                    type="text"
+                    label="Posta Kodu"
+                    placeholder="Posta kodu giriniz"
+                    disabled={!isEdit}
+                  />
                 </div>
               </div>
 
@@ -196,19 +202,34 @@ const MyProfile = () => {
                   Temel Bilgiler
                 </h2>
 
-                <div>
+                <div className="mb-4">
                   <label className="block text-sm font-medium text-gray-600 mb-2">
                     Cinsiyet
                   </label>
                   <select
                     {...register("gender")}
                     disabled={!isEdit}
-                    className="w-full bg-gray-50 border-2 border-gray-300 rounded-lg px-4 py-2"
+                    className="w-full bg-gray-50 border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500"
                   >
-                    <option value="Erkek">Erkek</option>
-                    <option value="Kadın">Kadın</option>
+                    <option value="erkek">Erkek</option>
+                    <option value="kadın">Kadın</option>
+                    <option value="seçilmedi">Belirtmek İstemiyorum</option>
                   </select>
+                  {errors.gender && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.gender.message}
+                    </p>
+                  )}
                 </div>
+
+                <FormInput
+                  error={errors.dateOfBirth?.message}
+                  name="dateOfBirth"
+                  register={register}
+                  type="date"
+                  label="Doğum Tarihi"
+                  disabled={!isEdit}
+                />
               </div>
             </div>
           </form>
