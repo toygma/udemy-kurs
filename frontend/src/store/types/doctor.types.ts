@@ -46,7 +46,7 @@ export interface IReviews {
   createdAt: Date;
 }
 
-export type RoleValue = "patient" | "doctor" | "admin";
+export type RoleValue = "patient" | "doctor" | "admin"
 
 export interface IDoctor {
   _id: string;
@@ -59,7 +59,7 @@ export interface IDoctor {
   image?: IImage;
   experience: string;
   about: string;
-  role: RoleValue;
+  role:RoleValue;
   education: IEducation[];
   services: string;
   address?: IAddress;
@@ -69,9 +69,9 @@ export interface IDoctor {
   awards: IAwards[];
   totalRating: number;
   averageRating: number;
-  isActive: boolean;
-  dateOfBirth?: string;
   gender?: "erkek" | "kadın" | "seçilmedi";
+  dateOfBirth?:string;
+  isActive: boolean;
   workingHours: IWorkingHours[];
   approvalStatus: "pending" | "approved" | "rejected";
   isPaid: "unpaid" | "paid";

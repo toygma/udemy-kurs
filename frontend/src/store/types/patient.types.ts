@@ -23,7 +23,7 @@ export interface IPatient {
   gender?: "erkek" | "kadın" | "seçilmedi";
   phone?: string;
   image?: IImage;
-  dateOfBirth?: string;
+  dateOfBirth?:string;
   paymentId?: string;
   role: RoleValue;
   isActive: boolean;

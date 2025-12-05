@@ -10,7 +10,7 @@ interface Props {
     placeholder?:string;
     label:string;
     name:string;
-    disabled:boolean;
+    disabled?:boolean;
     onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void;
     onChange?:(e:React.ChangeEvent<HTMLInputElement>) => void;
 }

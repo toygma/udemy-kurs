@@ -12,7 +12,7 @@ export const ProfileUpdateSchema = z.object({
     country: z.string().optional(),
   }),
   image: z.string().optional(),
- dateOfBirth: z.string().optional()
+  dateOfBirth: z.string().optional(),
 });
 
 export type ProfileUpdateSchemaType = z.infer<typeof ProfileUpdateSchema>;

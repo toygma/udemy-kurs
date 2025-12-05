@@ -41,6 +41,7 @@ const MyProfile = () => {
       },
     },
   });
+
   const imageValue = watch("image");
 
   useEffect(() => {
@@ -72,7 +73,6 @@ const MyProfile = () => {
       toast.error(err.message);
     }
   };
-
   return (
     <div className="min-h-screen py-12 px-4">
       <div className="max-w-2xl mx-auto">
@@ -127,72 +127,76 @@ const MyProfile = () => {
               </div>
 
               {/* Contact Info */}
-              <div className="bg-white rounded-2xl shadow-lg p-8 mb-6 flex flex-col gap-2">
+              <div className="bg-white rounded-2xl shadow-lg p-8 mb-6">
                 <h2 className="text-xl font-bold text-gray-800 mb-6">
                   İletişim Bilgileri
                 </h2>
 
-                <FormInput
-                  error={errors.email?.message}
-                  name="email"
-                  register={register}
-                  type="email"
-                  label="Email"
-                  placeholder="Email adresinizi giriniz"
-                  disabled={!isEdit}
-                />
-
-                <FormInput
-                  error={errors.phone?.message}
-                  name="phone"
-                  register={register}
-                  type="tel"
-                  label="Telefon"
-                  placeholder="Telefon numaranızı giriniz"
-                  disabled={!isEdit}
-                />
-
-                {/* Address */}
-                <div>
+                <div className="space-y-6">
+                  {/* Email */}
                   <FormInput
-                    error={errors.address?.city?.message}
-                    name="address.city"
+                    error={errors.email?.message}
+                    name="email"
                     register={register}
-                    type="text"
-                    label="Şehir"
-                    placeholder="Şehir giriniz"
+                    type="email"
+                    label="Email"
+                    placeholder="Email adresinizi giriniz."
                     disabled={!isEdit}
                   />
 
+                  {/* Phone */}
                   <FormInput
-                    error={errors.address?.country?.message}
-                    name="address.country"
+                    error={errors.phone?.message}
+                    name="phone"
                     register={register}
-                    type="text"
-                    label="Ülke"
-                    placeholder="Ülke giriniz"
+                    type="tel"
+                    label="Telefon"
+                    placeholder="Telefon numaranızı giriniz."
                     disabled={!isEdit}
                   />
 
-                  <FormInput
-                    error={errors.address?.street?.message}
-                    name="address.street"
-                    register={register}
-                    type="text"
-                    label="Sokak"
-                    placeholder="Sokak adresini giriniz"
-                    disabled={!isEdit}
-                  />
+                  {/* Address */}
+                  <div>
+                    <FormInput
+                      error={errors.address?.city?.message}
+                      name="address.city"
+                      register={register}
+                      type="text"
+                      label="Şehir"
+                      placeholder="Şehir giriniz."
+                      disabled={!isEdit}
+                    />
 
-                  <FormInput
-                    error={errors.address?.zipCode?.message}
-                    name="address.zipCode"
-                    register={register}
-                    type="text"
-                    label="Posta Kodu"
-                    placeholder="Posta kodu giriniz"
-                    disabled={!isEdit}
-                  />
+                    <FormInput
+                      error={errors.address?.country?.message}
+                      name="address.country"
+                      register={register}
+                      type="text"
+                      label="Ülke"
+                      placeholder="Ülke giriniz."
+                      disabled={!isEdit}
+                    />
+
+                    <FormInput
+                      error={errors.address?.street?.message}
+                      name="address.street"
+                      register={register}
+                      type="text"
+                      label="Sokak"
+                      placeholder="Sokak adresini giriniz."
+                      disabled={!isEdit}
+                    />
+
+                    <FormInput
+                      error={errors.address?.zipCode?.message}
+                      name="address.zipCode"
+                      register={register}
+                      type="text"
+                      label="Posta Kodu"
+                      placeholder="Posta kodu giriniz."
+                      disabled={!isEdit}
+                    />
+                  </div>
                 </div>
               </div>
 
@@ -202,26 +206,25 @@ const MyProfile = () => {
                   Temel Bilgiler
                 </h2>
 
-                <div className="mb-4">
+                <div>
                   <label className="block text-sm font-medium text-gray-600 mb-2">
                     Cinsiyet
                   </label>
                   <select
                     {...register("gender")}
                     disabled={!isEdit}
-                    className="w-full bg-gray-50 border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500"
+                    className="w-full bg-gray-50 border-2 border-gray-300 rounded-lg px-4 py-2"
                   >
                     <option value="erkek">Erkek</option>
                     <option value="kadın">Kadın</option>
-                    <option value="seçilmedi">Belirtmek İstemiyorum</option>
+                    <option value="seçilmedi">Belirtmek istemiyorum</option>
                   </select>
                   {errors.gender && (
                     <p className="text-red-500 text-sm mt-1">
-                      {errors.gender.message}
+                      {errors?.gender.message}
                     </p>
                   )}
                 </div>
-
                 <FormInput
                   error={errors.dateOfBirth?.message}
                   name="dateOfBirth"
