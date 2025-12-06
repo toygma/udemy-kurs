@@ -1,5 +1,5 @@
 import { useUsersManagement } from "./hooks/useUsersManagement";
-import type { UserRole } from "./types/adminTypes";
+import type { UserRole } from "./types/admin.types";
 
 const UsersManagement = () => {
   const { handleRoleChange, handleToggleBlock, users } = useUsersManagement();

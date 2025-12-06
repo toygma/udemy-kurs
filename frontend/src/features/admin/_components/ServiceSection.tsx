@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { doctorServices } from "../constants/adminConstants";
-import type { FormProps } from "../types/adminTypes";
+import type { FormProps } from "../types/admin.types";
 import FormInput from "@/shared/ui/FormInput";
 
 const ServiceSection = ({ register, error, setValue }: FormProps) => {
@@ -43,7 +43,7 @@ const ServiceSection = ({ register, error, setValue }: FormProps) => {
 
           {showSuggestions && filteredService.length > 0 && (
             <ul className="absolute z-10 w-full bg-white border border-gray-300 rounded-lg shadow-lg max-h-40 overflow-y-auto">
-              {filteredService.map((item,index) => (
+              {filteredService.map((item, index) => (
                 <li
                   key={index}
                   onClick={() => handleSelectSpeciality(item)}

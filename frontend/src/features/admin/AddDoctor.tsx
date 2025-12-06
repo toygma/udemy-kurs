@@ -12,10 +12,13 @@ import EducationSection from "./_components/EducationSection";
 import AwardSection from "./_components/AwardSection";
 import ServiceSection from "./_components/ServiceSection";
 import WorkingInSection from "./_components/WorkingInSection";
+import { useAddDoctorMutation } from "@/store/api/admin-api";
+import toast from "react-hot-toast";
 
 
 
 const AddDoctor = () => {
+  const [createMutation,{isLoading}] = useAddDoctorMutation()
   const {
     register,
     handleSubmit,
@@ -104,8 +107,13 @@ const AddDoctor = () => {
 
   const imageValue = watch("image");
 
-  const onSubmit = (data: TAddDoctorFormSchema) => {
-    console.log(data);
+  const onSubmit =async (data: TAddDoctorFormSchema) => {
+    try{
+      await createMutation(data);
+      toast.success("Başarılı şekilde oluşturuldu")
+    }catch(error:any){
+      toast.error(error?.data?.message)
+    }
   };
 
   return (
@@ -175,7 +183,7 @@ const AddDoctor = () => {
             watch={watch}
           />
 
-          <Button children="Doktor Ekle" type="submit" className="mt-6" />
+          <Button children="Doktor Ekle" type="submit" className="mt-6" disabled={isLoading} loading={isLoading}/>
         </form>
       </div>
     </div>

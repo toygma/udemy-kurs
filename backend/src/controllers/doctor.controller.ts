@@ -6,6 +6,18 @@ import moment from "moment";
 import Appointment from "../models/appointment.model";
 import { upload_file } from "../utils/cloudinary";
 
+const getAllDoctors = catchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const doctors = await Doctor.find().sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      count: doctors.length,
+      data: doctors,
+    });
+  }
+);
+
 const register = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     const {
@@ -83,7 +95,6 @@ const register = catchAsyncError(
   }
 );
 
-
 const getDoctorAvailability = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     const { doctorId } = req.params;
@@ -154,7 +165,7 @@ const getDoctorAvailability = catchAsyncError(
 
         slots.push({
           time: slotString,
-          isAvailable:
+          isWorking:
             !bookedTimes.has(slotString) && slotDateTime.isAfter(moment()),
         });
 
@@ -176,23 +187,15 @@ const getDoctorAvailability = catchAsyncError(
   }
 );
 
-const getAllDoctors = catchAsyncError(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const doctors = await Doctor.find().sort({ createdAt: -1 });
-
-    res.status(200).json({
-      success: true,
-      count: doctors.length,
-      data: doctors,
-    });
-  }
-);
-
 const getDoctorById = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     const { doctorId } = req.params;
 
-    const doctor = await Doctor.findById(doctorId);
+    const doctor = await Doctor.findById(doctorId).populate("appointments")
+
+    if(!doctor){
+      return next(new ErrorHandler("doktor bilgileri getirilemedi.",404))
+    }
 
     res.status(200).json({
       success: true,

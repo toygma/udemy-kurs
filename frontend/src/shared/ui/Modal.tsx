@@ -5,7 +5,7 @@ interface Props {
   onCancel: () => void;
   title: string;
   paragraph: string;
-  loading?: boolean; // yeni prop
+  loading?: boolean; 
 }
 
 const Modal = ({

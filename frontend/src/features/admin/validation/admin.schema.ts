@@ -73,17 +73,11 @@ export const AddDoctorFormSchema = z.object({
 
   password: z
     .string({ error: "Boş bırakılamaz" })
-    .min(8, "Şifre en az 8 karakter olmalı")
-    .regex(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
-      "Şifre en az bir büyük harf, bir küçük harf ve bir rakam içermelidir"
-    )
-    .optional(),
+    .min(6, "Şifre en az 6 karakter olmalı"),
 
   image: z.string().optional(),
 
-  speciality: z
-    .string({ error: "Boş bırakılamaz" }),
+  speciality: z.string({ error: "Boş bırakılamaz" }),
 
   available: z.boolean(),
 

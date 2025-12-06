@@ -1,5 +1,5 @@
 import FormInput from "@/shared/ui/FormInput";
-import type { FormProps } from "../types/adminTypes";
+import type { FormProps } from "../types/admin.types";
 
 const AddressSection = ({ register, error }: FormProps) => {
   return (

@@ -1,5 +1,5 @@
 import { Controller, useFieldArray } from "react-hook-form";
-import type { FormProps } from "../types/adminTypes";
+import type { FormProps } from "../types/admin.types";
 import TimePicker from "react-time-picker";
 import "react-time-picker/dist/TimePicker.css";
 

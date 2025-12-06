@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { User, UserRole } from "../types/adminTypes";
+import type { User, UserRole } from "../types/admin.types";
 import { MOCK_USERS } from "../constants/adminConstants";
 
 export const useUsersManagement = () => {
@@ -9,7 +9,7 @@ export const useUsersManagement = () => {
     try {
       setUsers((prev) =>
         prev.map((user) =>
-          user.id === userId ? { ...user, role:newRole } : user
+          user.id === userId ? { ...user, role: newRole } : user
         )
       );
     } catch (error) {
@@ -17,23 +17,21 @@ export const useUsersManagement = () => {
     }
   };
 
-
-   const handleToggleBlock = (userId: number) => {
+  const handleToggleBlock = (userId: number) => {
     try {
       setUsers((prev) =>
         prev.map((user) =>
-          user.id === userId ? { ...user, isBlocked:!user.isBlocked } : user
+          user.id === userId ? { ...user, isBlocked: !user.isBlocked } : user
         )
       );
     } catch (error) {
       console.log(error);
     }
   };
-
 
   return {
     users,
     handleRoleChange,
-    handleToggleBlock
-  }
+    handleToggleBlock,
+  };
 };

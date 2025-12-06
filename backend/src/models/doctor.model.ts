@@ -1,8 +1,7 @@
-import { Document, Schema } from "mongoose";
+import { Document, Schema, Types } from "mongoose";
 import bcrypt from "bcrypt";
 import jwt, { SignOptions } from "jsonwebtoken";
 import mongoose from "mongoose";
-import { IAppointment } from "./appointment.model";
 
 interface IEducation {
   degree: string;
@@ -37,8 +36,8 @@ interface IAwards {
 }
 
 export interface IDoctor extends Document {
-  appointments: IAppointment[];
-  reviews: Schema.Types.ObjectId[];
+  appointments: Types.ObjectId[];
+  reviews: Types.ObjectId[];
   name: string;
   email: string;
   password: string;
@@ -70,11 +69,14 @@ export interface IDoctor extends Document {
 
 const doctorSchema = new Schema<IDoctor>(
   {
-    appointments: [{ type: Schema.Types.ObjectId, ref: "Appointment" }],
+    appointments: [
+      { type: Schema.Types.ObjectId, ref: "Appointment", required: true },
+    ],
     reviews: [
       {
         type: Schema.Types.ObjectId,
         ref: "Review",
+        required: true,
       },
     ],
     name: { type: String, required: [true, "İsim alanı zorunludur."] },

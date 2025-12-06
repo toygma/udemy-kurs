@@ -1,26 +1,60 @@
 import { useState } from "react";
-import type { DoctorRequest } from "../types/adminTypes";
-import { MOCK_DOCTOR_REQUESTS } from "../constants/adminConstants";
+import {
+  useApproveDoctorMutation,
+  useGetPendingDataQuery,
+  useRejectDoctorMutation,
+} from "@/store/api/admin-api";
+import type { Doctor } from "../types/admin.types";
+import toast from "react-hot-toast";
 
 export const useDoctorRequest = () => {
-  const [request, setRequest] = useState<DoctorRequest[]>(MOCK_DOCTOR_REQUESTS);
+  const { data: request } = useGetPendingDataQuery(null);
 
-  const handleApprove = (id: number) => {
-    if (confirm("doktoru onaylamak istediğinize emin misiniz?")) {
-      const updatedList = request.filter((doctor) => doctor.id !== id);
-      setRequest(updatedList);
-    }
+  const [approveDoctor, { isLoading: isApproving }] =
+    useApproveDoctorMutation();
+  const [rejectDoctor, { isLoading: isRejected }] = useRejectDoctorMutation();
+
+  const [selectedDoctor, setSelectedDoctor] = useState<Doctor | null>(null);
+  const [modalAction, setModalAction] = useState<"approve" | "reject" | null>(
+    null
+  );
+
+  const openModal = (doctor: Doctor, action: "approve" | "reject") => {
+    setSelectedDoctor(doctor);
+    setModalAction(action);
   };
-  const handleReject = (id: number) => {
-    if (confirm("doktoru reddetmek istediğinize emin misiniz?")) {
-      const updatedList = request.filter((doctor) => doctor.id !== id);
-      setRequest(updatedList);
+
+  const closeModal = () => {
+    setSelectedDoctor(null);
+    setModalAction(null);
+  };
+
+  const handleConfirm = async () => {
+    if (!selectedDoctor || !modalAction) return;
+
+    try {
+      if (modalAction === "approve") {
+        await approveDoctor({ id: selectedDoctor._id }).unwrap();
+        toast.success("Başvuru başarıyla onaylandı");
+      } else {
+        await rejectDoctor({ id: selectedDoctor._id }).unwrap();
+        toast.success("Başvuru reddedildi");
+      }
+
+      closeModal();
+    } catch (error: any) {
+      toast.error(error?.data?.message);
     }
   };
 
   return {
-    handleApprove,
+    openModal,
     request,
-    handleReject,
+    handleConfirm,
+    selectedDoctor,
+    closeModal,
+    isApproving,
+    isRejected,
+    modalAction,
   };
 };

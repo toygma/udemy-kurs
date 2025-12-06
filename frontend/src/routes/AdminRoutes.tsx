@@ -7,7 +7,9 @@ import AdminLayout from "@/layouts/AdminLayout";
 
 const Dashboard = lazy(() => import("@/features/admin/Dashboard"));
 const AddDoctor = lazy(() => import("@/features/admin/AddDoctor"));
-const DoctorRequestTable = lazy(() => import("@/features/admin/DoctorRequestTable"));
+const DoctorRequestTable = lazy(
+  () => import("@/features/admin/DoctorRequestTable")
+);
 const UsersManagement = lazy(() => import("@/features/admin/UsersManagement"));
 
 export const AdminRoutes = {
@@ -27,28 +29,28 @@ export const AdminRoutes = {
           ),
         },
         {
-          path:"doktor-ekle",
-          element:(
-            <Suspense fallback={<Loading/>}>
-              <AddDoctor/>
+          path: "doktor-ekle",
+          element: (
+            <Suspense fallback={<Loading />}>
+              <AddDoctor />
             </Suspense>
-          )
+          ),
         },
-         {
-          path:"doktor-onayla",
-          element:(
-            <Suspense fallback={<Loading/>}>
-              <DoctorRequestTable/>
+        {
+          path: "doktor-onayla",
+          element: (
+            <Suspense fallback={<Loading />}>
+              <DoctorRequestTable />
             </Suspense>
-          )
+          ),
         },
-          {
-          path:"kullanici-ayarlari",
-          element:(
-            <Suspense fallback={<Loading/>}>
-              <UsersManagement/>
+        {
+          path: "kullanici-ayarlari",
+          element: (
+            <Suspense fallback={<Loading />}>
+              <UsersManagement />
             </Suspense>
-          )
+          ),
         },
       ],
     },

@@ -36,12 +36,19 @@ interface Education {
 }
 
 interface TimeSlot {
-  start: string; 
-  end: string;   
+  start: string;
+  end: string;
 }
 
 interface WorkingHours {
-  day: "monday" | "tuesday" | "wednesday" | "thursday" | "friday" | "saturday" | "sunday";
+  day:
+    | "monday"
+    | "tuesday"
+    | "wednesday"
+    | "thursday"
+    | "friday"
+    | "saturday"
+    | "sunday";
   isAvailable: boolean;
   slots: TimeSlot[];
 }
@@ -50,7 +57,7 @@ export interface Doctor {
   _id?: string;
   name: string;
   email: string;
-  password?: string; 
+  password?: string;
   image: Image;
   speciality: string;
   available: boolean;
@@ -70,25 +77,24 @@ export interface Doctor {
 }
 
 export interface DoctorRequest {
-    id: number;
-    fullName: string;
-    specialization: string; 
-    email: string;
-    phone: string;
-    requestDate: string;
-    status: 'pending' | 'approved' | 'rejected';
+  id: number;
+  fullName: string;
+  specialization: string;
+  email: string;
+  phone: string;
+  requestDate: string;
+  status: "pending" | "approved" | "rejected";
 }
 
-
-export type UserRole = 'admin' | 'doctor' | 'patient';
+export type UserRole = "admin" | "doctor" | "patient";
 
 export interface User {
-    id: number;
-    fullName: string;
-    email: string;
-    role: UserRole;     
-    isBlocked: boolean;  
-    createdAt: string;
+  id: number;
+  fullName: string;
+  email: string;
+  role: UserRole;
+  isBlocked: boolean;
+  createdAt: string;
 }
 
 export interface FormProps {

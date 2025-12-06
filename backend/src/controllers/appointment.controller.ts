@@ -120,8 +120,6 @@ const updateAppointmentStatus = catchAsyncError(
       { new: true }
     );
 
-  
-
     res.status(200).json({
       success: true,
       data: appointment,

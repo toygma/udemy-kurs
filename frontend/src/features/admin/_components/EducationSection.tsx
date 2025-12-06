@@ -1,5 +1,5 @@
 import { useFieldArray } from "react-hook-form";
-import type { FormProps } from "../types/adminTypes";
+import type { FormProps } from "../types/admin.types";
 import FormInput from "@/shared/ui/FormInput";
 import Button from "@/shared/ui/Button";
 

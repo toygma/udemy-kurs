@@ -1,14 +1,20 @@
-import { Calendar, Clock, MessageSquare, TrendingUp, UserCheck, Users } from "lucide-react";
 import {
-  appointmentList,
-  appointmentsByDoctor,
-  newAppointments,
-  stats,
-} from "./constants/adminConstants";
+  Calendar,
+  Clock,
+  MessageSquare,
+  TrendingUp,
+  UserCheck,
+  Users,
+} from "lucide-react";
+
 import moment from "moment";
 import StatsCard from "./_components/StatsCard";
+import { useGetAnalyticsDataQuery } from "@/store/api/admin-api";
 
 const Dashboard = () => {
+  const { data } = useGetAnalyticsDataQuery(null);
+  console.log("🚀 ~ Dashboard ~ data:", data);
+
   return (
     <div className="min-h-screen p-8">
       <div className="container mx-auto">
@@ -26,25 +32,25 @@ const Dashboard = () => {
           <StatsCard
             icon={<UserCheck size={32} />}
             title="Toplam Doktor"
-            value={stats.totalDoctors}
+            value={data?.stats?.totalDoctors}
             color="border-blue-500"
           />
-           <StatsCard
+          <StatsCard
             icon={<Users size={32} />}
             title="Toplam Hasta"
-            value={stats.totalPatients}
+            value={data?.stats?.totalPatients}
             color="border-green-500"
           />
-           <StatsCard
+          <StatsCard
             icon={<MessageSquare size={32} />}
             title="Toplam Yorum"
-            value={stats.totalComments}
+            value={data?.stats?.totalReviews}
             color="border-purple-500"
           />
-           <StatsCard
+          <StatsCard
             icon={<Calendar size={32} />}
             title="Toplam Randevu"
-            value={stats.totalAppointments}
+            value={data?.stats?.totalAppointments}
             color="border-orange-500"
           />
         </div>
@@ -59,18 +65,18 @@ const Dashboard = () => {
               </h2>
             </div>
             <div className="space-y-3">
-              {appointmentsByDoctor.map((item: any) => (
+              {data?.appointmentByDoctor?.map((item: any) => (
                 <div
                   key={item.id}
                   className="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 "
                 >
                   <div className="flex-1">
-                    <p className="font-semibold text-gray-800">{item.name}</p>
-                    <p className="text-sm text-gray-500">{item.speciality}</p>
+                    <p className="font-semibold text-gray-800">{item.doctor.name}</p>
+                    <p className="text-sm text-gray-500">{item.doctor.speciality}</p>
                   </div>
                   <div className="text-right">
                     <span className="inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold">
-                      {item.count} randevu
+                      {item.totalAppointments} randevu
                     </span>
                   </div>
                 </div>
@@ -86,20 +92,20 @@ const Dashboard = () => {
               </h2>
             </div>
             <div className="space-y-3 max-h-96 overflow-y-auto">
-              {newAppointments.length > 0 ? (
-                newAppointments.map((apt: any) => (
+              {data?.recentThreeAppointments?.length > 0 ? (
+                data?.recentThreeAppointments?.map((apt: any) => (
                   <div
                     key={apt._id}
                     className="p-3 bg-orange-50 rounded-lg border border-orange-200 hover:border-orange-300 transition"
                   >
                     <p className="font-semibold text-gray-800 text-sm">
-                      {apt.user?.name}
+                      {apt.patient?.name}
                     </p>
                     <p className="text-xs text-gray-600 mt-1">
                       {apt.doctor?.name}
                     </p>
                     <p className="text-xs text-orange-600 font-medium mt-2">
-                      {moment(apt.date).format("L")} • {apt.timeSlot}
+                      {moment(apt.createdAt).format("L")} • {apt.timeSlot}
                     </p>
                   </div>
                 ))
@@ -140,16 +146,16 @@ const Dashboard = () => {
                 </tr>
               </thead>
               <tbody>
-                {appointmentList.map((apt: any) => (
+                {data?.allRecentAppointments?.map((apt: any) => (
                   <tr key={apt._id} className="border-b hover:bg-gray-50">
                     <td className="px-4 py-3 text-sm text-gray-800">
                       {apt.doctor?.name}
                     </td>
                     <td className="px-4 py-3 text-sm text-gray-800">
-                      {apt.user?.name}
+                      {apt.patient?.name}
                     </td>
                     <td className="px-4 py-3 text-sm text-gray-600">
-                      {moment(apt.date).format("L")}
+                      {moment(apt?.createdAt).format("L")}
                     </td>
                     <td className="px-4 py-3 text-sm text-gray-600">
                       {apt.timeSlot}

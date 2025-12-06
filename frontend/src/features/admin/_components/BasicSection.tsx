@@ -1,27 +1,19 @@
-
-import  React, { useState } from "react";
+import React, { useState } from "react";
 import { specialistData } from "../constants/adminConstants";
 import FormInput from "@/shared/ui/FormInput";
-import type { FormProps } from "../types/adminTypes";
+import type { FormProps } from "../types/admin.types";
 
-
-
-const BasicSection = ({
-  error,
-  register,
-  setValue,
-}: FormProps) => {
+const BasicSection = ({ error, register, setValue }: FormProps) => {
   const [filteredSpecialist, setFilteredSpecialist] = useState(specialistData);
   const [showSuggestions, setShowSuggestions] = useState(false);
-
 
   const handleSelectSpeciality = (speciality: string) => {
     setValue?.("speciality", speciality);
     setShowSuggestions(false);
   };
 
-  const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
 
     const filtered = specialistData.filter((item) =>
       item.name.toLowerCase().includes(value.toLowerCase())

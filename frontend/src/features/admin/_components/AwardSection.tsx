@@ -1,5 +1,5 @@
 import { useFieldArray } from "react-hook-form";
-import type { FormProps } from "../types/adminTypes";
+import type { FormProps } from "../types/admin.types";
 import FormInput from "@/shared/ui/FormInput";
 import Button from "@/shared/ui/Button";
 
@@ -60,7 +60,9 @@ const AwardSection = ({ register, error, control }: FormProps) => {
       ))}
       <Button
         type="button"
-        onClick={() => append({ title: "", year: 0, description:"",organization:"" })}
+        onClick={() =>
+          append({ title: "", year: 0, description: "", organization: "" })
+        }
         className="bg-blue-500"
         children="Eğitim Ekle"
       />
