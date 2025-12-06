@@ -2,7 +2,7 @@ import { lazy, Suspense } from "react";
 import Loading from "@/features/Loading";
 import NotFound from "@/features/NotFound";
 import AuthLayout from "@/layouts/AuthLayout";
-import {GuestRoute} from "@/routes/ProtectedRoute"
+import { GuestRoute } from "./ProtectedRoute";
 
 const Login = lazy(() => import("@/features/auth/Login"));
 const SignupDoctor = lazy(() => import("@/features/auth/SignupDoctor"));

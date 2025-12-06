@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
-import { DoctorAvatar, Logo } from "@/core/images";
+import {  Logo, User } from "@/core/images";
 import { menuData } from "./constants/headerConstants";
 import MobileHeader from "./_components/MobileHeader";
 import Button from "@/shared/ui/Button";
@@ -107,7 +107,7 @@ const Header = () => {
             {user ? (
               <div className="relative lg:inline-block hidden">
                 <img
-                  src={DoctorAvatar}
+                  src={user?.image?.url || User}
                   alt="avatar"
                   className="w-12 h-12 object-cover rounded-full cursor-pointer"
                   onClick={handleAvatarMenuClose}

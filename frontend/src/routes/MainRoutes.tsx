@@ -15,7 +15,6 @@ export const MainRoutes = {
   element: <MainLayout />,
   errorElement: <NotFound />,
   children: [
-    // Giriş yapmış tüm kullanıcılar için (doctor, patient, admin)
     {
       element: <RequireAuth />,
       children: [
@@ -45,7 +44,6 @@ export const MainRoutes = {
         },
       ],
     },
-    // Sadece hasta kullanıcılar için
     {
       element: <ProtectedPatient />,
       children: [
