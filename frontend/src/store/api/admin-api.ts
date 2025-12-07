@@ -45,17 +45,17 @@ export const adminApi = createApi({
       invalidatesTags: ["Admin"],
     }),
     toggleUserStatus: builder.mutation({
-      query: ({id}) => ({
+      query: ({ id }) => ({
         url: `/${id}`,
         method: "PUT",
       }),
       invalidatesTags: ["Admin"],
     }),
     toggleUserRole: builder.mutation({
-      query: ({ id ,role}) => ({
+      query: ({ id, role }) => ({
         url: `/${id}/role`,
         method: "PUT",
-        body: { role }
+        body: { role },
       }),
       invalidatesTags: ["Admin"],
     }),
@@ -70,5 +70,5 @@ export const {
   useRejectDoctorMutation,
   useToggleUserStatusMutation,
   useToggleUserRoleMutation,
-  useGetAllUsersQuery
+  useGetAllUsersQuery,
 } = adminApi;

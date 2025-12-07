@@ -10,7 +10,7 @@ import { upload_file } from "../utils/cloudinary";
 
 const getAllUsers = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
-    const currentUserId = req.user._id; // Giriş yapan admin'in ID'si
+    const currentUserId = req.user._id;
 
     const doctors = await Doctor.find({ _id: { $ne: currentUserId } })
       .select("name email speciality role isActive createdAt")
@@ -22,7 +22,8 @@ const getAllUsers = catchAsyncError(
 
     const allUsers = [...doctors, ...patients];
 
-    allUsers.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+    allUsers.sort((a,b)=>b.createdAt.getTime() - a.createdAt.getTime())
+    
 
     res.status(200).json({
       success: true,
@@ -178,7 +179,7 @@ const toggleUserStatus = catchAsyncError(
     res.status(200).json({
       success: true,
       message: `Kullanıcı ${
-        user.isActive ? "aktif" : "engellenmiş"
+        user.isActive ? "engellenmiş" : "aktif"
       } duruma getirildi.`,
     });
   }
@@ -288,5 +289,6 @@ export default {
   rejectDoctor,
   toggleUserStatus,
   toggleUserRole,
-  doctorAdd,getAllUsers
+  doctorAdd,
+  getAllUsers,
 };

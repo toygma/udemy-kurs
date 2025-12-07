@@ -1,9 +1,9 @@
+import { formatDate } from "@/shared/utils/helper";
 import { useUsersManagement } from "./hooks/useUsersManagement";
 import type { User, UserRole } from "./types/admin.types";
 
 const UsersManagement = () => {
   const { handleRoleChange, handleToggleBlock, users } = useUsersManagement();
-  console.log("🚀 ~ UsersManagement ~ users:", users)
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-6 text-gray-800">
@@ -31,7 +31,7 @@ const UsersManagement = () => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {users?.data?.map((user:any) => (
+            {users?.data?.map((user:User) => (
               <tr
                 key={user._id}
                 className={`${
@@ -76,7 +76,7 @@ const UsersManagement = () => {
                 </td>
 
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {user.createdAt}
+                  {formatDate(user.createdAt)}
                 </td>
 
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">

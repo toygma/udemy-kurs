@@ -89,11 +89,11 @@ export interface DoctorRequest {
 export type UserRole = "admin" | "doctor" | "patient";
 
 export interface User {
-  id: number;
-  fullName: string;
+  _id: number;
+  name: string;
   email: string;
   role: UserRole;
-  isBlocked: boolean;
+  isActive: boolean;
   createdAt: string;
 }
 

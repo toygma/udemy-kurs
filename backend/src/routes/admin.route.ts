@@ -19,7 +19,6 @@ adminRoute.get(
   authorizeRoles("admin"),
   adminController.getAllUsers
 );
-
 adminRoute.get(
   "/doctor/pending",
   isAuthenticatedUser,
