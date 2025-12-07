@@ -15,7 +15,14 @@ export const adminApi = createApi({
       providesTags: ["Admin"],
     }),
     getAnalyticsData: builder.query({
-      query: () => "/",
+      query: (params) => {
+        return {
+          url: "/",
+          params: {
+            page: params?.page,
+          },
+        };
+      },
       providesTags: ["Admin"],
     }),
     getPendingData: builder.query({

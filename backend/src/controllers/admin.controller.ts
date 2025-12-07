@@ -22,8 +22,7 @@ const getAllUsers = catchAsyncError(
 
     const allUsers = [...doctors, ...patients];
 
-    allUsers.sort((a,b)=>b.createdAt.getTime() - a.createdAt.getTime())
-    
+    allUsers.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
 
     res.status(200).json({
       success: true,
@@ -35,7 +34,6 @@ const getAllUsers = catchAsyncError(
 const getAnalyticsData = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     const resPerPage = Number(req.query.limit) || 5;
-
     const reviewsData = await Review.countDocuments();
 
     const appointmentsData = await Appointment.countDocuments();
@@ -69,6 +67,8 @@ const getAnalyticsData = catchAsyncError(
       { $sort: { totalAppointments: -1 } },
     ]);
 
+    const totalAppointmentsCount = await Appointment.countDocuments();
+
     const apiFilter = new ApiFilter(
       Appointment.find()
         .populate("doctor", "name speciality appointments")
@@ -85,6 +85,9 @@ const getAnalyticsData = catchAsyncError(
       .sort({ createdAt: -1 })
       .limit(3);
 
+    const currentPage = Number(req.query.page) || 1;
+    const totalPages = Math.ceil(totalAppointmentsCount / resPerPage);
+
     return res.status(200).json({
       stats: {
         totalDoctors: doctorsData,
@@ -95,6 +98,12 @@ const getAnalyticsData = catchAsyncError(
       appointmentByDoctor,
       allRecentAppointments,
       recentThreeAppointments,
+      pagination: {
+        totalAppointments: totalAppointmentsCount,
+        resPerPage,
+        currentPage,
+        totalPages,
+      },
     });
   }
 );

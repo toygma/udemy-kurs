@@ -1,4 +1,4 @@
-import type { DoctorRequest, User } from "../types/admin.types";
+import type { DoctorRequest } from "../types/admin.types";
 
 export const stats = {
   totalDoctors: 12,
@@ -144,40 +144,6 @@ export const MOCK_DOCTOR_REQUESTS: DoctorRequest[] = [
   },
 ];
 
-export const MOCK_USERS: User[] = [
-  {
-    id: 1,
-    fullName: "Burak Admin",
-    email: "burak@admin.com",
-    role: "admin",
-    isBlocked: false,
-    createdAt: "2023-01-01",
-  },
-  {
-    id: 2,
-    fullName: "Dr. Ayşe Yılmaz",
-    email: "ayse@hastane.com",
-    role: "doctor",
-    isBlocked: false,
-    createdAt: "2023-05-15",
-  },
-  {
-    id: 3,
-    fullName: "Mehmet Hasta",
-    email: "mehmet@gmail.com",
-    role: "patient",
-    isBlocked: false,
-    createdAt: "2023-08-20",
-  },
-  {
-    id: 4,
-    fullName: "Kötü Niyetli Kullanıcı",
-    email: "spam@bot.com",
-    role: "patient",
-    isBlocked: true,
-    createdAt: "2023-11-02",
-  },
-];
 
 export const specialistData = [
   { id: 1, name: "Kardiyolog" },

@@ -10,10 +10,22 @@ import {
 import moment from "moment";
 import StatsCard from "./_components/StatsCard";
 import { useGetAnalyticsDataQuery } from "@/store/api/admin-api";
+import Pagination from "@/shared/ui/Pagination";
+import { useSearchParams } from "react-router";
 
 const Dashboard = () => {
-  const { data } = useGetAnalyticsDataQuery(null);
-  console.log("🚀 ~ Dashboard ~ data:", data);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const currentPage = Number(searchParams.get("page")) || 1;
+
+  const params = { page: currentPage };
+  const { data } = useGetAnalyticsDataQuery(params);
+  console.log("🚀 ~ Dashboard ~ data:", data)
+
+  const handlePageClick = (event: { selected: number }) => {
+    const newPage = event.selected + 1;
+    setSearchParams({ page: newPage.toString() });
+  };
 
   return (
     <div className="min-h-screen p-8">
@@ -71,8 +83,12 @@ const Dashboard = () => {
                   className="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 "
                 >
                   <div className="flex-1">
-                    <p className="font-semibold text-gray-800">{item.doctor.name}</p>
-                    <p className="text-sm text-gray-500">{item.doctor.speciality}</p>
+                    <p className="font-semibold text-gray-800">
+                      {item.doctor.name}
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      {item.doctor.speciality}
+                    </p>
                   </div>
                   <div className="text-right">
                     <span className="inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold">
@@ -182,6 +198,15 @@ const Dashboard = () => {
               </tbody>
             </table>
           </div>
+          {/* Pagination */}
+          {data?.pagination && data.pagination.totalPages > 1 && (
+            <div className="mt-6 flex justify-center">
+              <Pagination
+                handlePageClick={handlePageClick}
+                pageCount={data.pagination.totalPages}
+              />
+            </div>
+          )}
         </div>
       </div>
     </div>
