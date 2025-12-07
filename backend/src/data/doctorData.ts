@@ -1,5 +1,8 @@
+import mongoose from "mongoose";
+
 export const doctorData = [
   {
+    _id:new mongoose.Types.ObjectId("6935c87cef6112b9d7cc751f"),
     name: "Dr. Ayşe Yılmaz",
     email: "ayse.yilmaz@hospital.com",
     password: "password123",
@@ -82,6 +85,7 @@ export const doctorData = [
     reviews: [],
   },
   {
+    _id:new mongoose.Types.ObjectId("6935c87cef6112b9d7cc752a"),
     name: "Dr. Mehmet Demir",
     email: "mehmet.demir@hospital.com",
     password: "password123",
@@ -164,6 +168,7 @@ export const doctorData = [
     reviews: [],
   },
   {
+    _id:new mongoose.Types.ObjectId("6935c87cef6112b9d7cc7535"),
     name: "Dr. Zeynep Kaya",
     email: "zeynep.kaya@hospital.com",
     password: "password123",
@@ -246,6 +251,7 @@ export const doctorData = [
     reviews: [],
   },
   {
+    _id:new mongoose.Types.ObjectId("6935c87cef6112b9d7cc7540"),
     name: "Dr. Can Özkan",
     email: "can.ozkan@hospital.com",
     password: "password123",
