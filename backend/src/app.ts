@@ -12,10 +12,18 @@ import userRoute from "./routes/user.route";
 import appointmentRoute from "./routes/appointment.route";
 import reviewsRoute from "./routes/reviews.route";
 import adminRoute from "./routes/admin.route";
-
+import { handleStripeWebhook } from "./controllers/webhook.controller";
+import stripeRouter from "./routes/stripe.route";
 
 
 const app: Express = express();
+
+//webhooks
+app.post(
+  "/api/v1/webhook",
+  express.raw({ type: "application/json" }),
+  handleStripeWebhook
+);
 
 
 const __dirname = path.resolve();
@@ -42,6 +50,8 @@ app.use("/api/v1/appointments", appointmentRoute);
 app.use("/api/v1/reviews", reviewsRoute);
 
 app.use("/api/v1/admin", adminRoute);
+
+app.use("/api/v1/payment", stripeRouter);
 
 
 // Deploy (production)
