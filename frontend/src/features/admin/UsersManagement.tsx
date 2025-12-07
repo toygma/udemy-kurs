@@ -1,8 +1,9 @@
 import { useUsersManagement } from "./hooks/useUsersManagement";
-import type { UserRole } from "./types/admin.types";
+import type { User, UserRole } from "./types/admin.types";
 
 const UsersManagement = () => {
   const { handleRoleChange, handleToggleBlock, users } = useUsersManagement();
+  console.log("🚀 ~ UsersManagement ~ users:", users)
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-6 text-gray-800">
@@ -30,18 +31,18 @@ const UsersManagement = () => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {users.map((user) => (
+            {users?.data?.map((user:any) => (
               <tr
-                key={user.id}
+                key={user._id}
                 className={`${
-                  user.isBlocked ? "bg-red-50" : "hover:bg-gray-50"
+                  user.isActive ? "bg-red-50" : "hover:bg-gray-50"
                 }`}
               >
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex items-center">
                     <div className="ml-0">
                       <div className="text-sm font-medium text-gray-900">
-                        {user.fullName}
+                        {user.name}
                       </div>
                       <div className="text-sm text-gray-500">{user.email}</div>
                     </div>
@@ -52,7 +53,7 @@ const UsersManagement = () => {
                   <select
                     value={user.role}
                     onChange={(e) =>
-                      handleRoleChange(user.id, e.target.value as UserRole)
+                      handleRoleChange(user._id, e.target.value as UserRole)
                     }
                     className={`text-xs font-semibold px-2 py-1 rounded  cursor-pointer border border-gray-200 outline-none`}
                   >
@@ -65,12 +66,12 @@ const UsersManagement = () => {
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span
                     className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                      user.isBlocked
+                      user.isActive
                         ? "bg-red-100 text-red-800"
                         : "bg-green-100 text-green-800"
                     }`}
                   >
-                    {user.isBlocked ? "Engellendi" : "Aktif"}
+                    {user.isActive ? "Engellendi" : "Aktif"}
                   </span>
                 </td>
 
@@ -80,14 +81,14 @@ const UsersManagement = () => {
 
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                   <button
-                    onClick={() => handleToggleBlock(user.id)}
+                    onClick={() => handleToggleBlock(user._id)}
                     className={`${
-                      user.isBlocked
+                      user.isActive
                         ? "text-green-600 hover:text-green-900"
                         : "text-red-600 hover:text-red-900"
                     } font-bold`}
                   >
-                    {user.isBlocked ? "Engeli Kaldır" : "Engelle"}
+                    {user.isActive ? "Engeli Kaldır" : "Engelle"}
                   </button>
                 </td>
               </tr>

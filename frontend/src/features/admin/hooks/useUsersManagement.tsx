@@ -1,36 +1,37 @@
-import { useState } from "react";
-import type { User, UserRole } from "../types/admin.types";
-import { MOCK_USERS } from "../constants/adminConstants";
+import type { UserRole } from "../types/admin.types";
+import {
+  useToggleUserStatusMutation,
+  useToggleUserRoleMutation,
+  useGetAllUsersQuery,
+} from "@/store/api/admin-api";
+import toast from "react-hot-toast";
 
 export const useUsersManagement = () => {
-  const [users, setUsers] = useState<User[]>(MOCK_USERS);
+  const [toggleStatus] = useToggleUserStatusMutation();
+  const [toggleRole] = useToggleUserRoleMutation();
+  const { data: usersData, } = useGetAllUsersQuery(null)
 
-  const handleRoleChange = (userId: number, newRole: UserRole) => {
+  const handleRoleChange = async (userId: number, newRole: UserRole) => {
     try {
-      setUsers((prev) =>
-        prev.map((user) =>
-          user.id === userId ? { ...user, role: newRole } : user
-        )
-      );
+      const roleResponse = await toggleRole({ id: userId, role: newRole }).unwrap();;
+      toast.success(roleResponse.message);
     } catch (error) {
-      console.log(error);
+      console.error("Error changing user role:", error);
+      toast.error("Failed to change user role.");
     }
   };
 
-  const handleToggleBlock = (userId: number) => {
+  const handleToggleBlock = async (userId: number) => {
     try {
-      setUsers((prev) =>
-        prev.map((user) =>
-          user.id === userId ? { ...user, isBlocked: !user.isBlocked } : user
-        )
-      );
-    } catch (error) {
-      console.log(error);
+      const response = await toggleStatus({ id: userId }).unwrap();
+      toast.success(response.message);
+    } catch (err: any) {
+      toast.error("Başarısız blok işlemi", err);
     }
   };
 
   return {
-    users,
+    users: usersData,
     handleRoleChange,
     handleToggleBlock,
   };

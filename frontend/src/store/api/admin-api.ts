@@ -10,6 +10,10 @@ export const adminApi = createApi({
   baseQuery,
   tagTypes: ["Admin"],
   endpoints: (builder) => ({
+    getAllUsers: builder.query({
+      query: () => "/users",
+      providesTags: ["Admin"],
+    }),
     getAnalyticsData: builder.query({
       query: () => "/",
       providesTags: ["Admin"],
@@ -27,31 +31,31 @@ export const adminApi = createApi({
       invalidatesTags: ["Admin"],
     }),
     approveDoctor: builder.mutation({
-      query: ({id}) => ({
+      query: ({ id }) => ({
         url: `/doctor/approve/${id}`,
         method: "PUT",
       }),
       invalidatesTags: ["Admin"],
     }),
     rejectDoctor: builder.mutation({
-      query: ({id}) => ({
+      query: ({ id }) => ({
         url: `/doctor/reject/${id}`,
         method: "PUT",
       }),
       invalidatesTags: ["Admin"],
     }),
     toggleUserStatus: builder.mutation({
-      query: (id) => ({
+      query: ({id}) => ({
         url: `/${id}`,
         method: "PUT",
       }),
       invalidatesTags: ["Admin"],
     }),
     toggleUserRole: builder.mutation({
-      query: ({ id, body }) => ({
+      query: ({ id ,role}) => ({
         url: `/${id}/role`,
         method: "PUT",
-        body,
+        body: { role }
       }),
       invalidatesTags: ["Admin"],
     }),
@@ -66,4 +70,5 @@ export const {
   useRejectDoctorMutation,
   useToggleUserStatusMutation,
   useToggleUserRoleMutation,
+  useGetAllUsersQuery
 } = adminApi;

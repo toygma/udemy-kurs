@@ -14,6 +14,13 @@ adminRoute.get(
   adminController.getAnalyticsData
 );
 adminRoute.get(
+  "/users",
+  isAuthenticatedUser,
+  authorizeRoles("admin"),
+  adminController.getAllUsers
+);
+
+adminRoute.get(
   "/doctor/pending",
   isAuthenticatedUser,
   authorizeRoles("admin"),

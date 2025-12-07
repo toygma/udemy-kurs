@@ -8,6 +8,29 @@ import ApiFilter from "../utils/apiFilter";
 import ErrorHandler from "../utils/errorHandler";
 import { upload_file } from "../utils/cloudinary";
 
+const getAllUsers = catchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const currentUserId = req.user._id; // Giriş yapan admin'in ID'si
+
+    const doctors = await Doctor.find({ _id: { $ne: currentUserId } })
+      .select("name email speciality role isActive createdAt")
+      .sort({ createdAt: -1 });
+
+    const patients = await Patient.find({ _id: { $ne: currentUserId } })
+      .select("name email role isActive createdAt")
+      .sort({ createdAt: -1 });
+
+    const allUsers = [...doctors, ...patients];
+
+    allUsers.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+
+    res.status(200).json({
+      success: true,
+      data: allUsers,
+    });
+  }
+);
+
 const getAnalyticsData = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     const resPerPage = Number(req.query.limit) || 5;
@@ -264,5 +287,6 @@ export default {
   approveDoctor,
   rejectDoctor,
   toggleUserStatus,
-  toggleUserRole,doctorAdd
+  toggleUserRole,
+  doctorAdd,getAllUsers
 };
