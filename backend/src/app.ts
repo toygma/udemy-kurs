@@ -4,7 +4,6 @@ import cookieParser from "cookie-parser";
 import path from "path";
 import errorMiddleware from "./middlewares/error.middleware";
 
-
 //ROUTES
 import patientRoute from "./routes/patient.route";
 import doctorRoute from "./routes/doctor.route";
@@ -12,19 +11,16 @@ import userRoute from "./routes/user.route";
 import appointmentRoute from "./routes/appointment.route";
 import reviewsRoute from "./routes/reviews.route";
 import adminRoute from "./routes/admin.route";
+import stripeRoute from "./routes/stripe.route";
 import { handleStripeWebhook } from "./controllers/webhook.controller";
-import stripeRouter from "./routes/stripe.route";
-
 
 const app: Express = express();
 
-//webhooks
 app.post(
   "/api/v1/webhook",
   express.raw({ type: "application/json" }),
   handleStripeWebhook
 );
-
 
 const __dirname = path.resolve();
 
@@ -51,8 +47,7 @@ app.use("/api/v1/reviews", reviewsRoute);
 
 app.use("/api/v1/admin", adminRoute);
 
-app.use("/api/v1/payment", stripeRouter);
-
+app.use("/api/v1/payment", stripeRoute);
 
 // Deploy (production)
 if (process.env.NODE_ENV === "production") {
@@ -63,6 +58,6 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-app.use(errorMiddleware)
+app.use(errorMiddleware);
 
 export default app;

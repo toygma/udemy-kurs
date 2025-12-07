@@ -1,104 +1,82 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import Stripe from "stripe";
+import catchAsyncError from "../middlewares/catch.middleware";
+import ErrorHandler from "../utils/errorHandler";
 import Appointment from "../models/appointment.model";
 import Doctor from "../models/doctor.model";
 import Patient from "../models/patient.model";
 
 if (!process.env.STRIPE_SECRET_KEY) {
-  throw new Error("STRIPE_SECRET_KEY değişkeni bulunamadı");
+  throw new Error("STRIPE_SECRET_KEY bulunamadı");
 }
 
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: "2025-11-17.clover",
 });
 
-export const handleStripeWebhook = async (req: Request, res: Response) => {
-  const sig = req.headers["stripe-signature"];
-  const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
+export const handleStripeWebhook = catchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const sig = req.headers["stripe-signature"];
 
-  if (!endpointSecret) {
-    console.error("❌ STRIPE_WEBHOOK_SECRET tanımlı değil!");
-    return res.status(500).json({ error: "Stripe webhook secret not set" });
-  }
+    const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
-  if (!sig) {
-    console.error("❌ Stripe signature eksik!");
-    return res.status(400).json({ error: "Stripe signature missing" });
-  }
-
-  let event: Stripe.Event;
-
-  try {
-    event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
-  } catch (error: any) {
-    console.error("❌ Webhook signature doğrulama hatası:", error.message);
-    return res.status(400).json({
-      error: `Webhook Error: ${error.message}`,
-    });
-  }
-
-  console.log(`✅ Webhook alındı: ${event.type} [${event.id}]`);
-
-  // checkout.session.completed event'ini işle
-  if (event.type === "checkout.session.completed") {
-    const session = event.data.object as Stripe.Checkout.Session;
-    const appointmentId = session.metadata?.appointmentId;
-    const doctorId = session.metadata?.doctorId;
-    const patientId = session.metadata?.patientId;
-
-    console.log("📦 Session metadata:", { appointmentId, doctorId, patientId });
-
-    if (!appointmentId) {
-      console.error("❌ appointmentId eksik!");
-      return res.status(400).json({ error: "No appointmentId in metadata" });
+    if (!endpointSecret) {
+      return next(new ErrorHandler("STRIPE WEBHOOK SECRET tanımlı değil", 500));
     }
 
+    if (!sig) {
+      return next(new ErrorHandler("stripe signature eksik", 500));
+    }
+
+    let event: Stripe.Event;
+
     try {
-      // Appointment'ı bul ve güncelle
+      event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
+    } catch (error: any) {
+      return res.status(400).json({
+        error: `Webhook error ${error.message}`,
+      });
+    }
+
+    if (event.type === "checkout.session.completed") {
+      const session = event.data.object as Stripe.Checkout.Session;
+
+      const appointmentId = session.metadata?.appointmentId;
+      const doctorId = session.metadata?.doctorId;
+      const patientId = session.metadata?.patientId;
+
       const appointment = await Appointment.findById(appointmentId);
 
-      if (!appointment) {
-        console.error(`❌ Appointment bulunamadı: ${appointmentId}`);
-        return res.status(404).json({ error: "Appointment not found" });
+      if (!appointmentId) {
+        return next(new ErrorHandler("randevu ID gereklidir", 400));
       }
 
-      console.log(`🔄 Appointment güncelleniyor: ${appointmentId}`);
-
-      // Appointment'ı güncelle
       appointment.status = "confirmed";
       appointment.isPaid = "paid";
+
       appointment.paymentId = session.payment_intent as string;
       await appointment.save();
 
-      console.log(`✅ Appointment güncellendi: ${appointmentId}`);
-
-
-      // Doctor'ı güncelle (opsiyonel - isPaid alanı varsa)
       if (doctorId) {
-        try {
-          await Doctor.findByIdAndUpdate(doctorId, {
+        await Doctor.findByIdAndUpdate(
+          doctorId,
+          {
             isPaid: "paid",
-          });
-          console.log(`✅ Doctor güncellendi: ${doctorId}`);
-        } catch (err) {
-          console.error("⚠️ Doctor güncellenemedi:", err);
-        }
+          },
+          { new: true }
+        );
       }
 
-      console.log(`🎉 Ödeme başarıyla tamamlandı!`);
-
-      // TODO: Email bildirimi gönder
-      // await sendAppointmentConfirmationEmail(appointment);
-
-    } catch (error: any) {
-      console.error("❌ Webhook işleme hatası:", error.message);
-      console.error("Stack:", error.stack);
-      return res.status(500).json({
-        error: `Error processing webhook: ${error.message}`,
-      });
+      if (patientId) {
+        await Patient.findByIdAndUpdate(
+          patientId,
+          { paymentId: session.payment_intent as string },
+          { new: true }
+        );
+      }
     }
-  }
 
-  // Diğer event'ler için
-  return res.status(200).json({ received: true });
-};
+    return res.status(200).json({ received: true });
+  }
+);
+
