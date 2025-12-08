@@ -37,14 +37,6 @@ const Login = () => {
     },
   });
 
-  useEffect(() => {
-    if (isSuccess) {
-      toast.success("Giriş Başarılı");
-      navigate("/", { replace: true });
-    } else if (loginError && "data" in loginError) {
-      toast.error((loginError as any)?.data?.message || "Giriş başarısız");
-    }
-  }, [isSuccess, loginError, navigate]);
 
   const handleRoleChange = (role: "patient" | "doctor") => {
     setActiveRole(role);
@@ -52,7 +44,12 @@ const Login = () => {
   };
 
   const onSubmit = async (data: TLoginFormSchema) => {
-    await loginMutation(data)
+    try{
+      const response = await loginMutation(data).unwrap()
+      toast.success(response.message)
+    }catch(error:any){
+      toast.error(error.message)
+    }
   };
 
   return (
