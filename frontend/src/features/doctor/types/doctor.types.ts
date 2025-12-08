@@ -1,4 +1,4 @@
-import type { Review } from "@/features/reviews/types/reviewTypes";
+import type { Review } from "@/features/reviews/types/review.types";
 
 export interface DoctorSlot {
   id: number;

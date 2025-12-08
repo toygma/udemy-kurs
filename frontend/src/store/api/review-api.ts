@@ -12,6 +12,7 @@ export const reviewsApi = createApi({
   endpoints: (builder) => ({
     getAllReviews: builder.query({
       query: (doctorId) => `/${doctorId}`,
+      transformResponse:(response:any)=>response.data,
       providesTags: ["Reviews"],
     }),
     createReview: builder.mutation({

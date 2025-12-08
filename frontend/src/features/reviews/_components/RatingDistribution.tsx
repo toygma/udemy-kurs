@@ -1,4 +1,4 @@
-import type { RatingSummaryProps } from "../types/reviewTypes";
+import type { RatingSummaryProps } from "../types/review.types";
 
 const RatingDistribution = ({ reviews }: RatingSummaryProps) => {
   return (
@@ -6,9 +6,11 @@ const RatingDistribution = ({ reviews }: RatingSummaryProps) => {
       <h3 className="font-semibold text-gray-900 mb-4">Puan Dağılımı</h3>
       <div className="space-y-3">
         {[5, 4, 3, 2, 1].map((star) => {
-          const count = reviews.filter((r) => r.rating === star).length;
+          const count = reviews?.filter((r) => r.rating === star).length;
           const percentage =
-            reviews.length > 0 ? Math.round((count / reviews.length) * 100) : 0;
+            reviews?.length > 0
+              ? Math.round((count / reviews?.length) * 100)
+              : 0;
 
           return (
             <div key={star} className="flex items-center gap-3">

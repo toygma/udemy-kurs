@@ -1,5 +1,5 @@
 import { Star } from "lucide-react";
-import type { StarRatingProps } from "../types/reviewTypes";
+import type { StarRatingProps } from "../types/review.types";
 
 const StarRating = ({
   rating,

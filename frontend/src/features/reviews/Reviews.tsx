@@ -5,11 +5,7 @@ import ReviewForm from "./_components/ReviewForm";
 import ReviewList from "./_components/ReviewList";
 import { useReviews } from "./hooks/useReviews";
 
-interface ReviewsSectionProps {
-  doctorId: string;
-}
-
-const ReviewsSection = ({ doctorId }: ReviewsSectionProps) => {
+const ReviewsSection = ({ doctorId }: { doctorId: string }) => {
   const {
     reviews,
     isSubmitting,
@@ -23,14 +19,12 @@ const ReviewsSection = ({ doctorId }: ReviewsSectionProps) => {
     editingLoading,
   } = useReviews(doctorId);
 
-  const handleUpdate = (rating: number, comment: string, reviewId?: string) => {
-    if (reviewId) {
-      updateReview(rating, comment, reviewId);
-    }
+  const handleSubmit = (rating: number, comment: string, reviewId: string) => {
+    updateReview(rating, comment, reviewId);
   };
 
   return (
-    <div className="min-h-screen py-12">
+    <div className="min-h-screen  py-12">
       <div className="mb-12">
         <h2 className="text-3xl font-bold text-gray-900 mb-8 flex gap-3 items-center">
           <MessageCircle className="w-8 h-8 text-indigo-600" />
@@ -41,15 +35,14 @@ const ReviewsSection = ({ doctorId }: ReviewsSectionProps) => {
           <RatingDistribution reviews={reviews} />
         </div>
       </div>
-      
       <ReviewForm onSubmit={addReview} isLoading={isSubmitting} />
 
       <ReviewList
         reviews={reviews}
         onDelete={deleteReview}
-        isDeleting={isDeleting}
-        editingId={editingId}
-        onSubmit={handleUpdate}
+        isDeleting={isDeleting  ?? null}
+        editingId={editingId ?? null}
+        onSubmit={handleSubmit}
         onEdit={startEditing}
         onCancel={cancelEditing}
         isLoading={editingLoading}

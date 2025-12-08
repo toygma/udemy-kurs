@@ -1,4 +1,4 @@
-import type { ReviewFormProps } from "../types/reviewTypes";
+import type { ReviewFormProps } from "../types/review.types";
 
 import { Controller, useForm } from "react-hook-form";
 import {

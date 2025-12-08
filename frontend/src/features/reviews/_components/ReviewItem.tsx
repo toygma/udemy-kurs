@@ -1,7 +1,7 @@
 import { formatDate } from "@/shared/utils/helper";
 import { Calendar, Edit, Trash2, User } from "lucide-react";
 import StarRating from "./StarRating";
-import type { ReviewItemProps } from "../types/reviewTypes";
+import type { ReviewItemProps } from "../types/review.types";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -39,7 +39,9 @@ const ReviewItem = ({
   const commentValue = watch("comment");
 
   const handleFormSubmit = (data: ReviewSchemaType) => {
-    onSubmit(data.rating, data.comment, editingId);
+    if (editingId) {
+      onSubmit(data.rating, data.comment, editingId);
+    }
   };
 
   return (
@@ -49,10 +51,10 @@ const ReviewItem = ({
           className="w-12 h-12 rounded-full bg-indigo-100 
                  flex items-center justify-center shrink-0"
         >
-          {review?.user?.image ? (
+          {review?.patient?.image?.url ? (
             <img
-              src={review?.user?.image}
-              alt={review?.user?.name}
+              src={review?.patient?.image.url}
+              alt={review?.patient?.name}
               className="w-12 h-12 rounded-full object-cover"
             />
           ) : (
@@ -63,7 +65,7 @@ const ReviewItem = ({
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between mb-2">
             <h3 className="font-semibold text-gray-900 truncate">
-              {review?.user?.name}
+              {review?.patient?.name}
             </h3>
             <div className="flex items-center gap-3 shrink-0 ml-4">
               {/* Tarih */}

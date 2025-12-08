@@ -1,30 +1,30 @@
 import { MessageCircle } from "lucide-react";
-import type { ReviewListProps } from "../types/reviewTypes";
+import type { ReviewListProps } from "../types/review.types";
 import ReviewItem from "./ReviewItem";
 
 const ReviewList = ({
   reviews,
   onDelete,
-  deletingId,
+  isDeleting,
   editingId,
   onCancel,
   onEdit,
   onSubmit,
-  isLoading
+  isLoading,
 }: ReviewListProps) => {
   return (
     <div>
       <h3 className="text-2xl font-bold text-gray-900 mb-6">
-        Yorum Sayısı ({reviews.length})
+        Yorum Sayısı ({reviews?.length})
       </h3>
-      {reviews.length > 0 ? (
+      {reviews?.length > 0 ? (
         <div className="space-y-4">
-          {reviews.map((review) => (
+          {reviews?.map((review) => (
             <ReviewItem
               key={review._id}
               review={review}
               onDelete={onDelete}
-              isDeleting={deletingId === review._id}
+              isDeleting={isDeleting}
               editingId={editingId}
               onSubmit={onSubmit}
               onCancel={onCancel}

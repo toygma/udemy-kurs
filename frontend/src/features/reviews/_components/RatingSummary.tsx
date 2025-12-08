@@ -1,9 +1,9 @@
-import type { RatingSummaryProps } from "../types/reviewTypes";
+import type { RatingSummaryProps } from "../types/review.types";
 import StarRating from "./StarRating";
 
 const RatingSummary = ({ reviews }: RatingSummaryProps) => {
   const averageRating =
-    reviews.length > 0
+    reviews?.length > 0
       ? (
           reviews.reduce((acc, curr) => acc + curr.rating, 0) / reviews.length
         ).toFixed(1)
@@ -18,7 +18,9 @@ const RatingSummary = ({ reviews }: RatingSummaryProps) => {
         <div className="flex justify-center mb-3">
           <StarRating rating={Math.round(parseFloat(averageRating))} readOnly />
         </div>
-        <p className="text-gray-600">{reviews.length} Toplam yorum sayısı.</p>
+        <p className="text-gray-600">
+          {reviews?.length || 0} Toplam yorum sayısı.
+        </p>
       </div>
     </div>
   );

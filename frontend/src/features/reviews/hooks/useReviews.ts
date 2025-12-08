@@ -7,12 +7,12 @@ import {
 } from "@/store/api/review-api";
 import toast from "react-hot-toast";
 
-
 export const useReviews = (doctorId: string) => {
-  const { data: reviews = [] } = useGetAllReviewsQuery(doctorId);
+  const { data: reviews } = useGetAllReviewsQuery(doctorId);
 
   const [createReview, { isLoading: isSubmitting }] = useCreateReviewMutation();
-  const [updateReview, { isLoading: editingLoading }] = useUpdateReviewMutation();
+  const [updateReview, { isLoading: editingLoading }] =
+    useUpdateReviewMutation();
   const [deleteReview, { isLoading: isDeleting }] = useDeleteReviewMutation();
 
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -23,9 +23,9 @@ export const useReviews = (doctorId: string) => {
         doctorId,
         body: { rating, comment },
       }).unwrap();
-      toast.success("Yorum başarıyla eklendi");
+      toast.success("Yorum başarılı bir şekilde oluşturuldu");
     } catch (error: any) {
-      toast.error(error?.data?.message || "Bir hata oluştu");
+      toast.error(error.message);
     }
   };
 
@@ -39,21 +39,20 @@ export const useReviews = (doctorId: string) => {
         reviewId,
         body: { rating, comment },
       }).unwrap();
-      toast.success("Yorum güncellendi");
+      toast.success("Yorum başarılı bir şekilde güncellendi");
       setEditingId(null);
     } catch (error: any) {
-      toast.error(error?.data?.message || "Bir hata oluştu");
+      toast.error(error.message);
     }
   };
 
   const handleDeleteReview = async (reviewId: string) => {
-    if (window.confirm("Yorumun silinecek emin misin?")) {
-      try {
-        await deleteReview(reviewId).unwrap();
-        toast.success("Yorum silindi");
-      } catch (error: any) {
-        toast.error(error?.data?.message || "Bir hata oluştu");
-      }
+    try {
+      await deleteReview(reviewId).unwrap();
+      toast.success("Yorum silindi");
+
+    } catch (error: any) {
+      toast.error(error.message);
     }
   };
 
@@ -68,13 +67,13 @@ export const useReviews = (doctorId: string) => {
   return {
     reviews,
     isSubmitting,
-    editingId,
-    editingLoading,
     isDeleting,
+    editingId,
     addReview,
     updateReview: handleUpdateReview,
     deleteReview: handleDeleteReview,
     startEditing,
     cancelEditing,
+    editingLoading,
   };
 };

@@ -260,7 +260,7 @@ const DoctorDetail = () => {
           </div>
         </div>
         <DoctorSlot doctor={doctor?.data} />
-        <ReviewSection />
+        <ReviewSection doctorId={doctor?.data?._id}/>
       </LayoutContainer>
     </div>
   );
