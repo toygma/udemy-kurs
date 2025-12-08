@@ -1,4 +1,4 @@
-import type { UserProfile } from "../types/profileTypes";
+import type { UserProfile } from "../types/profile.types";
 
 export const userData:UserProfile = {
   _id: "1",

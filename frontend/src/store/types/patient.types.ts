@@ -24,7 +24,7 @@ export interface IPatient {
   phone?: string;
   image?: IImage;
   dateOfBirth?:string;
-  paymentId?: string;
+  paymentId?:string;
   role: RoleValue;
   isActive: boolean;
   createdAt: Date;

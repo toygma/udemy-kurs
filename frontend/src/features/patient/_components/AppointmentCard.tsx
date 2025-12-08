@@ -1,5 +1,5 @@
 import { Clock, CreditCard, MapPin, X } from "lucide-react";
-import type { AppointmentCardProps } from "../types/appointmentTypes";
+import type { AppointmentCardProps } from "../types/appointment.types";
 import { formatDate } from "@/shared/utils/helper";
 
 const AppointmentCard = ({
@@ -73,7 +73,7 @@ const AppointmentCard = ({
           <div className="flex gap-3 mt-6 pt-6 border-t border-gray-100">
             {/* Payment Button */}
             <button
-              onClick={() => onPayment(appointment._id,appointment.doctor._id)}
+              onClick={() => onPayment(appointment._id, appointment.doctor._id)}
               disabled={isPaid}
               className={`flex-1 ${
                 isPaid

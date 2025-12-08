@@ -2,10 +2,10 @@ import LayoutContainer from "@/shared/ui/LayoutContainer";
 import AppointmentCard from "./_components/AppointmentCard";
 import { useAppointments } from "./hooks/useAppointment";
 import EmptyState from "./_components/EmptyState";
-import type { Appointment } from "./types/appointmentTypes";
+import type { Appointment } from "./types/appointment.types";
 
 const MyAppointments = () => {
-  const { appointments,handleCancel, handleCheckout } = useAppointments();
+  const { appointments, handleCancel, handleCheckout } = useAppointments();
   return (
     <div className="min-h-screen">
       <LayoutContainer>
@@ -22,7 +22,7 @@ const MyAppointments = () => {
                   Yaklaşan randevularınızı yönetin.
                 </p>
               </div>
-              {appointments?.data?.map((apt:Appointment) => (
+              {appointments?.data?.map((apt: Appointment) => (
                 <AppointmentCard
                   key={apt._id}
                   appointment={apt}

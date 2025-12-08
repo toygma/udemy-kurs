@@ -83,3 +83,21 @@ export const ProtectedAdmin = () => {
 
   return <Outlet />;
 };
+
+export const ProtectedPayment = () => {
+   const { user, loading } = useAppSelector((state) => state.auth);
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  if (!user) {
+    return <Navigate to={"/giris-yap"} replace />;
+  }
+
+  if (!user.paymentId) {
+    return <Navigate to={"/"} replace />;
+  }
+
+  return <Outlet />;
+};

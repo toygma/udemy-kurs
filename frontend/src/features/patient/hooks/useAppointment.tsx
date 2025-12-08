@@ -14,7 +14,6 @@ export const useAppointments = () => {
         appointmentId,
         doctorId,
       }).unwrap();
-      console.log("🚀 ~ handleCheckout ~ response:", response)
       if (response.sessionUrl) {
         window.location.href = response.sessionUrl;
       }

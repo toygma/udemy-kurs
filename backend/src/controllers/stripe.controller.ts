@@ -64,11 +64,11 @@ const getCheckoutSession = catchAsyncError(
             currency: "try",
             unit_amount: Math.round(Number(doctor.fee) * 100),
             product_data: {
-              name: `Dr. ${doctor.name} ile randevu`,
+              name: `${doctor.name} ile randevu`,
               description: `${doctor.speciality} - ${new Date(
                 appointment.date
               ).toLocaleDateString("tr-TR")} - ${appointment.timeSlot}`,
-              images: [doctor.image.url],
+              images:[doctor.image.url],
             },
           },
           quantity: 1,

@@ -2,7 +2,8 @@ import { Suspense, lazy } from "react";
 import NotFound from "@/features/NotFound";
 import MainLayout from "@/layouts/MainLayout";
 import Loading from "@/features/Loading";
-import { RequireAuth, ProtectedPatient } from "./ProtectedRoute";
+import { RequireAuth, ProtectedPatient, ProtectedPayment } from "./ProtectedRoute";
+import SuccessPage from "@/features/success/SuccessPage";
 
 const HomePage = lazy(() => import("@/features/home/HomePage"));
 const Doctors = lazy(() => import("@/features/doctor/Doctors"));
@@ -60,6 +61,19 @@ export const MainRoutes = {
           element: (
             <Suspense fallback={<Loading />}>
               <MyAppointments />
+            </Suspense>
+          ),
+        },
+      ],
+    },
+    {
+      element: <ProtectedPayment />,
+      children: [
+        {
+          path: "/randevular/basarili",
+          element: (
+            <Suspense fallback={<Loading />}>
+              <SuccessPage />
             </Suspense>
           ),
         },

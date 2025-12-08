@@ -75,6 +75,7 @@ export interface IDoctor {
   workingHours: IWorkingHours[];
   approvalStatus: "pending" | "approved" | "rejected";
   isPaid: "unpaid" | "paid";
+  paymentId?:string;
   createdAt?: Date;
   updatedAt?: Date;
 }
