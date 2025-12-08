@@ -6,7 +6,10 @@
   "scripts": {
     "dev": "nodemon --exec ts-node src/server.ts",
     "start": "node dist/server.js",
-    "seeder": "ts-node src/seeder/seed.ts"
+    "seeder": "ts-node src/seeder/seed.ts",
+    "build:backend":"npm install && tsc",
+    "build:frontend":"cd .. && cd frontend && npm install && npm run build",
+    "build":"npm run build:frontend && npm run build:backend"
   },
   "keywords": [],
   "author": "",
