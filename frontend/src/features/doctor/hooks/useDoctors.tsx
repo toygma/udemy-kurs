@@ -1,38 +1,54 @@
 import { useGetAllDoctorsQuery } from "@/store/api/doctor-api";
 import { useEffect, useState } from "react";
-import type { Doctor, DoctorApiResponse } from "../types/doctorTypes";
+import type { DoctorApiResponse } from "../types/doctor.types";
+import { useSearchParams } from "react-router";
 
 export const useDoctors = () => {
-  const [selectedCategory, setSelectedCategory] = useState<string>("Tüm Doktorlar");
+  const [selectedCategory, setSelectedCategory] =
+    useState<string>("Tüm Doktorlar");
   const [filteredDoctors, setFilteredDoctors] = useState<
     DoctorApiResponse | undefined
   >(undefined);
 
-  const { data: doctors, isLoading } = useGetAllDoctorsQuery(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const currentPage = Number(searchParams.get("page")) || 1;
+  const category = searchParams.get("category") || "Tüm Doktorlar";
+
+  const params: { page: number; category?: string } = {
+    page: currentPage,
+  };
+
+  if (selectedCategory !== "Tüm Doktorlar") {
+    params.category = selectedCategory;
+  }
+  const { data: doctors, isLoading } = useGetAllDoctorsQuery(params);
 
   useEffect(() => {
-    if (!doctors) {
-      setFilteredDoctors(undefined);
-      return;
-    }
+    setFilteredDoctors(doctors);
+  }, [doctors]);
 
-    if (selectedCategory === "Tüm Doktorlar") {
-      setFilteredDoctors(doctors);
-      return;
+  useEffect(() => {
+    if (category) {
+      searchParams.delete("query");
+      setSearchParams(searchParams);
     }
-    const filtered = doctors.data.filter((doc: Doctor) => {
-      return doc.speciality.toLowerCase() === selectedCategory.toLowerCase();
-    });
+  }, [category, setSearchParams]);
 
-    setFilteredDoctors({
-      data: filtered,
-      count: filtered.length,
-      success: true,
-    });
-  }, [doctors, selectedCategory]);
+  const handlePageClick = (event: { selected: number }) => {
+    const newPage = event.selected + 1;
+
+    const params: Record<string, string> = { page: newPage.toString() };
+    if (selectedCategory !== "Tüm Doktorlar") {
+      params.category = selectedCategory;
+    }
+    setSearchParams(params);
+  };
 
   const handleCategoryChange = (categoryId: string) => {
     setSelectedCategory(categoryId);
+
+    setSearchParams({ page: "1", category: categoryId });
   };
 
   return {
@@ -40,5 +56,6 @@ export const useDoctors = () => {
     handleCategoryChange,
     isLoading,
     filteredDoctors,
+    handlePageClick,
   };
 };

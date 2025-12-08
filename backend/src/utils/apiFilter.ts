@@ -18,6 +18,23 @@ class ApiFilter {
 
     return this;
   }
+  filters() {
+    const queryCopy = { ...this.queryStr };
+
+    const fieldsToRemove = ["page", "limit"];
+    fieldsToRemove.forEach((el) => delete queryCopy[el]);
+
+    if (queryCopy.category && queryCopy.category !== "Tüm Doktorlar") {
+      queryCopy.speciality = queryCopy.category;
+      delete queryCopy.category;
+    } else {
+      delete queryCopy.category;
+    }
+
+    this.query = this.query.find(queryCopy);
+
+    return this;
+  }
 }
 
 export default ApiFilter;

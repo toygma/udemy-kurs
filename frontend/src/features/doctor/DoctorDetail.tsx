@@ -13,7 +13,7 @@ import DoctorSlot from "./_components/DoctorSlot";
 import ReviewSection from "../reviews/Reviews";
 import LayoutContainer from "@/shared/ui/LayoutContainer";
 import { useGetDoctorFindIdQuery } from "@/store/api/doctor-api";
-import type { Awards,  Education } from "./types/doctorTypes";
+import type { Awards, Education } from "./types/doctor.types";
 
 const DoctorDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -105,7 +105,7 @@ const DoctorDetail = () => {
                   Eğitim & Nitelikler
                 </h2>
                 <div className="space-y-4">
-                  {d.education.map((edu:Education, index:number) => (
+                  {d.education.map((edu: Education, index: number) => (
                     <div
                       key={index}
                       className="flex gap-4 p-4 bg-gray-50 rounded-xl"
@@ -134,7 +134,7 @@ const DoctorDetail = () => {
                   Ödüller
                 </h2>
                 <div className="space-y-4">
-                  {d.awards.map((award:Awards, index:number) => (
+                  {d.awards.map((award: Awards, index: number) => (
                     <div
                       key={index}
                       className="flex gap-4 p-4 bg-gray-50 rounded-xl"
@@ -147,7 +147,9 @@ const DoctorDetail = () => {
                           {award.title}
                         </h3>
                         <p className="text-gray-600">{award.organization}</p>
-                        <p className="text-gray-600 pt-2">{award.description}</p>
+                        <p className="text-gray-600 pt-2">
+                          {award.description}
+                        </p>
                         <p className="text-sm text-gray-500">{award.year}</p>
                       </div>
                     </div>

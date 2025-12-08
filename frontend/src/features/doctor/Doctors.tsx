@@ -3,10 +3,16 @@ import { categories } from "./constants/doctorConstants";
 import { useDoctors } from "./hooks/useDoctors";
 
 import DoctorCard from "./_components/DoctorCard";
+import Pagination from "@/shared/ui/Pagination";
 
 const Doctors = () => {
-  const { filteredDoctors, handleCategoryChange, isLoading, selectedCategory } =
-    useDoctors();
+  const {
+    filteredDoctors,
+    handleCategoryChange,
+    isLoading,
+    selectedCategory,
+    handlePageClick,
+  } = useDoctors();
 
   return (
     <LayoutContainer>
@@ -49,13 +55,22 @@ const Doctors = () => {
               <h1>
                 {selectedCategory === "all"
                   ? "Tüm Doktorlar"
-                  : categories.find((c) => c.id === selectedCategory)?.name}
+                  : categories.find((c) => c.name === selectedCategory)?.name}
               </h1>
               <p className="text-sm sm:text-base text-gray-600">
                 {filteredDoctors?.count} Doktor Gösteriliyor.
               </p>
             </div>
             <DoctorCard filteredDoctors={filteredDoctors} />
+            {/* PAGINATION  */}
+            {filteredDoctors?.pagination && filteredDoctors.pagination.totalPages > 1 && (
+              <div className="mt-6 flex justify-center">
+                <Pagination
+                  handlePageClick={handlePageClick}
+                  pageCount={filteredDoctors.pagination.totalPages}
+                />
+              </div>
+            )}
           </div>
         )}
       </div>

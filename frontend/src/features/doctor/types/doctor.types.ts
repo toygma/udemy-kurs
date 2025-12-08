@@ -74,6 +74,12 @@ export interface DoctorApiResponse {
   success: boolean;
   count: number;
   data: Doctor[];
+  pagination: {
+    totalDoctors: number;
+    resPerPage: number;
+    currentPage: number;
+    totalPages: number;
+  };
 }
 export interface IDoctorCardProps {
   filteredDoctors: DoctorApiResponse | undefined;

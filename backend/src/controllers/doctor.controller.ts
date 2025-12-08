@@ -5,32 +5,32 @@ import Doctor from "../models/doctor.model";
 import moment from "moment";
 import Appointment from "../models/appointment.model";
 import { upload_file } from "../utils/cloudinary";
+import ApiFilter from "../utils/apiFilter";
 
 const getAllDoctors = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
-    const resPerPage = Number(req.query.limit) || 5;
+    const resPerPage = Number(req.query.limit) || 3;
 
-    // Toplam doktor sayısı
-    const doctorsCount = await Doctor.countDocuments();
+    const totalDoctors = await Doctor.countDocuments();
 
-    // ApiFilter ile pagination
-    const apiFilter = new ApiFilter(
+    const apiFilters = new ApiFilter(
       Doctor.find().sort({ createdAt: -1 }),
       req.query
-    ).pagination(resPerPage);
+    )
+      .filters()
+      .pagination(resPerPage);
 
-    const doctors = await apiFilter.query;
+    const doctors = await apiFilters.query;
 
-    // Pagination hesaplamaları
     const currentPage = Number(req.query.page) || 1;
-    const totalPages = Math.ceil(doctorsCount / resPerPage);
+    const totalPages = Math.ceil(totalDoctors / resPerPage);
 
     res.status(200).json({
       success: true,
       count: doctors.length,
       data: doctors,
       pagination: {
-        totalDoctors: doctorsCount,
+        totalDoctors,
         resPerPage,
         currentPage,
         totalPages,
@@ -38,6 +38,7 @@ const getAllDoctors = catchAsyncError(
     });
   }
 );
+
 const register = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     const {

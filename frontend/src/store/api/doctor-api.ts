@@ -23,7 +23,15 @@ export const doctorApi = createApi({
       providesTags: ["Doctor"],
     }),
     getAllDoctors: builder.query({
-      query: () => `/all`,
+    query: (params) => {
+        return {
+          url: "/all",
+          params: {
+            page: params?.page,
+            category:params?.category,
+          },
+        };
+      },
       providesTags: ["Doctor"],
     }),
     getDoctorFindId: builder.query({

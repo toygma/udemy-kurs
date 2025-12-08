@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { Doctor, ITimeSlot } from "../types/doctorTypes";
+import type { Doctor, ITimeSlot } from "../types/doctor.types";
 import { Calendar, Clock } from "lucide-react";
 import { formatDate } from "@/shared/utils/helper";
 import Modal from "@/shared/ui/Modal";
