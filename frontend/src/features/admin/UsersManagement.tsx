@@ -1,9 +1,11 @@
 import { formatDate } from "@/shared/utils/helper";
 import { useUsersManagement } from "./hooks/useUsersManagement";
 import type { User, UserRole } from "./types/admin.types";
+import Pagination from "@/shared/ui/Pagination";
 
 const UsersManagement = () => {
-  const { handleRoleChange, handleToggleBlock, users } = useUsersManagement();
+  const { handleRoleChange, handleToggleBlock, users ,handlePageClick} = useUsersManagement();
+
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-6 text-gray-800">
@@ -31,7 +33,7 @@ const UsersManagement = () => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {users?.data?.map((user:User) => (
+            {users?.data?.map((user: User) => (
               <tr
                 key={user._id}
                 className={`${
@@ -96,6 +98,15 @@ const UsersManagement = () => {
           </tbody>
         </table>
       </div>
+      {/* PAGINATION  */}
+      {users?.pagination && users.pagination.totalPages > 1 && (
+        <div className="mt-6 flex justify-center">
+          <Pagination
+            handlePageClick={handlePageClick}
+            pageCount={users.pagination.totalPages}
+          />
+        </div>
+      )}
     </div>
   );
 };

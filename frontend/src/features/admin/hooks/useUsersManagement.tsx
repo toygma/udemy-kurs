@@ -5,10 +5,20 @@ import {
 } from "@/store/api/admin-api";
 import type { UserRole } from "../types/admin.types";
 import toast from "react-hot-toast";
+import { useSearchParams } from "react-router";
 
 export const useUsersManagement = () => {
-  const { data: usersData } = useGetAllUsersQuery(null);
-  console.log("🚀 ~ useUsersManagement ~ usersData:", usersData)
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const currentPage = Number(searchParams.get("page")) || 1;
+
+  const params = { page: currentPage };
+
+  const handlePageClick = (event: { selected: number }) => {
+    const newPage = event.selected + 1;
+    setSearchParams({ page: newPage.toString() });
+  };
+  const { data: usersData } = useGetAllUsersQuery(params);
   const [toggleRole] = useToggleUserRoleMutation();
   const [toggleStatus] = useToggleUserStatusMutation();
 
@@ -36,8 +46,9 @@ export const useUsersManagement = () => {
   };
 
   return {
-    users:usersData,
+    users: usersData,
     handleRoleChange,
     handleToggleBlock,
+    handlePageClick
   };
 };

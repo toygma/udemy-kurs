@@ -10,8 +10,8 @@ import {
 import moment from "moment";
 import StatsCard from "./_components/StatsCard";
 import { useGetAnalyticsDataQuery } from "@/store/api/admin-api";
-import Pagination from "@/shared/ui/Pagination";
 import { useSearchParams } from "react-router";
+import Pagination from "@/shared/ui/Pagination";
 
 const Dashboard = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -20,7 +20,6 @@ const Dashboard = () => {
 
   const params = { page: currentPage };
   const { data } = useGetAnalyticsDataQuery(params);
-  console.log("🚀 ~ Dashboard ~ data:", data)
 
   const handlePageClick = (event: { selected: number }) => {
     const newPage = event.selected + 1;
@@ -198,7 +197,7 @@ const Dashboard = () => {
               </tbody>
             </table>
           </div>
-          {/* Pagination */}
+          {/* PAGINATION  */}
           {data?.pagination && data.pagination.totalPages > 1 && (
             <div className="mt-6 flex justify-center">
               <Pagination

@@ -11,7 +11,14 @@ export const adminApi = createApi({
   tagTypes: ["Admin"],
   endpoints: (builder) => ({
     getAllUsers: builder.query({
-      query: () => "/users",
+      query: (params) => {
+        return {
+          url: "/users",
+          params: {
+            page: params?.page,
+          },
+        };
+      },
       providesTags: ["Admin"],
     }),
     getAnalyticsData: builder.query({
@@ -23,7 +30,6 @@ export const adminApi = createApi({
           },
         };
       },
-      providesTags: ["Admin"],
     }),
     getPendingData: builder.query({
       query: () => "/doctor/pending",

@@ -10,23 +10,52 @@ import { upload_file } from "../utils/cloudinary";
 
 const getAllUsers = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
+    const resPerPage = Number(req.query.limit) || 5;
     const currentUserId = req.user._id;
 
-    const doctors = await Doctor.find({ _id: { $ne: currentUserId } })
-      .select("name email speciality role isActive createdAt")
-      .sort({ createdAt: -1 });
+    // Toplam kullanıcı sayısını hesapla
+    const doctorCount = await Doctor.countDocuments({ _id: { $ne: currentUserId } });
+    const patientCount = await Patient.countDocuments({ _id: { $ne: currentUserId } });
+    const allUserCount = doctorCount + patientCount;
 
-    const patients = await Patient.find({ _id: { $ne: currentUserId } })
-      .select("name email role isActive createdAt")
-      .sort({ createdAt: -1 });
+    // Pagination için hesaplamalar
+    const currentPage = Number(req.query.page) || 1;
+    const totalPages = Math.ceil(allUserCount / resPerPage);
 
+    // ApiFilter ile doctors
+    const doctorFilter = new ApiFilter(
+      Doctor.find({ _id: { $ne: currentUserId } })
+        .select("name email speciality role isActive createdAt")
+        .sort({ createdAt: -1 }),
+      req.query
+    ).pagination(resPerPage);
+
+    const doctors = await doctorFilter.query;
+
+    // ApiFilter ile patients
+    const patientFilter = new ApiFilter(
+      Patient.find({ _id: { $ne: currentUserId } })
+        .select("name email role isActive createdAt")
+        .sort({ createdAt: -1 }),
+      req.query
+    ).pagination(resPerPage);
+
+    const patients = await patientFilter.query;
+
+    // İki diziyi birleştir ve tarihe göre sırala
     const allUsers = [...doctors, ...patients];
-
     allUsers.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+
 
     res.status(200).json({
       success: true,
       data: allUsers,
+      pagination: {
+        totalUsers: allUserCount,
+        resPerPage,
+        currentPage,
+        totalPages,
+      },
     });
   }
 );
@@ -34,6 +63,7 @@ const getAllUsers = catchAsyncError(
 const getAnalyticsData = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     const resPerPage = Number(req.query.limit) || 5;
+
     const reviewsData = await Review.countDocuments();
 
     const appointmentsData = await Appointment.countDocuments();
@@ -67,8 +97,6 @@ const getAnalyticsData = catchAsyncError(
       { $sort: { totalAppointments: -1 } },
     ]);
 
-    const totalAppointmentsCount = await Appointment.countDocuments();
-
     const apiFilter = new ApiFilter(
       Appointment.find()
         .populate("doctor", "name speciality appointments")
@@ -86,7 +114,7 @@ const getAnalyticsData = catchAsyncError(
       .limit(3);
 
     const currentPage = Number(req.query.page) || 1;
-    const totalPages = Math.ceil(totalAppointmentsCount / resPerPage);
+    const totalPages = Math.ceil(appointmentsData / resPerPage);
 
     return res.status(200).json({
       stats: {
@@ -99,7 +127,7 @@ const getAnalyticsData = catchAsyncError(
       allRecentAppointments,
       recentThreeAppointments,
       pagination: {
-        totalAppointments: totalAppointmentsCount,
+        totalAppointments: appointmentsData,
         resPerPage,
         currentPage,
         totalPages,

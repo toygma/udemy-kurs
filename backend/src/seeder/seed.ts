@@ -10,7 +10,7 @@ dotenv.config();
 const SeederDoctor = async () => {
   try {
     await mongoose.connect(process.env.MONGODB_URI!);
-    console.log("Database connected!");
+    console.log("veritabanı bağlandı!");
 
     await Doctor.deleteMany();
     await Appointment.deleteMany();
@@ -26,7 +26,7 @@ const SeederDoctor = async () => {
     console.log(`Toplam: ${appointmentData.length} randevular`);
 
     await mongoose.connection.close();
-    console.log("🔌 Database connection closed!");
+    console.log("veritabanı kapandı!");
     process.exit(0);
   } catch (error) {
     console.error("Error:", error);
