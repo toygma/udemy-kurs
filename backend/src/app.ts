@@ -53,7 +53,7 @@ app.use("/api/v1/payment", stripeRoute);
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
-  app.get("*", (_req, res) => {
+  app.get("/*", (_req, res) => {
     res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
   });
 }
