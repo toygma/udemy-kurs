@@ -46,10 +46,10 @@ const Login = () => {
   const onSubmit = async (data: TLoginFormSchema) => {
     try{
       const response = await loginMutation(data).unwrap()
-      toast.success(response.message)
+      toast.success(response.data.message)
       navigate("/")
     }catch(error:any){
-      toast.error(error.message)
+      toast.error(error.data.message)
     }
   };
 
