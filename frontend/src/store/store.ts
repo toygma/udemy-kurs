@@ -6,6 +6,7 @@ import { doctorApi } from "./api/doctor-api";
 import { appointmentApi } from "./api/appointment-api";
 import { adminApi } from "./api/admin-api";
 import { checkoutApi } from "./api/checkout-api";
+import { reviewsApi } from "./api/review-api";
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ export const store = configureStore({
     [appointmentApi.reducerPath]: appointmentApi.reducer,
     [adminApi.reducerPath]: adminApi.reducer,
     [checkoutApi.reducerPath]: checkoutApi.reducer,
+    [reviewsApi.reducerPath]: reviewsApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat([
@@ -25,6 +27,7 @@ export const store = configureStore({
       appointmentApi.middleware,
       adminApi.middleware,
       checkoutApi.middleware,
+      reviewsApi.middleware,
     ]),
 });
 

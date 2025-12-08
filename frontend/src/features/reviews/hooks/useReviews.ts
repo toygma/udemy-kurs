@@ -1,64 +1,59 @@
 import { useState } from "react";
-import type { Review } from "../types/reviewTypes";
+import {
+  useCreateReviewMutation,
+  useDeleteReviewMutation,
+  useGetAllReviewsQuery,
+  useUpdateReviewMutation,
+} from "@/store/api/review-api";
+import toast from "react-hot-toast";
 
-export const useReviews = (initialReviews: Review[] = []) => {
-  const [reviews, setReviews] = useState<Review[]>(initialReviews);
 
-  const [deletingId, setDeletingId] = useState<string | null>(null);
+export const useReviews = (doctorId: string) => {
+  const { data: reviews = [] } = useGetAllReviewsQuery(doctorId);
 
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-
-  const [editingLoading, setEditingLoading] = useState<boolean>(false);
-
+  const [createReview, { isLoading: isSubmitting }] = useCreateReviewMutation();
+  const [updateReview, { isLoading: editingLoading }] = useUpdateReviewMutation();
+  const [deleteReview, { isLoading: isDeleting }] = useDeleteReviewMutation();
 
   const [editingId, setEditingId] = useState<string | null>(null);
 
   const addReview = async (rating: number, comment: string) => {
-    setIsSubmitting(true);
-    setTimeout(() => {
-      const newReview: Review = {
-        _id: crypto.randomUUID(),
-        user: {
-          name: "New User",
-          image: "",
-        },
-        rating,
-        comment,
-        createdAt: new Date().toISOString(),
-      };
-      setReviews((prev) => [newReview, ...prev]);
-      setIsSubmitting(false);
-      setEditingId(null);
-    }, 1000);
+    try {
+      await createReview({
+        doctorId,
+        body: { rating, comment },
+      }).unwrap();
+      toast.success("Yorum başarıyla eklendi");
+    } catch (error: any) {
+      toast.error(error?.data?.message || "Bir hata oluştu");
+    }
   };
 
-  const updateReview = async (
+  const handleUpdateReview = async (
     rating: number,
     comment: string,
-    reviewId?: string
+    reviewId: string
   ) => {
-    setEditingLoading(true);
-    setTimeout(() => {
-      setReviews((prev) =>
-        prev.map((review) =>
-          review._id === reviewId ? { ...review, rating, comment } : review
-        )
-      );
-
-      setEditingLoading(false);
+    try {
+      await updateReview({
+        reviewId,
+        body: { rating, comment },
+      }).unwrap();
+      toast.success("Yorum güncellendi");
       setEditingId(null);
-    }, 1000);
+    } catch (error: any) {
+      toast.error(error?.data?.message || "Bir hata oluştu");
+    }
   };
 
-  const deleteReview = (reviewId: string) => {
-    if (window.confirm("Yorumun silinecek emin misin ? ")) {
-      setDeletingId(reviewId);
-
-      setTimeout(() => {
-        setReviews((prev) => prev.filter((review) => review._id !== reviewId));
-
-        setDeletingId(null);
-      }, 1000);
+  const handleDeleteReview = async (reviewId: string) => {
+    if (window.confirm("Yorumun silinecek emin misin?")) {
+      try {
+        await deleteReview(reviewId).unwrap();
+        toast.success("Yorum silindi");
+      } catch (error: any) {
+        toast.error(error?.data?.message || "Bir hata oluştu");
+      }
     }
   };
 
@@ -73,13 +68,13 @@ export const useReviews = (initialReviews: Review[] = []) => {
   return {
     reviews,
     isSubmitting,
-    deletingId,
     editingId,
+    editingLoading,
+    isDeleting,
     addReview,
-    updateReview,
-    deleteReview,
+    updateReview: handleUpdateReview,
+    deleteReview: handleDeleteReview,
     startEditing,
     cancelEditing,
-    editingLoading
   };
 };
