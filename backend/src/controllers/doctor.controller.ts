@@ -11,10 +11,12 @@ const getAllDoctors = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     const resPerPage = Number(req.query.limit) || 3;
 
-    const totalDoctors = await Doctor.countDocuments();
+     const totalDoctors = await Doctor.countDocuments({ 
+      approvalStatus: "approved" 
+    });;
 
     const apiFilters = new ApiFilter(
-      Doctor.find().sort({ createdAt: -1 }),
+      Doctor.find({ approvalStatus: "approved" }).sort({ createdAt: -1 }),
       req.query
     )
       .filters()
