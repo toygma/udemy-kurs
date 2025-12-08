@@ -11,7 +11,7 @@ export interface Doctor {
   };
 }
 
-export type PaymentStatus = "ödenmedi" | "ödendi";
+export type PaymentStatus = "unpaid" | "paid";
 
 
 export type AppointmentStatus = "cancelled" | "confirmed" | "pending" ;
