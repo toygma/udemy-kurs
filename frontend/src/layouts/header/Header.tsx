@@ -13,6 +13,7 @@ const Header = () => {
   const [avatarMenu, setAvatarMenu] = useState(false);
   const navigate = useNavigate();
   const { user } = useAppSelector((state) => state.auth);
+  console.log("🚀 ~ Header ~ user:", user)
   const [logoutMutation] = useLogoutMutation();
 
   const activeDropdown = menuData.find((item) => item.id === activeItemId);

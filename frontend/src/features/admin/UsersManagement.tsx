@@ -59,8 +59,8 @@ const UsersManagement = () => {
                     }
                     className={`text-xs font-semibold px-2 py-1 rounded  cursor-pointer border border-gray-200 outline-none`}
                   >
-                    <option value="hasta">Hasta</option>
-                    <option value="doktor">Doktor</option>
+                    <option value="patient">Hasta</option>
+                    <option value="doctor">Doktor</option>
                     <option value="admin">Yönetici</option>
                   </select>
                 </td>

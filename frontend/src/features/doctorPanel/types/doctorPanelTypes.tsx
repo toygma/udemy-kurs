@@ -8,7 +8,7 @@ export interface IUser {
     url: string;
   };
   isPaid: "paid" | "unpaid";
-  role: "admin" | "doktor" | "hasta";
+  role: "admin" | "doctor" | "patient";
 }
 
 export interface IAppointment {
