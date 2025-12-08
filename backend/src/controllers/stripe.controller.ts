@@ -40,7 +40,7 @@ const getCheckoutSession = catchAsyncError(
       return next(new ErrorHandler("Bu randevu zaten ödenmiş", 400));
     }
 
-    if (appointment.patient.toString() !== patientId.toString()) {
+    if (appointment.patient._id.toString() !== patientId.toString()) {
       return next(new ErrorHandler("Bu randevu size ait değil", 403));
     }
 
@@ -52,9 +52,9 @@ const getCheckoutSession = catchAsyncError(
       customer_email: patient.email,
       client_reference_id: appointmentId,
       metadata: {
-        appointmentId: appointmentId,
-        doctorId: doctorId,
-        patientId: patientId,
+        appointmentId: appointmentId.toString(),
+        doctorId: doctorId.toString(),
+        patientId: patientId.toString(),
         patientName: patient.name,
         doctorName: doctor.name,
       },
@@ -68,7 +68,7 @@ const getCheckoutSession = catchAsyncError(
               description: `${doctor.speciality} - ${new Date(
                 appointment.date
               ).toLocaleDateString("tr-TR")} - ${appointment.timeSlot}`,
-              images: doctor.image.url,
+              images: [doctor.image.url],
             },
           },
           quantity: 1,

@@ -31,6 +31,6 @@ export interface Appointment {
 
 export interface AppointmentCardProps {
   appointment: Appointment;
-  onPayment: (appointmentId: string) => void;
+  onPayment: (appointmentId: string,doctorId:string) => void;
   onCancel: (appointmentId: string) => void;
 }
