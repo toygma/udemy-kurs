@@ -8,16 +8,36 @@ import { upload_file } from "../utils/cloudinary";
 
 const getAllDoctors = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
-    const doctors = await Doctor.find().sort({ createdAt: -1 });
+    const resPerPage = Number(req.query.limit) || 5;
+
+    // Toplam doktor sayısı
+    const doctorsCount = await Doctor.countDocuments();
+
+    // ApiFilter ile pagination
+    const apiFilter = new ApiFilter(
+      Doctor.find().sort({ createdAt: -1 }),
+      req.query
+    ).pagination(resPerPage);
+
+    const doctors = await apiFilter.query;
+
+    // Pagination hesaplamaları
+    const currentPage = Number(req.query.page) || 1;
+    const totalPages = Math.ceil(doctorsCount / resPerPage);
 
     res.status(200).json({
       success: true,
       count: doctors.length,
       data: doctors,
+      pagination: {
+        totalDoctors: doctorsCount,
+        resPerPage,
+        currentPage,
+        totalPages,
+      },
     });
   }
 );
-
 const register = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     const {
@@ -191,10 +211,10 @@ const getDoctorById = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     const { doctorId } = req.params;
 
-    const doctor = await Doctor.findById(doctorId).populate("appointments")
+    const doctor = await Doctor.findById(doctorId).populate("appointments");
 
-    if(!doctor){
-      return next(new ErrorHandler("doktor bilgileri getirilemedi.",404))
+    if (!doctor) {
+      return next(new ErrorHandler("doktor bilgileri getirilemedi.", 404));
     }
 
     res.status(200).json({

@@ -37,7 +37,7 @@ const UsersManagement = () => {
               <tr
                 key={user._id}
                 className={`${
-                  user.isActive ? "bg-red-50" : "hover:bg-gray-50"
+                  !user.isActive ? "bg-red-50" : "hover:bg-gray-50"
                 }`}
               >
                 <td className="px-6 py-4 whitespace-nowrap">
@@ -68,12 +68,12 @@ const UsersManagement = () => {
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span
                     className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                      user.isActive
+                      !user.isActive
                         ? "bg-red-100 text-red-800"
                         : "bg-green-100 text-green-800"
                     }`}
                   >
-                    {user.isActive ? "Engellendi" : "Aktif"}
+                    {!user.isActive ? "Engellendi" : "Aktif"}
                   </span>
                 </td>
 
@@ -90,7 +90,7 @@ const UsersManagement = () => {
                         : "text-red-600 hover:text-red-900"
                     } font-bold`}
                   >
-                    {user.isActive ? "Engeli Kaldır" : "Engelle"}
+                    {!user.isActive ? "Engeli Kaldır" : "Engelle"}
                   </button>
                 </td>
               </tr>

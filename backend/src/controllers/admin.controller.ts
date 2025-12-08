@@ -10,29 +10,30 @@ import { upload_file } from "../utils/cloudinary";
 
 const getAllUsers = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
-    const resPerPage = Number(req.query.limit) || 5;
     const currentUserId = req.user._id;
+    const resPerPage = Number(req.query.limit) || 5;
 
-    // Toplam kullanıcı sayısını hesapla
-    const doctorCount = await Doctor.countDocuments({ _id: { $ne: currentUserId } });
-    const patientCount = await Patient.countDocuments({ _id: { $ne: currentUserId } });
+    const doctorCount = await Doctor.countDocuments({
+      _id: { $ne: currentUserId },
+    });
+    const patientCount = await Patient.countDocuments({
+      _id: { $ne: currentUserId },
+    });
     const allUserCount = doctorCount + patientCount;
 
-    // Pagination için hesaplamalar
     const currentPage = Number(req.query.page) || 1;
     const totalPages = Math.ceil(allUserCount / resPerPage);
 
-    // ApiFilter ile doctors
     const doctorFilter = new ApiFilter(
       Doctor.find({ _id: { $ne: currentUserId } })
-        .select("name email speciality role isActive createdAt")
+
+        .select("name email role isActive createdAt")
         .sort({ createdAt: -1 }),
       req.query
     ).pagination(resPerPage);
 
     const doctors = await doctorFilter.query;
 
-    // ApiFilter ile patients
     const patientFilter = new ApiFilter(
       Patient.find({ _id: { $ne: currentUserId } })
         .select("name email role isActive createdAt")
@@ -42,10 +43,9 @@ const getAllUsers = catchAsyncError(
 
     const patients = await patientFilter.query;
 
-    // İki diziyi birleştir ve tarihe göre sırala
     const allUsers = [...doctors, ...patients];
-    allUsers.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
 
+    allUsers.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
 
     res.status(200).json({
       success: true,
@@ -216,7 +216,7 @@ const toggleUserStatus = catchAsyncError(
     res.status(200).json({
       success: true,
       message: `Kullanıcı ${
-        user.isActive ? "engellenmiş" : "aktif"
+        !user.isActive ? "engellenmiş" : "aktif"
       } duruma getirildi.`,
     });
   }

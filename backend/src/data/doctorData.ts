@@ -8,11 +8,12 @@ export const doctorData = [
     password: "password123",
     speciality: "Kardiyolog",
     experience: "15 yıl",
+    role:"doktor",
     about:
       "Kalp hastalıkları konusunda uzman kardiyolog. Koroner arter hastalıkları, kalp yetmezliği ve ritim bozuklukları tedavisinde deneyimli.",
     image: {
-      public_id: "doctor4_fq4oot",
-      url: "https://res.cloudinary.com/doznmpjdf/image/upload/v1760450043/doctor4_fq4oot.jpg",
+      public_id: "doktor4_fq4oot",
+      url: "https://res.cloudinary.com/doznmpjdf/image/upload/v1760450043/doktor4_fq4oot.jpg",
     },
     education: [
       {
@@ -90,12 +91,13 @@ export const doctorData = [
     email: "mehmet.demir@hospital.com",
     password: "password123",
     speciality: "Ortopedik Cerrah",
+    role:"doktor",
     experience: "12 yıl",
     about:
       "Ortopedi ve travmatoloji uzmanı. Spor yaralanmaları, artroskopik cerrahi ve protez ameliyatları konusunda uzman.",
     image: {
-      public_id: "doctor3_zd4eeh",
-      url: "https://res.cloudinary.com/doznmpjdf/image/upload/v1760450045/doctor3_zd4eeh.jpg",
+      public_id: "doktor3_zd4eeh",
+      url: "https://res.cloudinary.com/doznmpjdf/image/upload/v1760450045/doktor3_zd4eeh.jpg",
     },
     education: [
       {
@@ -172,13 +174,14 @@ export const doctorData = [
     name: "Dr. Zeynep Kaya",
     email: "zeynep.kaya@hospital.com",
     password: "password123",
+    role:"doktor",
     speciality: "Dermatolog",
     experience: "10 yıl",
     about:
       "Cilt hastalıkları ve kozmetik dermatoloji uzmanı. Akne, egzama, sedef hastalığı ve estetik uygulamalar konusunda deneyimli.",
     image: {
-      public_id: "doctor5_l0f4xv",
-      url: "https://res.cloudinary.com/doznmpjdf/image/upload/v1760450045/doctor5_l0f4xv.jpg",
+      public_id: "doktor5_l0f4xv",
+      url: "https://res.cloudinary.com/doznmpjdf/image/upload/v1760450045/doktor5_l0f4xv.jpg",
     },
     education: [
       {
@@ -255,13 +258,14 @@ export const doctorData = [
     name: "Dr. Can Özkan",
     email: "can.ozkan@hospital.com",
     password: "password123",
+    role:"doktor",
     speciality: "Nörolog",
     experience: "18 yıl",
     about:
       "Sinir sistemi hastalıkları uzmanı. Migren, epilepsi, Parkinson ve MS gibi nörolojik hastalıkların tanı ve tedavisinde uzman.",
     image: {
-      public_id: "doctor8_wzttd0",
-      url: "https://res.cloudinary.com/doznmpjdf/image/upload/v1760450045/doctor8_wzttd0.jpg",
+      public_id: "doktor8_wzttd0",
+      url: "https://res.cloudinary.com/doznmpjdf/image/upload/v1760450045/doktor8_wzttd0.jpg",
     },
     education: [
       {
@@ -337,13 +341,14 @@ export const doctorData = [
     name: "Dr. Elif Aksoy",
     email: "elif.aksoy@hospital.com",
     password: "password123",
+    role:"doktor",
     speciality: "Pediatrist",
     experience: "14 yıl",
     about:
       "Çocuk hastalıkları uzmanı. Bebek ve çocuk sağlığı, aşılama, büyüme-gelişme takibi konusunda deneyimli.",
     image: {
-      public_id: "doctor2_k2k7hs",
-      url: "https://res.cloudinary.com/doznmpjdf/image/upload/v1760450045/doctor2_k2k7hs.jpg",
+      public_id: "doktor2_k2k7hs",
+      url: "https://res.cloudinary.com/doznmpjdf/image/upload/v1760450045/doktor2_k2k7hs.jpg",
     },
     education: [
       {
@@ -421,12 +426,13 @@ export const doctorData = [
     email: "burak.sahin@hospital.com",
     password: "password123",
     speciality: "Endokrinolog",
+    role:"doktor",
     experience: "11 yıl",
     about:
       "Göz hastalıkları ve cerrahisi uzmanı. Katarakt, lasik, retina hastalıkları ve glokom tedavilerinde deneyimli.",
     image: {
-      public_id: "doctor6_jstbjh",
-      url: "https://res.cloudinary.com/doznmpjdf/image/upload/v1760450045/doctor6_jstbjh.jpg",
+      public_id: "doktor6_jstbjh",
+      url: "https://res.cloudinary.com/doznmpjdf/image/upload/v1760450045/doktor6_jstbjh.jpg",
     },
     education: [
       {
@@ -503,12 +509,13 @@ export const doctorData = [
     email: "selin.yildiz@hospital.com",
     password: "password123",
     speciality: "Gastroenterolog",
+    role:"doktor",
     experience: "16 yıl",
     about:
       "Kadın hastalıkları ve doğum uzmanı. Gebelik takibi, doğum, jinekolojik cerrahi ve menopoz yönetimi konusunda uzman.",
     image: {
-      public_id: "doctor_bmrdlx",
-      url: "https://res.cloudinary.com/doznmpjdf/image/upload/v1760450045/doctor_bmrdlx.jpg",
+      public_id: "doktor_bmrdlx",
+      url: "https://res.cloudinary.com/doznmpjdf/image/upload/v1760450045/doktor_bmrdlx.jpg",
     },
     education: [
       {
@@ -585,6 +592,7 @@ export const doctorData = [
     email: "emre.celik@hospital.com",
     password: "password123",
     speciality: "Psikiyatrist",
+    role:"doktor",
     experience: "13 yıl",
     about:
       "Genel cerrahi uzmanı. Laparoskopik cerrahi, kolorektal cerrahi ve meme cerrahisi konusunda deneyimli.",
@@ -667,6 +675,7 @@ export const doctorData = [
     email: "deniz.aydin@hospital.com",
     password: "password123",
     speciality: "Psikiyatrist",
+    role:"doktor",
     experience: "9 yıl",
     about:
       "Psikiyatri uzmanı. Depresyon, anksiyete bozuklukları, bipolar bozukluk ve travma sonrası stres tedavisinde uzman.",
@@ -749,6 +758,7 @@ export const doctorData = [
     email: "cem.yavuz@hospital.com",
     password: "password123",
     speciality: "Diş Hekimi",
+    role:"doktor",
     experience: "17 yıl",
     about:
       "Üroloji uzmanı. Prostat hastalıkları, böbrek taşları, üriner sistem enfeksiyonları ve erkek sağlığı konusunda deneyimli.",
