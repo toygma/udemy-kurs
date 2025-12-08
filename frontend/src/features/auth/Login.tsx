@@ -9,13 +9,13 @@ import Button from "@/shared/ui/Button";
 import { Link, useNavigate } from "react-router";
 import { Stethoscope, User } from "lucide-react";
 import { useLoginMutation } from "@/store/api/user-api";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import toast from "react-hot-toast";
 
 const Login = () => {
   const [
     loginMutation,
-    { error: loginError, isLoading: loginLoading, isSuccess },
+    {  isLoading: loginLoading},
   ] = useLoginMutation();
 
   const [activeRole, setActiveRole] = useState<"patient" | "doctor">("patient");
@@ -47,6 +47,7 @@ const Login = () => {
     try{
       const response = await loginMutation(data).unwrap()
       toast.success(response.message)
+      navigate("/")
     }catch(error:any){
       toast.error(error.message)
     }
