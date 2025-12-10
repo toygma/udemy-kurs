@@ -3,7 +3,7 @@
 Bu Udemy kursumda; hasta, doktor ve admin panellerinin yer aldığı kapsamlı bir kontrol sistemi geliştiriyorum. Hastalar doktorlarla randevu oluşturabilirken, doktorlar bu randevuları onaylayabilir veya iptal edebilir. 
 Admin paneli ise tüm kullanıcı yorumlarını, randevu geçmişlerini ve sistem aktivitelerini detaylı şekilde görüntüleyebilmek için tasarlandı.
 Ayrıca projede pagination, sort, filter ve advanced search gibi modern listeleme ve veri yönetimi özellikleri de tam kapsamlı olarak uygulanmıştır.
----
+
 
 ## 🚀 Özellikler
 
